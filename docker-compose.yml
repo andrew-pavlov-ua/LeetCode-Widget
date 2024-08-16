@@ -1,0 +1,16 @@
+version: "3.7"
+
+services:
+  app:
+    container_name: "lc_redirect_app"
+    image: golang:1.21.0-alpine
+    working_dir: /app
+    volumes:
+      - .:/app
+    command: "sleep infinity"
+    environment:
+      GIN_MODE: release
+      ENVIRONMENT: ${ENVIRONMENT:-development}
+      HOSTS: ${HOSTS}
+    ports:
+      - "8080:8080"
