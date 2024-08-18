@@ -16,7 +16,8 @@ func main() {
 	r.GET("/", webController.ReturnSimpleView)
 
 	r.GET("/redirect", webController.RedirectToLc)
-	r.GET("/testBadge", webController.StatsBadge)
+	r.GET("/badge", webController.StatsBadge)
+	r.GET("/LeetCodeLogo", webController.ReturnSimpleView)
 
 	err := r.Run(":8080")
 	if err != nil {

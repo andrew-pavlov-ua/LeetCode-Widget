@@ -4,6 +4,7 @@ import (
 	v1 "cmd/internal/templates/v1"
 	"github.com/gin-gonic/gin"
 	"net/http"
+	"os"
 )
 
 type WebController struct {
@@ -42,4 +43,13 @@ func (c *WebController) CalculateWidth(count int64, max int64) float64 {
 	countPerPixel := float64(v1.BarWidthValue) / float64(max)
 	result := countPerPixel * float64(count)
 	return result
+}
+
+func (c *WebController) GetLeetCodeLogo(ctx *gin.Context) {
+	imgData, err := os.ReadFile("images/LeetCodeLogo.png")
+	if err != nil {
+		ctx.String(http.StatusInternalServerError, "Error reading image file")
+		return
+	}
+	ctx.Data(http.StatusOK, "image/png", imgData)
 }
