@@ -18,7 +18,7 @@ var (
 )
 
 //line internal/templates/v1/badge.qtpl:1
-func StreamBadge(qw422016 *qt422016.Writer, stats LcStats) {
+func StreamBadge(qw422016 *qt422016.Writer, stats LcStats, barsWidth BarsWidth, maxStats maxStats) {
 //line internal/templates/v1/badge.qtpl:1
 	qw422016.N().S(`
 <svg width="600" height="150" viewBox="0 0 600 150" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -52,80 +52,98 @@ func StreamBadge(qw422016 *qt422016.Writer, stats LcStats) {
   <!-- Progress Bars for Problem Difficulty -->
   <g font-family="Verdana, sans-serif">
     <!-- Easy -->
-    <text x="300" y="35" font-size="14" fill="#444">Easy</text>
-    <rect x="350" y="25" width="205" height="12" fill="#333" rx="6"></rect>
-    <rect x="350" y="25" width="`)
+    <text x="250" y="35" font-size="14" fill="#444">Easy</text>
+    <rect x="310" y="25" width="`)
+//line internal/templates/v1/badge.qtpl:18
+	qw422016.N().DL(maxStats.BarWidth)
+//line internal/templates/v1/badge.qtpl:18
+	qw422016.N().S(`" height="12" fill="#A9A9A9" rx="6"></rect>
+    <rect x="310" y="25" width="`)
 //line internal/templates/v1/badge.qtpl:19
-	qw422016.N().DL(stats.EasyCount / 100 * 819)
+	qw422016.N().F(barsWidth.EasyWidth)
 //line internal/templates/v1/badge.qtpl:19
 	qw422016.N().S(`" height="12" fill="#4CAF50" rx="6"></rect>
-    <text x="510" y="35" font-size="12" fill="#444">`)
+    <text x="400" y="35" font-size="12" fill="#444">`)
 //line internal/templates/v1/badge.qtpl:20
 	qw422016.N().DL(stats.EasyCount)
 //line internal/templates/v1/badge.qtpl:20
-	qw422016.N().S(` / 819</text>
+	qw422016.N().S(` / `)
+//line internal/templates/v1/badge.qtpl:20
+	qw422016.N().DL(maxStats.EasyMax)
+//line internal/templates/v1/badge.qtpl:20
+	qw422016.N().S(`</text>
 
     <!-- Medium -->
-    <text x="300" y="70" font-size="14" fill="#444">Medium</text>
-    <rect x="350" y="60" width="`)
+    <text x="250" y="70" font-size="14" fill="#444">Medium</text>
+    <rect x="310" y="60" width="`)
 //line internal/templates/v1/badge.qtpl:24
-	qw422016.N().DL(stats.MediumCount)
+	qw422016.N().DL(maxStats.BarWidth)
 //line internal/templates/v1/badge.qtpl:24
+	qw422016.N().S(`" height="12" fill="#A9A9A9" rx="6"></rect>
+    <rect x="310" y="60" width="`)
+//line internal/templates/v1/badge.qtpl:25
+	qw422016.N().F(barsWidth.MediumWidth)
+//line internal/templates/v1/badge.qtpl:25
 	qw422016.N().S(`" height="12" fill="#FF9800" rx="6"></rect>
-    <text x="510" y="70" font-size="12" fill="#444">`)
-//line internal/templates/v1/badge.qtpl:25
+    <text x="400" y="70" font-size="12" fill="#444">`)
+//line internal/templates/v1/badge.qtpl:26
 	qw422016.N().DL(stats.MediumCount)
-//line internal/templates/v1/badge.qtpl:25
+//line internal/templates/v1/badge.qtpl:26
 	qw422016.N().S(` / `)
-//line internal/templates/v1/badge.qtpl:25
-	qw422016.N().DL(stats.TotalCount)
-//line internal/templates/v1/badge.qtpl:25
+//line internal/templates/v1/badge.qtpl:26
+	qw422016.N().DL(maxStats.MediumMax)
+//line internal/templates/v1/badge.qtpl:26
 	qw422016.N().S(`</text>
 
     <!-- Hard -->
-    <text x="300" y="105" font-size="14" fill="#444">Hard</text>
-    <rect x="350" y="95" width="`)
-//line internal/templates/v1/badge.qtpl:29
-	qw422016.N().DL(stats.HardCount)
-//line internal/templates/v1/badge.qtpl:29
+    <text x="250" y="105" font-size="14" fill="#444">Hard</text>
+    <rect x="310" y="95" width="`)
+//line internal/templates/v1/badge.qtpl:30
+	qw422016.N().DL(maxStats.BarWidth)
+//line internal/templates/v1/badge.qtpl:30
+	qw422016.N().S(`" height="12" fill="#A9A9A9" rx="6"></rect>
+    <rect x="310" y="95" width="`)
+//line internal/templates/v1/badge.qtpl:31
+	qw422016.N().F(barsWidth.HardWidth)
+//line internal/templates/v1/badge.qtpl:31
 	qw422016.N().S(`" height="12" fill="#F44336" rx="6"></rect>
-    <text x="510" y="105" font-size="12" fill="#444">`)
-//line internal/templates/v1/badge.qtpl:30
+    <text x="400" y="105" font-size="12" fill="#444">`)
+//line internal/templates/v1/badge.qtpl:32
 	qw422016.N().DL(stats.HardCount)
-//line internal/templates/v1/badge.qtpl:30
+//line internal/templates/v1/badge.qtpl:32
 	qw422016.N().S(` / `)
-//line internal/templates/v1/badge.qtpl:30
-	qw422016.N().DL(stats.TotalCount)
-//line internal/templates/v1/badge.qtpl:30
+//line internal/templates/v1/badge.qtpl:32
+	qw422016.N().DL(maxStats.HardMax)
+//line internal/templates/v1/badge.qtpl:32
 	qw422016.N().S(`</text>
   </g>
 </svg>
 `)
-//line internal/templates/v1/badge.qtpl:33
+//line internal/templates/v1/badge.qtpl:35
 }
 
-//line internal/templates/v1/badge.qtpl:33
-func WriteBadge(qq422016 qtio422016.Writer, stats LcStats) {
-//line internal/templates/v1/badge.qtpl:33
+//line internal/templates/v1/badge.qtpl:35
+func WriteBadge(qq422016 qtio422016.Writer, stats LcStats, barsWidth BarsWidth, maxStats maxStats) {
+//line internal/templates/v1/badge.qtpl:35
 	qw422016 := qt422016.AcquireWriter(qq422016)
-//line internal/templates/v1/badge.qtpl:33
-	StreamBadge(qw422016, stats)
-//line internal/templates/v1/badge.qtpl:33
+//line internal/templates/v1/badge.qtpl:35
+	StreamBadge(qw422016, stats, barsWidth, maxStats)
+//line internal/templates/v1/badge.qtpl:35
 	qt422016.ReleaseWriter(qw422016)
-//line internal/templates/v1/badge.qtpl:33
+//line internal/templates/v1/badge.qtpl:35
 }
 
-//line internal/templates/v1/badge.qtpl:33
-func Badge(stats LcStats) string {
-//line internal/templates/v1/badge.qtpl:33
+//line internal/templates/v1/badge.qtpl:35
+func Badge(stats LcStats, barsWidth BarsWidth, maxStats maxStats) string {
+//line internal/templates/v1/badge.qtpl:35
 	qb422016 := qt422016.AcquireByteBuffer()
-//line internal/templates/v1/badge.qtpl:33
-	WriteBadge(qb422016, stats)
-//line internal/templates/v1/badge.qtpl:33
+//line internal/templates/v1/badge.qtpl:35
+	WriteBadge(qb422016, stats, barsWidth, maxStats)
+//line internal/templates/v1/badge.qtpl:35
 	qs422016 := string(qb422016.B)
-//line internal/templates/v1/badge.qtpl:33
+//line internal/templates/v1/badge.qtpl:35
 	qt422016.ReleaseByteBuffer(qb422016)
-//line internal/templates/v1/badge.qtpl:33
+//line internal/templates/v1/badge.qtpl:35
 	return qs422016
-//line internal/templates/v1/badge.qtpl:33
+//line internal/templates/v1/badge.qtpl:35
 }
