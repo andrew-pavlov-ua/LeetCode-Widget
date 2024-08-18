@@ -1,4 +1,4 @@
-{% func Badge(stats LcStats, barsWidth BarsWidth, maxStats maxStats) %}
+{% func Badge(stats LcStats, barsWidth BarsWidth) %}
 <svg width="600" height="150" viewBox="0 0 600 150" fill="none" xmlns="http://www.w3.org/2000/svg">
   <!-- Background -->
   <rect width="600" height="150" rx="12" fill="#F0F0F0"></rect>
@@ -15,21 +15,21 @@
   <g font-family="Verdana, sans-serif">
     <!-- Easy -->
     <text x="250" y="35" font-size="14" fill="#444">Easy</text>
-    <rect x="310" y="25" width="{%dl maxStats.BarWidth %}" height="12" fill="#A9A9A9" rx="6"></rect>
+    <rect x="310" y="25" width="{%dl BarWidthValue %}" height="12" fill="#A9A9A9" rx="6"></rect>
     <rect x="310" y="25" width="{%f barsWidth.EasyWidth %}" height="12" fill="#4CAF50" rx="6"></rect>
-    <text x="400" y="35" font-size="12" fill="#444">{%dl stats.EasyCount %} / {%dl maxStats.EasyMax %}</text>
+    <text x="400" y="35" font-size="12" fill="#444">{%dl stats.EasyCount %} / {%dl EasyMaxValue %}</text>
 
     <!-- Medium -->
     <text x="250" y="70" font-size="14" fill="#444">Medium</text>
-    <rect x="310" y="60" width="{%dl maxStats.BarWidth %}" height="12" fill="#A9A9A9" rx="6"></rect>
+    <rect x="310" y="60" width="{%dl BarWidthValue %}" height="12" fill="#A9A9A9" rx="6"></rect>
     <rect x="310" y="60" width="{%f barsWidth.MediumWidth %}" height="12" fill="#FF9800" rx="6"></rect>
-    <text x="400" y="70" font-size="12" fill="#444">{%dl stats.MediumCount %} / {%dl maxStats.MediumMax %}</text>
+    <text x="400" y="70" font-size="12" fill="#444">{%dl stats.MediumCount %} / {%dl MediumMaxValue %}</text>
 
     <!-- Hard -->
     <text x="250" y="105" font-size="14" fill="#444">Hard</text>
-    <rect x="310" y="95" width="{%dl maxStats.BarWidth %}" height="12" fill="#A9A9A9" rx="6"></rect>
+    <rect x="310" y="95" width="{%dl BarWidthValue %}" height="12" fill="#A9A9A9" rx="6"></rect>
     <rect x="310" y="95" width="{%f barsWidth.HardWidth %}" height="12" fill="#F44336" rx="6"></rect>
-    <text x="400" y="105" font-size="12" fill="#444">{%dl stats.HardCount %} / {%dl maxStats.HardMax %}</text>
+    <text x="400" y="105" font-size="12" fill="#444">{%dl stats.HardCount %} / {%dl HardMaxValue %}</text>
   </g>
 </svg>
 {% endfunc %}

@@ -2,7 +2,6 @@ package controllers
 
 import (
 	v1 "cmd/internal/templates/v1"
-	"fmt"
 	"github.com/gin-gonic/gin"
 	"net/http"
 )
@@ -24,14 +23,12 @@ func (c *WebController) RedirectToLc(ctx *gin.Context) {
 
 func (c *WebController) StatsBadge(ctx *gin.Context) {
 	lcStats := v1.LcStats{Username: "a", Rank: 1, Lvl: 2, Experience: 100, EasyCount: 300, MediumCount: 1000, HardCount: 5, TotalCount: 6}
-	maxWidth := v1.NewMaxStats()
-	fmt.Printf("Max easy: %i", maxWidth.EasyMax)
 	barsWidth := v1.BarsWidth{
-		EasyWidth:   c.CalculateWidth(lcStats.EasyCount, maxWidth.EasyMax),
-		MediumWidth: c.CalculateWidth(lcStats.MediumCount, maxWidth.MediumMax),
-		HardWidth:   c.CalculateWidth(lcStats.HardCount, maxWidth.HardMax)}
+		EasyWidth:   c.CalculateWidth(lcStats.EasyCount, v1.EasyMaxValue),
+		MediumWidth: c.CalculateWidth(lcStats.MediumCount, v1.MediumMaxValue),
+		HardWidth:   c.CalculateWidth(lcStats.HardCount, v1.HardMaxValue)}
 
-	c.renderImage(ctx, []byte(v1.Badge(lcStats, barsWidth, maxWidth)))
+	c.renderImage(ctx, []byte(v1.Badge(lcStats, barsWidth)))
 }
 
 func (c *WebController) renderImage(ctx *gin.Context, data []byte) {
@@ -42,7 +39,7 @@ func (c *WebController) renderImage(ctx *gin.Context, data []byte) {
 }
 
 func (c *WebController) CalculateWidth(count int64, max int64) float64 {
-	countPerPixel := float64(v1.NewMaxStats().BarWidth) / float64(max)
+	countPerPixel := float64(v1.BarWidthValue) / float64(max)
 	result := countPerPixel * float64(count)
 	return result
 }

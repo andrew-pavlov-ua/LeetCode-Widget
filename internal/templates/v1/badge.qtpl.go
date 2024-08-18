@@ -18,7 +18,7 @@ var (
 )
 
 //line internal/templates/v1/badge.qtpl:1
-func StreamBadge(qw422016 *qt422016.Writer, stats LcStats, barsWidth BarsWidth, maxStats maxStats) {
+func StreamBadge(qw422016 *qt422016.Writer, stats LcStats, barsWidth BarsWidth) {
 //line internal/templates/v1/badge.qtpl:1
 	qw422016.N().S(`
 <svg width="600" height="150" viewBox="0 0 600 150" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -55,7 +55,7 @@ func StreamBadge(qw422016 *qt422016.Writer, stats LcStats, barsWidth BarsWidth, 
     <text x="250" y="35" font-size="14" fill="#444">Easy</text>
     <rect x="310" y="25" width="`)
 //line internal/templates/v1/badge.qtpl:18
-	qw422016.N().DL(maxStats.BarWidth)
+	qw422016.N().DL(BarWidthValue)
 //line internal/templates/v1/badge.qtpl:18
 	qw422016.N().S(`" height="12" fill="#A9A9A9" rx="6"></rect>
     <rect x="310" y="25" width="`)
@@ -69,7 +69,7 @@ func StreamBadge(qw422016 *qt422016.Writer, stats LcStats, barsWidth BarsWidth, 
 //line internal/templates/v1/badge.qtpl:20
 	qw422016.N().S(` / `)
 //line internal/templates/v1/badge.qtpl:20
-	qw422016.N().DL(maxStats.EasyMax)
+	qw422016.N().DL(EasyMaxValue)
 //line internal/templates/v1/badge.qtpl:20
 	qw422016.N().S(`</text>
 
@@ -77,7 +77,7 @@ func StreamBadge(qw422016 *qt422016.Writer, stats LcStats, barsWidth BarsWidth, 
     <text x="250" y="70" font-size="14" fill="#444">Medium</text>
     <rect x="310" y="60" width="`)
 //line internal/templates/v1/badge.qtpl:24
-	qw422016.N().DL(maxStats.BarWidth)
+	qw422016.N().DL(BarWidthValue)
 //line internal/templates/v1/badge.qtpl:24
 	qw422016.N().S(`" height="12" fill="#A9A9A9" rx="6"></rect>
     <rect x="310" y="60" width="`)
@@ -91,7 +91,7 @@ func StreamBadge(qw422016 *qt422016.Writer, stats LcStats, barsWidth BarsWidth, 
 //line internal/templates/v1/badge.qtpl:26
 	qw422016.N().S(` / `)
 //line internal/templates/v1/badge.qtpl:26
-	qw422016.N().DL(maxStats.MediumMax)
+	qw422016.N().DL(MediumMaxValue)
 //line internal/templates/v1/badge.qtpl:26
 	qw422016.N().S(`</text>
 
@@ -99,7 +99,7 @@ func StreamBadge(qw422016 *qt422016.Writer, stats LcStats, barsWidth BarsWidth, 
     <text x="250" y="105" font-size="14" fill="#444">Hard</text>
     <rect x="310" y="95" width="`)
 //line internal/templates/v1/badge.qtpl:30
-	qw422016.N().DL(maxStats.BarWidth)
+	qw422016.N().DL(BarWidthValue)
 //line internal/templates/v1/badge.qtpl:30
 	qw422016.N().S(`" height="12" fill="#A9A9A9" rx="6"></rect>
     <rect x="310" y="95" width="`)
@@ -113,7 +113,7 @@ func StreamBadge(qw422016 *qt422016.Writer, stats LcStats, barsWidth BarsWidth, 
 //line internal/templates/v1/badge.qtpl:32
 	qw422016.N().S(` / `)
 //line internal/templates/v1/badge.qtpl:32
-	qw422016.N().DL(maxStats.HardMax)
+	qw422016.N().DL(HardMaxValue)
 //line internal/templates/v1/badge.qtpl:32
 	qw422016.N().S(`</text>
   </g>
@@ -123,22 +123,22 @@ func StreamBadge(qw422016 *qt422016.Writer, stats LcStats, barsWidth BarsWidth, 
 }
 
 //line internal/templates/v1/badge.qtpl:35
-func WriteBadge(qq422016 qtio422016.Writer, stats LcStats, barsWidth BarsWidth, maxStats maxStats) {
+func WriteBadge(qq422016 qtio422016.Writer, stats LcStats, barsWidth BarsWidth) {
 //line internal/templates/v1/badge.qtpl:35
 	qw422016 := qt422016.AcquireWriter(qq422016)
 //line internal/templates/v1/badge.qtpl:35
-	StreamBadge(qw422016, stats, barsWidth, maxStats)
+	StreamBadge(qw422016, stats, barsWidth)
 //line internal/templates/v1/badge.qtpl:35
 	qt422016.ReleaseWriter(qw422016)
 //line internal/templates/v1/badge.qtpl:35
 }
 
 //line internal/templates/v1/badge.qtpl:35
-func Badge(stats LcStats, barsWidth BarsWidth, maxStats maxStats) string {
+func Badge(stats LcStats, barsWidth BarsWidth) string {
 //line internal/templates/v1/badge.qtpl:35
 	qb422016 := qt422016.AcquireByteBuffer()
 //line internal/templates/v1/badge.qtpl:35
-	WriteBadge(qb422016, stats, barsWidth, maxStats)
+	WriteBadge(qb422016, stats, barsWidth)
 //line internal/templates/v1/badge.qtpl:35
 	qs422016 := string(qb422016.B)
 //line internal/templates/v1/badge.qtpl:35

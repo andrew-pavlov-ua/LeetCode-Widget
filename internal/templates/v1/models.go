@@ -1,5 +1,12 @@
 package v1
 
+const (
+	EasyMaxValue   int64 = 820
+	MediumMaxValue int64 = 1710
+	HardMaxValue   int64 = 732
+	BarWidthValue  int64 = 240
+)
+
 type LcStats struct {
 	Username    string
 	Rank        int64
@@ -15,15 +22,4 @@ type BarsWidth struct {
 	EasyWidth   float64
 	MediumWidth float64
 	HardWidth   float64
-}
-
-type maxStats struct {
-	EasyMax   int64
-	MediumMax int64
-	HardMax   int64
-	BarWidth  int64
-}
-
-func NewMaxStats() maxStats {
-	return maxStats{EasyMax: 820, MediumMax: 1710, HardMax: 732, BarWidth: 240}
 }
