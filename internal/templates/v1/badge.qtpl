@@ -1,0 +1,33 @@
+{% func Badge(stats LcStats, barsWidth) %}
+<svg width="600" height="150" viewBox="0 0 600 150" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="600" height="150" rx="12" fill="#F0F0F0"></rect>
+
+  <!-- User Info -->
+  <g fill="#444" font-family="Verdana, sans-serif">
+    <text x="20" y="35" font-size="18" font-weight="bold">{%s stats.Username %}</text>
+    <text x="20" y="60" font-size="14">Rank: {%dl stats.Rank %}</text>
+    <text x="20" y="80" font-size="14">Experience: {%dl stats.Lvl %}</text>
+    <text x="20" y="100" font-size="14">Total Problems: {%dl stats.TotalCount %}</text>
+  </g>
+
+  <!-- Progress Bars for Problem Difficulty -->
+  <g font-family="Verdana, sans-serif">
+    <!-- Easy -->
+    <text x="300" y="35" font-size="14" fill="#444">Easy</text>
+    <rect x="350" y="25" width="205" height="12" fill="#333" rx="6"></rect>
+    <rect x="350" y="25" width="{%dl stats.EasyCount/100*819 %}" height="12" fill="#4CAF50" rx="6"></rect>
+    <text x="510" y="35" font-size="12" fill="#444">{%dl stats.EasyCount %} / 819</text>
+
+    <!-- Medium -->
+    <text x="300" y="70" font-size="14" fill="#444">Medium</text>
+    <rect x="350" y="60" width="{%dl stats.MediumCount %}" height="12" fill="#FF9800" rx="6"></rect>
+    <text x="510" y="70" font-size="12" fill="#444">{%dl stats.MediumCount %} / {%dl stats.TotalCount %}</text>
+
+    <!-- Hard -->
+    <text x="300" y="105" font-size="14" fill="#444">Hard</text>
+    <rect x="350" y="95" width="{%dl stats.HardCount %}" height="12" fill="#F44336" rx="6"></rect>
+    <text x="510" y="105" font-size="12" fill="#444">{%dl stats.HardCount %} / {%dl stats.TotalCount %}</text>
+  </g>
+</svg>
+{% endfunc %}

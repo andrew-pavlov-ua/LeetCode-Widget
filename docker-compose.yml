@@ -2,7 +2,7 @@ version: "3.7"
 
 services:
   app:
-    container_name: "lc_redirect_app"
+    container_name: "lc_badge_app"
     image: golang:1.21.0-alpine
     working_dir: /app
     volumes:

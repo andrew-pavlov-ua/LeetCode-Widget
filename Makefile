@@ -1,12 +1,11 @@
-
 env-up:
 	docker-compose -f docker-compose.yml --env-file .env up -d
 
 restart:
-	docker restart lc_redirect_app
+	docker restart lc_badge_app
 
 logs:
-	docker logs lc_redirect_app
+	docker logs lc_badge_app
 
 env-down:
 	docker-compose -f docker-compose.yml --env-file .env down
@@ -15,13 +14,13 @@ env-down-with-clear:
 	docker-compose -f docker-compose.yml --env-file .env down --remove-orphans -v # --rmi=all
 
 app-build:
-	docker exec lc_redirect_app go build -o /bin/lc-redirect-server ./cmd/v1/main.go
+	docker exec lc_badge_app go build -o /bin/lc-redirect-server ./cmd/v1/main.go
 
 app-start:
-	docker exec lc_redirect_app lc-redirect-server
+	docker exec lc_badge_app lc-redirect-server
 
 app-stop:
-	docker exec lc_redirect_app pkill lc-redirect-server || echo "lc_redirect-server already stopped"
+	docker exec lc_badge_app pkill lc-redirect-server || echo "lc_redirect-server already stopped"
 
 app-restart: app-build app-stop app-start
 
