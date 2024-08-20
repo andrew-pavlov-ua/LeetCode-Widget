@@ -7,11 +7,10 @@ const (
 	BarWidthValue  int64 = 240
 )
 
-type LcStats struct {
+type LcUserData struct {
 	Username    string
 	Rank        int64
 	Lvl         int64
-	Experience  int64
 	EasyCount   int64
 	MediumCount int64
 	HardCount   int64

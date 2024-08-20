@@ -18,7 +18,7 @@ var (
 )
 
 //line internal/templates/v1/badge.qtpl:1
-func StreamBadge(qw422016 *qt422016.Writer, stats LcStats, barsWidth BarsWidth) {
+func StreamBadge(qw422016 *qt422016.Writer, stats LcUserData, barsWidth BarsWidth) {
 //line internal/templates/v1/badge.qtpl:1
 	qw422016.N().S(`
 <svg width="500" height="200" viewBox="0 0 500 200" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -120,7 +120,7 @@ func StreamBadge(qw422016 *qt422016.Writer, stats LcStats, barsWidth BarsWidth) 
 }
 
 //line internal/templates/v1/badge.qtpl:48
-func WriteBadge(qq422016 qtio422016.Writer, stats LcStats, barsWidth BarsWidth) {
+func WriteBadge(qq422016 qtio422016.Writer, stats LcUserData, barsWidth BarsWidth) {
 //line internal/templates/v1/badge.qtpl:48
 	qw422016 := qt422016.AcquireWriter(qq422016)
 //line internal/templates/v1/badge.qtpl:48
@@ -131,7 +131,7 @@ func WriteBadge(qq422016 qtio422016.Writer, stats LcStats, barsWidth BarsWidth) 
 }
 
 //line internal/templates/v1/badge.qtpl:48
-func Badge(stats LcStats, barsWidth BarsWidth) string {
+func Badge(stats LcUserData, barsWidth BarsWidth) string {
 //line internal/templates/v1/badge.qtpl:48
 	qb422016 := qt422016.AcquireByteBuffer()
 //line internal/templates/v1/badge.qtpl:48

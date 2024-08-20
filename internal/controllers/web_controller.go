@@ -23,7 +23,7 @@ func (c *WebController) RedirectToLc(ctx *gin.Context) {
 }
 
 func (c *WebController) StatsBadge(ctx *gin.Context) {
-	lcStats := v1.LcStats{Username: "a", Rank: 1, Lvl: 2, Experience: 100, EasyCount: 300, MediumCount: 1000, HardCount: 5, TotalCount: 6}
+	lcStats := v1.LcUserData{Username: "a", Rank: 1, Lvl: 2, EasyCount: 300, MediumCount: 1000, HardCount: 5, TotalCount: 6}
 	barsWidth := v1.BarsWidth{
 		EasyWidth:   c.CalculateWidth(lcStats.EasyCount, v1.EasyMaxValue),
 		MediumWidth: c.CalculateWidth(lcStats.MediumCount, v1.MediumMaxValue),
