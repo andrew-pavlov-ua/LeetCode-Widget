@@ -14,7 +14,7 @@
     <text x="60" y="35" font-size="24" font-weight="bold">{%s stats.Username %}</text>
 
     <!-- Rank on the top right corner -->
-    <text x="450" y="35" font-size="18" fill="#888" text-anchor="end">#{%dl stats.Rank %}</text>
+    <text x="450" y="35" font-size="18" fill="#888" text-anchor="end">#{%f stats.Rank %}</text>
   </g>
 
   <!-- Circle with number and border -->

@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	"cmd/internal/leetcode_api"
 	v1 "cmd/internal/templates/v1"
 	"github.com/gin-gonic/gin"
 	"net/http"
@@ -23,13 +24,16 @@ func (c *WebController) RedirectToLc(ctx *gin.Context) {
 }
 
 func (c *WebController) StatsBadge(ctx *gin.Context) {
-	lcStats := v1.LcUserData{Username: "a", Rank: 1, Lvl: 2, EasyCount: 300, MediumCount: 1000, HardCount: 5, TotalCount: 6}
-	barsWidth := v1.BarsWidth{
-		EasyWidth:   c.CalculateWidth(lcStats.EasyCount, v1.EasyMaxValue),
-		MediumWidth: c.CalculateWidth(lcStats.MediumCount, v1.MediumMaxValue),
-		HardWidth:   c.CalculateWidth(lcStats.HardCount, v1.HardMaxValue)}
+	userData := leetcode_api.MatchedUserMapToUserProfile("jonathanirvings")
 
-	c.renderImage(ctx, []byte(v1.Badge(lcStats, barsWidth)))
+	lcUserData := v1.NewLcUserDataFromReq(*userData)
+
+	barsWidth := v1.BarsWidth{
+		EasyWidth:   c.CalculateWidth(lcUserData.EasyCount, v1.EasyMaxValue),
+		MediumWidth: c.CalculateWidth(lcUserData.MediumCount, v1.MediumMaxValue),
+		HardWidth:   c.CalculateWidth(lcUserData.HardCount, v1.HardMaxValue)}
+
+	c.renderImage(ctx, []byte(v1.Badge(*lcUserData, barsWidth)))
 }
 
 func (c *WebController) renderImage(ctx *gin.Context, data []byte) {

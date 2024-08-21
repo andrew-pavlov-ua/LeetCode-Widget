@@ -42,7 +42,7 @@ func StreamBadge(qw422016 *qt422016.Writer, stats LcUserData, barsWidth BarsWidt
     <!-- Rank on the top right corner -->
     <text x="450" y="35" font-size="18" fill="#888" text-anchor="end">#`)
 //line internal/templates/v1/badge.qtpl:17
-	qw422016.N().DL(stats.Rank)
+	qw422016.N().F(stats.Rank)
 //line internal/templates/v1/badge.qtpl:17
 	qw422016.N().S(`</text>
   </g>
@@ -53,7 +53,7 @@ func StreamBadge(qw422016 *qt422016.Writer, stats LcUserData, barsWidth BarsWidt
     <circle cx="80" cy="140" r="40" fill="#444"></circle>
     <text x="80" y="145" font-size="28" fill="#FFF" font-family="Verdana, sans-serif" text-anchor="middle" alignment-baseline="middle" dominant-baseline="middle">`)
 //line internal/templates/v1/badge.qtpl:24
-	qw422016.N().DL(stats.Lvl)
+	qw422016.N().DL(stats.TotalCount)
 //line internal/templates/v1/badge.qtpl:24
 	qw422016.N().S(`</text>
   </g>
