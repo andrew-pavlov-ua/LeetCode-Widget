@@ -10,7 +10,6 @@ const (
 type LcUserData struct {
 	Username    string
 	Rank        int64
-	Lvl         int64
 	EasyCount   int64
 	MediumCount int64
 	HardCount   int64

@@ -11,20 +11,18 @@ type SubmitStats struct {
 
 type UserProfileData struct {
 	Username        string       `json:"username"`
-	UserSlug        string       `json:"user_slug"`
-	Rank            int64        `json:"rank"`
-	Lvl             int64        `json:"lvl"`
-	AllProblemCount []Submission `json:"all_question"`
+	UserSlug        string       `json:"userSlug"`
+	Rank            float64      `json:"rank"`
+	AllProblemCount []Submission `json:"allProblemCount"`
 }
 
 type Profile struct {
-	UserSlug string `json:"user_slug"`
-	Rank     int64  `json:"ranking"`
-	Lvl      int64  `json:"level"`
+	UserSlug string  `json:"userSlug"`
+	Rank     float64 `json:"ranking"`
 }
 
 type MatchedUser struct {
 	Username    string      `json:"username"`
-	SubmitStats SubmitStats `json:"submit_stats"`
 	Profile     Profile     `json:"profile"`
+	SubmitStats SubmitStats `json:"submitStats"`
 }

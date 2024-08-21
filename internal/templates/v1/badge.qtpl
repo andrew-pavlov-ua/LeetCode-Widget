@@ -21,7 +21,7 @@
   <g>
     <circle cx="80" cy="140" r="45" fill="none" stroke="#FFA116" stroke-width="5"></circle>
     <circle cx="80" cy="140" r="40" fill="#444"></circle>
-    <text x="80" y="145" font-size="28" fill="#FFF" font-family="Verdana, sans-serif" text-anchor="middle" alignment-baseline="middle" dominant-baseline="middle">{%dl stats.Lvl %}</text>
+    <text x="80" y="145" font-size="28" fill="#FFF" font-family="Verdana, sans-serif" text-anchor="middle" alignment-baseline="middle" dominant-baseline="middle">{%dl stats.TotalCount %}</text>
   </g>
 
   <!-- Progress Bars for Problem Difficulty -->
