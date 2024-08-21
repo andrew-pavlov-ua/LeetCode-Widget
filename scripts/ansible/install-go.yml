@@ -1,0 +1,34 @@
+---
+- name: "Install Go"
+  hosts: "web"
+  gather_facts: "no"
+  vars:
+    - GO_VERSION: "1.21.1"
+
+  tasks:
+    - name: "Download Go {{ GO_VERSION }} tarball"
+      get_url:
+        url: "https://go.dev/dl/go{{ GO_VERSION }}.linux-amd64.tar.gz"
+        dest: "/tmp/go{{ GO_VERSION }}.linux-amd64.tar.gz"
+
+    - name: "Extract Go tarball"
+      ansible.builtin.unarchive:
+        src: "/tmp/go{{ GO_VERSION }}.linux-amd64.tar.gz"
+        dest: "/usr/local"
+        remote_src: "yes"
+        creates: "/usr/local/go"
+
+    - name: "Add Go binaries to PATH"
+      lineinfile:
+        path: "~/.profile"
+        line: "{{ item }}"
+        state: "present"
+      loop: "{{ ['export GOROOT=/usr/local/go', 'export GOPATH=$HOME/go', 'export PATH=$GOPATH/bin:$GOROOT/bin:$PATH'] }}"
+
+    - name: "Source ~/.profile"
+      shell: "source ~/.profile; go version"
+      args:
+        executable: "/bin/bash"
+      register: "go_version_output"
+    - debug:
+        var: "go_version_output.stdout"

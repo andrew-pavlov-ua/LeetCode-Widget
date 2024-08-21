@@ -24,7 +24,9 @@ func (c *WebController) RedirectToLc(ctx *gin.Context) {
 }
 
 func (c *WebController) StatsBadge(ctx *gin.Context) {
-	userData := leetcode_api.MatchedUserMapToUserProfile("jonathanirvings")
+	userSlug := ctx.Param("leetcode_user_slug")
+
+	userData := leetcode_api.MatchedUserMapToUserProfile(userSlug)
 
 	lcUserData := v1.NewLcUserDataFromReq(*userData)
 
