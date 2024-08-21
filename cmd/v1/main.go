@@ -9,7 +9,7 @@ import (
 func main() {
 	r := gin.Default()
 
-	r.LoadHTMLGlob("view/*.html")
+	r.LoadHTMLGlob("public/view/*.html")
 
 	webController := controllers.NewWebController()
 
