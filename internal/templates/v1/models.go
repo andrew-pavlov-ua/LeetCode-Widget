@@ -3,7 +3,7 @@ package v1
 import "cmd/internal/leetcode_api"
 
 const (
-	EasyMaxValue   int64 = 820
+	EasyMaxValue   int64 = 819
 	MediumMaxValue int64 = 1710
 	HardMaxValue   int64 = 732
 	BarWidthValue  int64 = 240
