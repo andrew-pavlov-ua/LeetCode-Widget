@@ -3,36 +3,46 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hello World</title>
-    <link rel="stylesheet" href="style.css">
+    <title>LeetCode Badge</title>
     <style>
         body, html {
             height: 100%;
             margin: 0;
             display: flex;
-            flex-direction: column; /* Располагаем элементы по вертикали */
+            flex-direction: column;
             justify-content: center;
             align-items: center;
-            background-color: #f0f0f0; /* Цвет фона */
+            background-color: #f0f0f0;
             font-family: Arial, sans-serif;
         }
 
         h1 {
             font-size: 5rem;
             color: #333;
-            margin-bottom: 20px; /* Отступ снизу */
+            margin-bottom: 20px;
         }
 
-        .button-container {
+        .input-container {
             display: flex;
-            justify-content: center;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .input {
+            padding: 10px;
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            width: 300px;
+            text-align: center;
         }
 
         .button {
             padding: 15px 30px;
             font-size: 1.2rem;
             color: #fff;
-            background-color: #007bff; /* Цвет кнопки */
+            background-color: #007bff;
             border: none;
             border-radius: 5px;
             cursor: pointer;
@@ -43,16 +53,43 @@
         }
 
         .button:hover {
-            background-color: #0056b3; /* Цвет кнопки при наведении */
-            transform: scale(1.05); /* Немного увеличиваем кнопку при наведении */
+            background-color: #0056b3;
+            transform: scale(1.05);
+        }
+
+        .badge-link {
+            margin-top: 20px;
+            font-size: 1.2rem;
+            color: #007bff;
         }
     </style>
 </head>
 <body>
-<h1>Hello World</h1>
-<br><br>
+<h1>LeetCode Badge</h1>
 
-<form
+<div class="input-container">
+    <form id="usernameForm">
+        <input type="text" id="usernameInput" name="username" placeholder="Enter your LeetCode username" class="input" required>
+        <button type="submit" class="button">Get Badge Link</button>
+    </form>
+    <div id="badgeLink" class="badge-link"></div>
+</div>
+
+<script>
+    document.getElementById('usernameForm').addEventListener('submit', function(event) {
+        event.preventDefault(); // Предотвращаем стандартное поведение формы
+
+        // Получаем значение введенного ника
+        const username = document.getElementById('usernameInput').value;
+
+        // Создаем ссылку на бейдж
+        const badgeUrl = `http://localhost:8080/api/${username}/badge.svg`;
+
+        // Отображаем ссылку на бейдж
+        const badgeLinkDiv = document.getElementById('badgeLink');
+        badgeLinkDiv.innerHTML = `<a href="${badgeUrl}" target="_blank">${badgeUrl}</a>`;
+    });
+</script>
 
 </body>
 </html>
