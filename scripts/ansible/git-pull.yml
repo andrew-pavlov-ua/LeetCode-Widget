@@ -1,10 +1,10 @@
 ---
-- name: "Git clone u8views"
+- name: "Git clone lc_badge"
   hosts: "web"
   gather_facts: "no"
   vars:
     - REPOSITORY: "https://github.com/andrew-pavlov-ua/LeetCode-Widget.git"
-    - DESTINATION: "/var/go/u8views"
+    - DESTINATION: "/var/go/lc_badge"
 
   tasks:
     - name: "Ensure directory {{ DESTINATION }} exists"

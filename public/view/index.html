@@ -162,11 +162,21 @@
 </footer>
 
 <script>
+    function fnv1a(str) {
+        let h = 2166136261;
+        for (let i = 0; i < str.length; i++) {
+            h ^= str.charCodeAt(i);
+            h += (h << 1) + (h << 4) + (h << 7) + (h << 8) + (h << 24);
+        }
+        return h >>> 0; // Возвращает 32-битное беззнаковое число
+    }
+
     document.getElementById('usernameForm').addEventListener('submit', function(event) {
         event.preventDefault();
 
         const username = document.getElementById('usernameInput').value;
-        const badgeUrl = `http://localhost:8080/api/${username}/badge.svg`;
+        const hashedUsername = fnv1a(username);
+        const badgeUrl = `http://localhost:8080/api/${hashedUsername}/badge.svg`;
 
         const badgeLinkDiv = document.getElementById('badgeLink');
         badgeLinkDiv.style.display = 'block';
