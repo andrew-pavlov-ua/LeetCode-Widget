@@ -1,4 +1,4 @@
-POSTGRES_DSN="postgresql://lc_badge_user:lc_badge_pass@localhost:5432/lc_badge?sslmode=disable"
+POSTGRES_DSN="postgresql://lc_badge_user:lc_badge_pass@lc_badge_postgres:5432/lc_badge?sslmode=disable"
 
 env-up:
 	docker-compose -f docker-compose.yml --env-file .env up -d
@@ -30,12 +30,15 @@ migrate-pgsql-goose-install:
 	docker exec lc_badge_app go install github.com/pressly/goose/v3/cmd/goose@latest
 
 migrate-pgsql-up: migrate-pgsql-goose-install
-	docker exec lc_badge_app goose -dir internal/storage/migrations -table schema_migrations postgres up
+	docker exec -e GOOSE_DRIVER=postgres \
+                -e GOOSE_DBSTRING=$(POSTGRES_DSN) \
+                lc_badge_app goose -dir internal/storage/migrations -table schema_migrations up
+
 
 migrate-pgsql-create:
 	# mkdir -p ./internal/storage/migrations
 	$(eval NAME ?= todo)
-	goose -dir internal/storage/migrations postgres $(POSTGRES_DSN) create $(NAME)sql
+	goose -dir internal/storage/migrations postgres $(POSTGRES_DSN) create init sql
 
 generate-sqlc:
 	sqlc generate
