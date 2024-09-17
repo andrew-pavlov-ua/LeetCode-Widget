@@ -9,9 +9,9 @@ services:
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
       POSTGRES_DB: ${POSTGRES_DB}
     ports:
-      - "5432:5432"
+      - "5433:5432"
     volumes:
-        - ./.docker/volumes/postgresql/data/:/var/lib/postgresql/data/
+      - ./.docker/volumes/postgresql/data/:/var/lib/postgresql/data/
 
   app:
     container_name: "lc_badge_app"
