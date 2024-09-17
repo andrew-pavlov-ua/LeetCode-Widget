@@ -34,11 +34,13 @@ migrate-pgsql-up: migrate-pgsql-goose-install
                 -e GOOSE_DBSTRING=$(POSTGRES_DSN) \
                 lc_badge_app goose -dir internal/storage/migrations -table schema_migrations up
 
-
 migrate-pgsql-create:
 	# mkdir -p ./internal/storage/migrations
 	$(eval NAME ?= todo)
 	goose -dir internal/storage/migrations postgres $(POSTGRES_DSN) create init sql
+
+migrate-pgsql-down:
+	docker exec lc_badge_app goose -dir ./internal/storage/migrations -table schema_migrations postgres down
 
 generate-sqlc:
 	sqlc generate

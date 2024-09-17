@@ -5,7 +5,7 @@ CREATE TYPE SOCIAL_PROVIDER AS ENUM (
 );
 
 CREATE TABLE users (
-                       id                      BIGSERIAL PRIMARY KEY,
+                       id                      BIGSERIAL PRIMARY KEY NOT NULL,
                        social_provider_user_id  VARCHAR NOT NULL,
                        username                 VARCHAR NOT NULL,
                        created_at               TIMESTAMP WITH TIME ZONE NOT NULL,
@@ -17,7 +17,7 @@ CREATE TABLE lc_stats (
                           easy_submits            INTEGER,
                           medium_submits          INTEGER,
                           hard_submits            INTEGER,
-                          rank                    BIGINT NOT NULL,
+                          total_submits           INTEGER,
                           created_at              TIMESTAMP WITH TIME ZONE NOT NULL,
                           updated_at              TIMESTAMP WITH TIME ZONE NOT NULL
 );

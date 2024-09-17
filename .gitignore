@@ -2,3 +2,5 @@
 .env
 
 cmd/test
+
+.docker/volumes/
