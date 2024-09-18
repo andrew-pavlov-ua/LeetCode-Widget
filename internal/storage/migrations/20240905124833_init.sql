@@ -8,7 +8,6 @@ CREATE TABLE users (
                        id                      BIGSERIAL PRIMARY KEY NOT NULL,
                        social_provider_user_id  VARCHAR NOT NULL,
                        username                 VARCHAR NOT NULL,
-                       created_at               TIMESTAMP WITH TIME ZONE NOT NULL,
                        UNIQUE (social_provider_user_id)
 );
 
