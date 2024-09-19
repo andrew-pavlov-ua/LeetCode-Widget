@@ -10,10 +10,7 @@ const (
 )
 
 type LcUserData struct {
-<<<<<<< HEAD
 	UserSlug    string
-=======
->>>>>>> 78514ac7933200ad2012e1f91d3e06f9481c63c3
 	Username    string
 	EasyCount   int64
 	MediumCount int64
@@ -28,15 +25,10 @@ type BarsWidth struct {
 	HardWidth   float64
 }
 
-<<<<<<< HEAD
-func NewLcUserData(userSlug string, easyCount int64, mediumCount int64, hardCount int64, totalCount int64) *LcUserData {
+func NewLcUserData(username string, userSlug string, easyCount int64, mediumCount int64, hardCount int64, totalCount int64) *LcUserData {
 	var result = &LcUserData{
 		UserSlug:    userSlug,
-=======
-func NewLcUserData(username string, easyCount int64, mediumCount int64, hardCount int64, totalCount int64) *LcUserData {
-	var result = &LcUserData{
 		Username:    username,
->>>>>>> 78514ac7933200ad2012e1f91d3e06f9481c63c3
 		EasyCount:   easyCount,
 		MediumCount: mediumCount,
 		HardCount:   hardCount,
@@ -54,10 +46,7 @@ func NewLcUserDataFromReq(profileData leetcode_api.UserProfileData) *LcUserData 
 	)
 	username := profileData.Username
 	rank := profileData.Rank
-<<<<<<< HEAD
 	userSlug := profileData.UserSlug
-=======
->>>>>>> 78514ac7933200ad2012e1f91d3e06f9481c63c3
 
 	for _, problem := range profileData.AllProblemCount {
 		switch problem.Difficulty {
@@ -73,10 +62,6 @@ func NewLcUserDataFromReq(profileData leetcode_api.UserProfileData) *LcUserData 
 		}
 	}
 
-<<<<<<< HEAD
 	var result = &LcUserData{Username: username, UserSlug: userSlug, EasyCount: easyCount, MediumCount: mediumCount, HardCount: hardCount, TotalCount: totalCount, Rank: rank}
-=======
-	var result = &LcUserData{Username: username, EasyCount: easyCount, MediumCount: mediumCount, HardCount: hardCount, TotalCount: totalCount, Rank: rank}
->>>>>>> 78514ac7933200ad2012e1f91d3e06f9481c63c3
 	return result
 }
