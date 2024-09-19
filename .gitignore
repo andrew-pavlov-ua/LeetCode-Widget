@@ -1,0 +1,6 @@
+.idea
+.env
+
+cmd/test
+
+.docker/volumes/

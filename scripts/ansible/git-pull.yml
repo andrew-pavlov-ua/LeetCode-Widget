@@ -1,0 +1,19 @@
+---
+- name: "Git clone lc_badge"
+  hosts: "web"
+  gather_facts: "no"
+  vars:
+    - REPOSITORY: "https://github.com/andrew-pavlov-ua/LeetCode-Widget.git"
+    - DESTINATION: "/var/go/lc_badge"
+
+  tasks:
+    - name: "Ensure directory {{ DESTINATION }} exists"
+      ansible.builtin.file:
+        path: "{{ DESTINATION }}"
+        state: "directory"
+
+    - name: "Git pull repository {{ REPOSITORY }}"
+      ansible.builtin.git:
+        repo: "{{ REPOSITORY }}"
+        version: "main"
+        dest: "{{ DESTINATION }}"

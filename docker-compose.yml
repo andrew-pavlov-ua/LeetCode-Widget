@@ -1,0 +1,32 @@
+version: "3.7"
+
+services:
+  postgres:
+    container_name: "lc_badge_postgres"
+    image: postgres:14.2
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+    ports:
+      - "5433:5432"
+    volumes:
+      - ./.docker/volumes/postgresql/data/:/var/lib/postgresql/data/
+
+  app:
+    container_name: "lc_badge_app"
+    image: golang:1.21.0-alpine
+    working_dir: /app
+    volumes:
+      - .:/app
+    command: "sleep infinity"
+    environment:
+      POSTGRES_DSN: ${POSTGRES_DSN}
+      GOOSE_DBSTRING: ${POSTGRES_DSN}
+      GIN_MODE: release
+      ENVIRONMENT: ${ENVIRONMENT:-development}
+      HOSTS: ${HOSTS}
+    ports:
+      - "8080:8080"
+    depends_on:
+      - postgres
