@@ -35,11 +35,11 @@ func getQueryQntyQuestions() string {
 		}`
 }
 
-func getUserProfile(userSlug string) (map[string]interface{}, error) {
+func getUserProfile(username string) (map[string]interface{}, error) {
 	client := graphql.NewClient("https://leetcode.com/graphql")
 	query := getQueryUserData()
 	req := graphql.NewRequest(query)
-	req.Var("userSlug", userSlug)
+	req.Var("username", username)
 	ctx := context.Background()
 
 	var response map[string]interface{}
@@ -52,11 +52,12 @@ func getUserProfile(userSlug string) (map[string]interface{}, error) {
 	return response, nil
 }
 
-func MatchedUserMapToUserProfile(userSlug string) *UserProfileData {
-	matchedUser, err := getUserProfile(userSlug)
+func MatchedUserMapToUserProfile(username string) *UserProfileData {
+	matchedUser, err := getUserProfile(username)
 	if err != nil || matchedUser["matchedUser"] == nil {
+		fmt.Printf("Error getting matched user: %v", err)
 		return &UserProfileData{
-			RealName: userSlug + " user doesn't exist",
+			Username: username + " user doesn't exist",
 			UserSlug: "",
 			Rank:     0,
 			AllProblemCount: []Submission{
@@ -68,7 +69,7 @@ func MatchedUserMapToUserProfile(userSlug string) *UserProfileData {
 	}
 
 	profileData := UserProfileData{
-		RealName: matchedUser["matchedUser"].(map[string]interface{})["realName"].(string),
+		Username: matchedUser["matchedUser"].(map[string]interface{})["username"].(string),
 		UserSlug: matchedUser["matchedUser"].(map[string]interface{})["profile"].(map[string]interface{})["userSlug"].(string),
 		Rank:     matchedUser["matchedUser"].(map[string]interface{})["profile"].(map[string]interface{})["ranking"].(float64),
 	}

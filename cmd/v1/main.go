@@ -18,6 +18,9 @@ func main() {
 	var pgConnection = db.MustConnection(dsn)
 	defer pgConnection.Close()
 
+	var repository = db.MustRepository(pgConnection)
+	defer repository.Close()
+
 	r := gin.Default()
 	r.LoadHTMLGlob("public/view/*.html")
 

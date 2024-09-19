@@ -43,8 +43,9 @@ func NewLcUserDataFromReq(profileData leetcode_api.UserProfileData) *LcUserData 
 		hardCount   int64
 		totalCount  int64
 	)
-	username := profileData.RealName
+	username := profileData.Username
 	rank := profileData.Rank
+	userSlug := profileData.UserSlug
 
 	for _, problem := range profileData.AllProblemCount {
 		switch problem.Difficulty {
@@ -60,6 +61,6 @@ func NewLcUserDataFromReq(profileData leetcode_api.UserProfileData) *LcUserData 
 		}
 	}
 
-	var result = &LcUserData{Username: username, EasyCount: easyCount, MediumCount: mediumCount, HardCount: hardCount, TotalCount: totalCount, Rank: rank}
+	var result = &LcUserData{Username: username, UserSlug: userSlug, EasyCount: easyCount, MediumCount: mediumCount, HardCount: hardCount, TotalCount: totalCount, Rank: rank}
 	return result
 }

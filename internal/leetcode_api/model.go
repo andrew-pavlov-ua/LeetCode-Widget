@@ -10,14 +10,14 @@ type SubmitStats struct {
 }
 
 type UserProfileData struct {
-	RealName        string       `json:"realName"`
+	Username        string       `json:"username"`
 	UserSlug        string       `json:"userSlug"`
 	Rank            float64      `json:"rank"`
 	AllProblemCount []Submission `json:"allProblemCount"`
 }
 
 type Profile struct {
-	UserSlug string  `json:"userSlug"`
+	Username string  `json:"username"`
 	Rank     float64 `json:"ranking"`
 }
 
