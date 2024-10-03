@@ -20,6 +20,7 @@ Before you begin, ensure you have the following installed:
 make env-up
 make app-build
 make app-start
+make migrate-psql-up
 ````
 
 ## Usage
