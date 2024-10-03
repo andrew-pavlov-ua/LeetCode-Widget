@@ -8,20 +8,22 @@ package dbs
 import (
 	"context"
 	"database/sql"
+	"fmt"
 	"time"
 )
 
 const insertStatsInfo = `-- name: InsertStatsInfo :exec
-INSERT INTO lc_stats (user_id, easy_submits, medium_submits, hard_submits, total_submits, created_at, updated_at)
-       VALUES ($1, $2, $3, $4, $5, $6, $7)
+INSERT INTO lc_stats (user_id, easy_submits, medium_submits, hard_submits, total_submits, rank, created_at, updated_at)
+       VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
 `
 
 type InsertStatsInfoParams struct {
 	UserID        int64
-	EasySubmits   sql.NullInt32
-	MediumSubmits sql.NullInt32
-	HardSubmits   sql.NullInt32
-	TotalSubmits  sql.NullInt32
+	EasySubmits   sql.NullInt64
+	MediumSubmits sql.NullInt64
+	HardSubmits   sql.NullInt64
+	TotalSubmits  sql.NullInt64
+	Rank          int64
 	CreatedAt     time.Time
 	UpdatedAt     time.Time
 }
@@ -33,10 +35,65 @@ func (q *Queries) InsertStatsInfo(ctx context.Context, arg InsertStatsInfoParams
 		arg.MediumSubmits,
 		arg.HardSubmits,
 		arg.TotalSubmits,
+		arg.Rank,
 		arg.CreatedAt,
 		arg.UpdatedAt,
 	)
 	return err
+}
+
+const userGetBySocialProviderId = `-- name: UserGetBySocialProviderId :one
+SELECT id FROM users
+WHERE social_provider_user_id = $1
+`
+
+func (q *Queries) UserGetBySocialProviderId(ctx context.Context, userSlug string) (int64, error) {
+	row := q.queryRow(ctx, q.userGetBySocialProviderIdStmt, userGetBySocialProviderId, userSlug)
+	var id int64
+	err := row.Scan(&id)
+	fmt.Println("userGetBySocialProviderId: %i", id, err)
+	return id, err
+}
+
+const userGetStatsByID = `-- name: UserGetStatsByID :one
+SELECT u.id,
+       u.username,
+       s.easy_submits,
+       s.medium_submits,
+       s.hard_submits,
+       s.total_submits,
+       s.rank,
+       s.updated_at
+FROM users u
+         INNER JOIN lc_stats s ON u.id = s.user_id
+WHERE u.id = $1
+`
+
+type UserGetStatsByIDRow struct {
+	ID            int64
+	Username      string
+	EasySubmits   sql.NullInt64
+	MediumSubmits sql.NullInt64
+	HardSubmits   sql.NullInt64
+	TotalSubmits  sql.NullInt64
+	Rank          int64
+	UpdatedAt     time.Time
+}
+
+func (q *Queries) UserGetStatsByID(ctx context.Context, id int64) (UserGetStatsByIDRow, error) {
+	row := q.queryRow(ctx, q.userGetStatsByIDStmt, userGetStatsByID, id)
+	var i UserGetStatsByIDRow
+	err := row.Scan(
+		&i.ID,
+		&i.Username,
+		&i.EasySubmits,
+		&i.MediumSubmits,
+		&i.HardSubmits,
+		&i.TotalSubmits,
+		&i.Rank,
+		&i.UpdatedAt,
+	)
+	return i, err
 }
 
 const userNewAndParse = `-- name: UserNewAndParse :one

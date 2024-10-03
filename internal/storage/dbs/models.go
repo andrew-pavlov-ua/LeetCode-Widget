@@ -54,10 +54,11 @@ func (ns NullSocialProvider) Value() (driver.Value, error) {
 
 type LcStat struct {
 	UserID        int64
-	EasySubmits   sql.NullInt32
-	MediumSubmits sql.NullInt32
-	HardSubmits   sql.NullInt32
-	TotalSubmits  sql.NullInt32
+	EasySubmits   sql.NullInt64
+	MediumSubmits sql.NullInt64
+	HardSubmits   sql.NullInt64
+	TotalSubmits  sql.NullInt64
+	Rank          int64
 	CreatedAt     time.Time
 	UpdatedAt     time.Time
 }

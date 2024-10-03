@@ -68,10 +68,14 @@ func MatchedUserMapToUserProfile(username string) *UserProfileData {
 		}
 	}
 
+	_username := matchedUser["matchedUser"].(map[string]interface{})["profile"].(map[string]interface{})["realName"].(string)
+	_userSlug := matchedUser["matchedUser"].(map[string]interface{})["profile"].(map[string]interface{})["userSlug"].(string)
+	_rank := matchedUser["matchedUser"].(map[string]interface{})["profile"].(map[string]interface{})["ranking"].(float64)
+
 	profileData := UserProfileData{
-		Username: matchedUser["matchedUser"].(map[string]interface{})["username"].(string),
-		UserSlug: matchedUser["matchedUser"].(map[string]interface{})["profile"].(map[string]interface{})["userSlug"].(string),
-		Rank:     matchedUser["matchedUser"].(map[string]interface{})["profile"].(map[string]interface{})["ranking"].(float64),
+		Username: _username,
+		UserSlug: _userSlug,
+		Rank:     _rank,
 	}
 
 	for _, item := range matchedUser["matchedUser"].(map[string]interface{})["submitStats"].(map[string]interface{})["acSubmissionNum"].([]interface{}) {

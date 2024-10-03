@@ -13,10 +13,11 @@ CREATE TABLE users (
 
 CREATE TABLE lc_stats (
                           user_id                 BIGINT PRIMARY KEY REFERENCES users(id),
-                          easy_submits            INTEGER,
-                          medium_submits          INTEGER,
-                          hard_submits            INTEGER,
-                          total_submits           INTEGER,
+                          easy_submits            BIGINT,
+                          medium_submits          BIGINT,
+                          hard_submits            BIGINT,
+                          total_submits           BIGINT,
+                          rank                    BIGINT NOT NULL,
                           created_at              TIMESTAMP WITH TIME ZONE NOT NULL,
                           updated_at              TIMESTAMP WITH TIME ZONE NOT NULL,
                           UNIQUE (user_id)

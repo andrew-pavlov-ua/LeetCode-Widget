@@ -13,7 +13,139 @@ h1 {
     font-size: 5rem;
     color: #333;
     margin-bottom: 20px;
+}body, html {
+     height: 100%;
+     margin: 0;
+     display: flex;
+     flex-direction: column;
+     justify-content: center;
+     align-items: center;
+     background-color: #f0f0f0;
+     font-family: Arial, sans-serif;
+ }
+
+h1 {
+    font-size: 5rem;
+    color: #333;
+    margin-bottom: 20px;
 }
+
+.input-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.input {
+    padding: 10px;
+    font-size: 1.2rem;
+    margin-bottom: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    width: 300px;
+    text-align: center;
+}
+
+.button {
+    padding: 15px 30px;
+    font-size: 1.2rem;
+    color: #fff;
+    background-color: #007bff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    text-decoration: none;
+    text-align: center;
+    display: inline-block;
+    transition: background-color 0.3s, transform 0.3s;
+}
+
+.button:hover {
+    background-color: #0056b3;
+    transform: scale(1.05);
+}
+
+.badge-link-container {
+    display: flex;
+    align-items: center;
+    margin-top: 20px;
+}
+
+.badge-link {
+    font-size: 1.2rem;
+    color: #007bff;
+    padding: 10px 15px;
+    border: 2px solid #007bff;
+    border-radius: 5px;
+    background-color: #fff;
+    transition: background-color 0.3s, color 0.3s;
+    display: inline-block;
+    text-align: center;
+    width: fit-content;
+    margin-right: 10px;
+}
+
+.badge-link a {
+    color: #007bff;
+    text-decoration: none;
+}
+
+.badge-link:hover {
+    background-color: #007bff;
+    color: #fff;
+}
+
+.badge-link a:hover {
+    color: #fff;
+}
+
+.copy-button {
+    padding: 10px 20px;
+    font-size: 1.2rem;
+    color: #fff;
+    background-color: #28a745;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.3s;
+}
+
+.copy-button:hover {
+    background-color: #218838;
+    transform: scale(1.05);
+}
+
+.copy-notification {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    padding: 10px 20px;
+    background-color: #28a745;
+    color: #fff;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    opacity: 0;
+    transition: opacity 0.5s ease-in-out;
+    z-index: 1000;
+    display: none;
+}
+
+footer {
+    position: absolute;
+    bottom: 10px;
+    font-size: 0.9rem;
+    color: #888;
+}
+
+footer a {
+    color: #007bff;
+    text-decoration: none;
+}
+
+footer a:hover {
+    text-decoration: underline;
+}
+
 
 .input-container {
     display: flex;

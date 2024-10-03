@@ -1,18 +1,23 @@
 package controllers
 
 import (
-	"cmd/internal/leetcode_api"
+	_ "cmd/internal/db"
+	"cmd/internal/services"
 	v1 "cmd/internal/templates/v1"
+	"fmt"
 	"github.com/gin-gonic/gin"
 	"net/http"
 	"os"
 )
 
 type WebController struct {
+	userService *services.UserService
 }
 
-func NewWebController() *WebController {
-	return &WebController{}
+func NewWebController(userService *services.UserService) *WebController {
+	return &WebController{
+		userService: userService,
+	}
 }
 
 func (c *WebController) ReturnIndex(ctx *gin.Context) {
@@ -26,17 +31,38 @@ func (c *WebController) RedirectToLc(ctx *gin.Context) {
 func (c *WebController) StatsBadgeBySlug(ctx *gin.Context) {
 	userSlug := ctx.Param("leetcode_user_slug")
 
-	userData := leetcode_api.MatchedUserMapToUserProfile(userSlug)
+	userId := c.userService.Upsert(ctx.Request.Context(), userSlug)
+	fmt.Printf("userId:%v\n", userId)
 
-	lcUserData := v1.NewLcUserDataFromReq(*userData)
+	userData, err := c.userService.GetByStatsById(ctx, userId)
+	if err != nil || userData == nil {
+		fmt.Println("err 38")
+		fmt.Println(err)
+		ctx.HTML(http.StatusInternalServerError, "error.html", gin.H{})
+	}
 
 	barsWidth := v1.BarsWidth{
-		EasyWidth:   c.CalculateWidth(lcUserData.EasyCount, v1.EasyMaxValue),
-		MediumWidth: c.CalculateWidth(lcUserData.MediumCount, v1.MediumMaxValue),
-		HardWidth:   c.CalculateWidth(lcUserData.HardCount, v1.HardMaxValue)}
+		EasyWidth:   c.CalculateWidth(userData.EasyCount, v1.EasyMaxValue),
+		MediumWidth: c.CalculateWidth(userData.MediumCount, v1.MediumMaxValue),
+		HardWidth:   c.CalculateWidth(userData.HardCount, v1.HardMaxValue)}
 
-	c.renderImage(ctx, []byte(v1.Badge(*lcUserData, barsWidth)))
+	c.renderImage(ctx, []byte(v1.Badge(*userData, barsWidth)))
 }
+
+//func (c *WebController) StatsBadgeBySlug(ctx *gin.Context) {
+//	userSlug := ctx.Param("leetcode_user_slug")
+//
+//	userData := leetcode_api.MatchedUserMapToUserProfile(userSlug)
+//
+//	lcUserData := v1.NewLcUserDataFromReq(*userData)
+//
+//	barsWidth := v1.BarsWidth{
+//		EasyWidth:   c.CalculateWidth(lcUserData.EasyCount, v1.EasyMaxValue),
+//		MediumWidth: c.CalculateWidth(lcUserData.MediumCount, v1.MediumMaxValue),
+//		HardWidth:   c.CalculateWidth(lcUserData.HardCount, v1.HardMaxValue)}
+//
+//	c.renderImage(ctx, []byte(v1.Badge(*lcUserData, barsWidth)))
+//}
 
 func (c *WebController) renderImage(ctx *gin.Context, data []byte) {
 	ctx.Header("Cache-Control", "no-cache, no-store, must-revalidate")

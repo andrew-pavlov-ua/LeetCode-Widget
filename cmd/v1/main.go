@@ -4,6 +4,7 @@ import (
 	"cmd/internal/controllers"
 	"cmd/internal/db"
 	"cmd/internal/env"
+	"cmd/internal/services"
 	"fmt"
 	"github.com/gin-gonic/gin"
 	"log"
@@ -21,10 +22,12 @@ func main() {
 	var repository = db.MustRepository(pgConnection)
 	defer repository.Close()
 
+	var userService = services.NewUserService(repository)
+
 	r := gin.Default()
 	r.LoadHTMLGlob("public/view/*.html")
 
-	webController := controllers.NewWebController()
+	webController := controllers.NewWebController(userService)
 
 	r.GET("/", webController.ReturnIndex)
 
