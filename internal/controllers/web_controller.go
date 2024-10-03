@@ -41,6 +41,8 @@ func (c *WebController) StatsBadgeBySlug(ctx *gin.Context) {
 		ctx.HTML(http.StatusInternalServerError, "error.html", gin.H{})
 	}
 
+	fmt.Printf("________userData:%v\n", userData)
+
 	barsWidth := v1.BarsWidth{
 		EasyWidth:   c.CalculateWidth(userData.EasyCount, v1.EasyMaxValue),
 		MediumWidth: c.CalculateWidth(userData.MediumCount, v1.MediumMaxValue),

@@ -27,6 +27,9 @@ func Prepare(ctx context.Context, db DBTX) (*Queries, error) {
 	if q.insertStatsInfoStmt, err = db.PrepareContext(ctx, insertStatsInfo); err != nil {
 		return nil, fmt.Errorf("error preparing query InsertStatsInfo: %w", err)
 	}
+	if q.updateLcStatsStmt, err = db.PrepareContext(ctx, updateLcStats); err != nil {
+		return nil, fmt.Errorf("error preparing query UpdateLcStats: %w", err)
+	}
 	if q.userGetBySocialProviderIdStmt, err = db.PrepareContext(ctx, userGetBySocialProviderId); err != nil {
 		return nil, fmt.Errorf("error preparing query UserGetBySocialProviderId: %w", err)
 	}
@@ -44,6 +47,11 @@ func (q *Queries) Close() error {
 	if q.insertStatsInfoStmt != nil {
 		if cerr := q.insertStatsInfoStmt.Close(); cerr != nil {
 			err = fmt.Errorf("error closing insertStatsInfoStmt: %w", cerr)
+		}
+	}
+	if q.updateLcStatsStmt != nil {
+		if cerr := q.updateLcStatsStmt.Close(); cerr != nil {
+			err = fmt.Errorf("error closing updateLcStatsStmt: %w", cerr)
 		}
 	}
 	if q.userGetBySocialProviderIdStmt != nil {
@@ -101,6 +109,7 @@ type Queries struct {
 	db                            DBTX
 	tx                            *sql.Tx
 	insertStatsInfoStmt           *sql.Stmt
+	updateLcStatsStmt             *sql.Stmt
 	userGetBySocialProviderIdStmt *sql.Stmt
 	userGetStatsByIDStmt          *sql.Stmt
 	userNewAndParseStmt           *sql.Stmt
@@ -111,6 +120,7 @@ func (q *Queries) WithTx(tx *sql.Tx) *Queries {
 		db:                            tx,
 		tx:                            tx,
 		insertStatsInfoStmt:           q.insertStatsInfoStmt,
+		updateLcStatsStmt:             q.updateLcStatsStmt,
 		userGetBySocialProviderIdStmt: q.userGetBySocialProviderIdStmt,
 		userGetStatsByIDStmt:          q.userGetStatsByIDStmt,
 		userNewAndParseStmt:           q.userNewAndParseStmt,

@@ -8,7 +8,6 @@ package dbs
 import (
 	"context"
 	"database/sql"
-	"fmt"
 	"time"
 )
 
@@ -42,6 +41,37 @@ func (q *Queries) InsertStatsInfo(ctx context.Context, arg InsertStatsInfoParams
 	return err
 }
 
+const updateLcStats = `-- name: UpdateLcStats :exec
+UPDATE lc_stats
+SET easy_submits = $1,
+    medium_submits = $2,
+    hard_submits = $3,
+    total_submits = $4,
+    updated_at = $5
+WHERE user_id = $6
+`
+
+type UpdateLcStatsParams struct {
+	EasySubmits   sql.NullInt64
+	MediumSubmits sql.NullInt64
+	HardSubmits   sql.NullInt64
+	TotalSubmits  sql.NullInt64
+	UpdatedAt     time.Time
+	UserID        int64
+}
+
+func (q *Queries) UpdateLcStats(ctx context.Context, arg UpdateLcStatsParams) error {
+	_, err := q.exec(ctx, q.updateLcStatsStmt, updateLcStats,
+		arg.EasySubmits,
+		arg.MediumSubmits,
+		arg.HardSubmits,
+		arg.TotalSubmits,
+		arg.UpdatedAt,
+		arg.UserID,
+	)
+	return err
+}
+
 const userGetBySocialProviderId = `-- name: UserGetBySocialProviderId :one
 SELECT id FROM users
 WHERE social_provider_user_id = $1
@@ -51,12 +81,12 @@ func (q *Queries) UserGetBySocialProviderId(ctx context.Context, userSlug string
 	row := q.queryRow(ctx, q.userGetBySocialProviderIdStmt, userGetBySocialProviderId, userSlug)
 	var id int64
 	err := row.Scan(&id)
-	fmt.Println("userGetBySocialProviderId: %i", id, err)
 	return id, err
 }
 
 const userGetStatsByID = `-- name: UserGetStatsByID :one
 SELECT u.id,
+       u.social_provider_user_id AS userSlug,
        u.username,
        s.easy_submits,
        s.medium_submits,
@@ -71,6 +101,7 @@ WHERE u.id = $1
 
 type UserGetStatsByIDRow struct {
 	ID            int64
+	Userslug      string
 	Username      string
 	EasySubmits   sql.NullInt64
 	MediumSubmits sql.NullInt64
@@ -85,6 +116,7 @@ func (q *Queries) UserGetStatsByID(ctx context.Context, id int64) (UserGetStatsB
 	var i UserGetStatsByIDRow
 	err := row.Scan(
 		&i.ID,
+		&i.Userslug,
 		&i.Username,
 		&i.EasySubmits,
 		&i.MediumSubmits,
