@@ -11,7 +11,10 @@
   <!-- User Info -->
   <g fill="#FFF" font-family="Verdana, sans-serif">
     <!-- Username next to the logo -->
-    <text x="60" y="35" font-size="24" font-weight="bold">{%s stats.Username %}</text>
+    <text x="60" y="35" font-size="24" font-weight="bold">{%s stats.UserSlug %}</text>
+
+    <!-- Real Name under the Username -->
+    <text x="60" y="60" font-size="18" fill="#888">{%s stats.Username %}</text>
 
     <!-- Rank on the top right corner -->
     <text x="450" y="35" font-size="18" fill="#888" text-anchor="end">#{%f stats.Rank %}</text>

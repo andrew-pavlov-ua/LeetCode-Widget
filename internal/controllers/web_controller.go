@@ -29,42 +29,28 @@ func (c *WebController) RedirectToLc(ctx *gin.Context) {
 }
 
 func (c *WebController) StatsBadgeBySlug(ctx *gin.Context) {
+	var badge = []byte(v1.BadgeNoUserFound())
 	userSlug := ctx.Param("leetcode_user_slug")
 
 	userId := c.userService.Upsert(ctx.Request.Context(), userSlug)
 	fmt.Printf("userId:%v\n", userId)
 
 	userData, err := c.userService.GetByStatsById(ctx, userId)
-	if err != nil || userData == nil {
+	if err != nil {
 		fmt.Println("err 38")
 		fmt.Println(err)
 		ctx.HTML(http.StatusInternalServerError, "error.html", gin.H{})
+	} else if userData != nil {
+		barsWidth := v1.BarsWidth{
+			EasyWidth:   c.CalculateWidth(userData.EasyCount, v1.EasyMaxValue),
+			MediumWidth: c.CalculateWidth(userData.MediumCount, v1.MediumMaxValue),
+			HardWidth:   c.CalculateWidth(userData.HardCount, v1.HardMaxValue)}
+
+		badge = []byte(v1.Badge(*userData, barsWidth))
 	}
 
-	fmt.Printf("________userData:%v\n", userData)
-
-	barsWidth := v1.BarsWidth{
-		EasyWidth:   c.CalculateWidth(userData.EasyCount, v1.EasyMaxValue),
-		MediumWidth: c.CalculateWidth(userData.MediumCount, v1.MediumMaxValue),
-		HardWidth:   c.CalculateWidth(userData.HardCount, v1.HardMaxValue)}
-
-	c.renderImage(ctx, []byte(v1.Badge(*userData, barsWidth)))
+	c.renderImage(ctx, badge)
 }
-
-//func (c *WebController) StatsBadgeBySlug(ctx *gin.Context) {
-//	userSlug := ctx.Param("leetcode_user_slug")
-//
-//	userData := leetcode_api.MatchedUserMapToUserProfile(userSlug)
-//
-//	lcUserData := v1.NewLcUserDataFromReq(*userData)
-//
-//	barsWidth := v1.BarsWidth{
-//		EasyWidth:   c.CalculateWidth(lcUserData.EasyCount, v1.EasyMaxValue),
-//		MediumWidth: c.CalculateWidth(lcUserData.MediumCount, v1.MediumMaxValue),
-//		HardWidth:   c.CalculateWidth(lcUserData.HardCount, v1.HardMaxValue)}
-//
-//	c.renderImage(ctx, []byte(v1.Badge(*lcUserData, barsWidth)))
-//}
 
 func (c *WebController) renderImage(ctx *gin.Context, data []byte) {
 	ctx.Header("Cache-Control", "no-cache, no-store, must-revalidate")

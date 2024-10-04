@@ -1,0 +1,41 @@
+{% func BadgeNoUserFound() %}
+<svg width="500" height="200" viewBox="0 0 500 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="500" height="200" rx="12" fill="#1E1E1E"></rect>
+
+  <!-- LeetCode Logo -->
+  <g>
+    <image src="internal/templates/v1/img/LeetCodeLogo.png" x="20" y="10" width="30" height="30" />
+  </g>
+
+  <!-- No User Info Text -->
+  <g fill="#FFF" font-family="Verdana, sans-serif">
+    <text x="250" y="100" font-size="24" font-weight="bold" text-anchor="middle" alignment-baseline="middle">No User Found</text>
+  </g>
+
+  <!-- Placeholder for Circle and Progress Bars -->
+  <g>
+    <circle cx="80" cy="140" r="45" fill="none" stroke="#FFA116" stroke-width="5"></circle>
+    <circle cx="80" cy="140" r="40" fill="#444"></circle>
+    <text x="80" y="145" font-size="28" fill="#FFF" font-family="Verdana, sans-serif" text-anchor="middle" alignment-baseline="middle" dominant-baseline="middle">N/A</text>
+  </g>
+
+  <!-- Progress Bars Placeholder -->
+  <g font-family="Verdana, sans-serif">
+    <text x="150" y="120" font-size="18" fill="#FFF">Easy</text>
+    <rect x="240" y="110" width="220" height="10" fill="#333" rx="5"></rect>
+    <rect x="240" y="110" width="0" height="10" fill="#4CAF50" rx="5"></rect>
+    <text x="470" y="120" font-size="14" fill="#FFF" text-anchor="end">N/A / N/A</text>
+
+    <text x="150" y="145" font-size="18" fill="#FFF">Medium</text>
+    <rect x="240" y="135" width="220" height="10" fill="#333" rx="5"></rect>
+    <rect x="240" y="135" width="0" height="10" fill="#FF9800" rx="5"></rect>
+    <text x="470" y="145" font-size="14" fill="#FFF" text-anchor="end">N/A / N/A</text>
+
+    <text x="150" y="170" font-size="18" fill="#FFF">Hard</text>
+    <rect x="240" y="160" width="220" height="10" fill="#333" rx="5"></rect>
+    <rect x="240" y="160" width="0" height="10" fill="#F44336" rx="5"></rect>
+    <text x="470" y="170" font-size="14" fill="#FFF" text-anchor="end">N/A / N/A</text>
+  </g>
+</svg>
+{% endfunc %}
