@@ -27,7 +27,7 @@ func StreamBadgeNoUserFound(qw422016 *qt422016.Writer) {
 
   <!-- LeetCode Logo -->
   <g>
-    <image src="internal/templates/v1/img/LeetCodeLogo.png" x="20" y="10" width="30" height="30" />
+    <image src="/LeetCodeLogo.png" x="20" y="10" width="30" height="30" />
   </g>
 
   <!-- No User Info Text -->

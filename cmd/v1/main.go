@@ -34,6 +34,11 @@ func main() {
 	r.GET("/redirect", webController.RedirectToLc)
 	r.GET("/api/slug/:leetcode_user_slug/badge.svg", webController.StatsBadgeBySlug)
 
+	r.
+		//Icons
+		Static("/favicon.ico", "./internal/templates/v1/img/LeetCodeLogo.png").
+		Static("/LeetCodeLogo.png", "./internal/templates/v1/img/LeetCodeLogo.png")
+
 	var serverErr = r.Run(port) // listen and serve on 0.0.0.0:8080 (for windows "localhost:8080")
 	if serverErr != nil {
 		log.Fatalln(serverErr)
