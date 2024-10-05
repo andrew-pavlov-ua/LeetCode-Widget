@@ -65,11 +65,11 @@ func (s *UserService) GetByStatsById(ctx context.Context, userId int64) (*v1.LcU
 		return nil, err
 	}
 
-	if userStatsByIDRow.UpdatedAt.Before(now.Add(-15 * time.Minute)) {
+	if userStatsByIDRow.UpdatedAt.UTC().Before(now.Add(-15 * time.Minute)) {
 		userProfileData := *(leetcode_api.MatchedUserMapToUserProfile(userStatsByIDRow.Userslug))
 		lcData := v1.NewLcUserDataFromReq(userProfileData)
 		err = s.UpdateUserStats(ctx, lcData, userId)
-		fmt.Println("getting info from LC")
+		fmt.Println("getting info from LC, difference: ", userStatsByIDRow.UpdatedAt.UTC().Sub(now).Minutes())
 	}
 	userProfileData = &v1.LcUserData{
 		Username:    userStatsByIDRow.Username,
