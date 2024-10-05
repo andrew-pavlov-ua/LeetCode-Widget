@@ -108,7 +108,7 @@ func (s *UserService) UpdateUserStats(ctx context.Context, userData *v1.LcUserDa
 }
 
 func (s *UserService) InsertUserStats(ctx context.Context, userData *v1.LcUserData, userId int64) error {
-	now := time.Now().UTC().Add(-20 * time.Minute)
+	now := time.Now().UTC()
 
 	err := s.repository.Queries().InsertStatsInfo(ctx, dbs.InsertStatsInfoParams{
 		UserID: userId,

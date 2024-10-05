@@ -48,7 +48,7 @@ SET easy_submits = $1,
     hard_submits = $3,
     total_submits = $4,
     updated_at = $5
-WHERE user_id = $6
+WHERE user_id = $6 IS NOT NULL
 `
 
 type UpdateLcStatsParams struct {

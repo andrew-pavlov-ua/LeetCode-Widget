@@ -32,4 +32,4 @@ SET easy_submits = @easy_submits,
     hard_submits = @hard_submits,
     total_submits = @total_submits,
     updated_at = @updated_at
-WHERE user_id = @user_id;
+WHERE user_id = @user_id IS NOT NULL;
