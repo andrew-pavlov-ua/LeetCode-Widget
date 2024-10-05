@@ -29,6 +29,7 @@ app-restart: app-build app-stop app-start
 migrate-pgsql-goose-install:
 	docker exec lc_badge_app go install github.com/pressly/goose/v3/cmd/goose@latest
 
+#	Migrating postgresql db with goose
 migrate-pgsql-up: migrate-pgsql-goose-install
 	docker exec -e GOOSE_DRIVER=postgres \
                 -e GOOSE_DBSTRING=$(POSTGRES_DSN) \

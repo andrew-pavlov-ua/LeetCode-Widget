@@ -47,7 +47,6 @@ func getUserProfile(username string) (map[string]interface{}, error) {
 	if err != nil {
 		return nil, fmt.Errorf("error making GraphQL request: %v", err)
 	}
-	fmt.Printf("Raw GraphQL response: %+v\n", response)
 
 	return response, nil
 }

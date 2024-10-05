@@ -7,6 +7,7 @@ import (
 	v1 "cmd/internal/templates/v1"
 	"context"
 	"database/sql"
+	"errors"
 	"fmt"
 	"log"
 	"time"
@@ -23,9 +24,8 @@ func NewUserService(repository *db.Repository) *UserService {
 func (s *UserService) Upsert(ctx context.Context, userSlug string) int64 {
 	id, err := s.repository.Queries().UserGetBySocialProviderId(ctx, userSlug)
 
-	if err == sql.ErrNoRows {
-		fmt.Println("no rows in result set________________")
-		//creating new user
+	// If there's no users in db with id we need, creating user
+	if errors.Is(err, sql.ErrNoRows) {
 		matchedUser := leetcode_api.MatchedUserMapToUserProfile(userSlug)
 		userData := v1.NewLcUserDataFromReq(*matchedUser)
 		fmt.Println("userData", userData)
@@ -33,7 +33,6 @@ func (s *UserService) Upsert(ctx context.Context, userSlug string) int64 {
 		id, err := s.repository.Queries().UserNewAndParse(ctx, dbs.UserNewAndParseParams{
 			Username:             userData.Username,
 			SocialProviderUserID: userData.UserSlug})
-		fmt.Println("----------created id: ", id)
 		if err != nil {
 			fmt.Println("39str ", err)
 

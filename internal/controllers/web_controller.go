@@ -24,11 +24,8 @@ func (c *WebController) ReturnIndex(ctx *gin.Context) {
 	ctx.HTML(http.StatusOK, "index.html", gin.H{})
 }
 
-func (c *WebController) RedirectToLc(ctx *gin.Context) {
-	ctx.Redirect(http.StatusTemporaryRedirect, "https://leetcode.com")
-}
-
 func (c *WebController) StatsBadgeBySlug(ctx *gin.Context) {
+	// Init userNotFound badge and getting userSlug (Leetcode id) from the url
 	var badge = []byte(v1.BadgeNoUserFound())
 	userSlug := ctx.Param("leetcode_user_slug")
 

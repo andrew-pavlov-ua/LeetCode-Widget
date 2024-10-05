@@ -35,14 +35,14 @@
             h ^= str.charCodeAt(i);
             h += (h << 1) + (h << 4) + (h << 7) + (h << 8) + (h << 24);
         }
-        return h >>> 0; // Возвращает 32-битное беззнаковое число
+        return h >>> 0;
     }
 
     document.getElementById('usernameForm').addEventListener('submit', function(event) {
         event.preventDefault();
 
-        const username = document.getElementById('usernameInput').value;
-        const hashedUsername = fnv1a(username);
+        const username = document.getElementById('usernameInput').value.trim();
+        // const hashedUsername = fnv1a(username);
         // const badgeUrl = `http://localhost:8080/api/slug/${hashedUsername}/badge.svg`;
         const badgeUrl = `http://64.176.66.30:8080/api/slug/${username}/badge.svg`;
 
@@ -63,6 +63,7 @@
         });
     });
 
+    // Successful copy message
     function showCopyNotification() {
         const notification = document.getElementById('copyNotification');
         notification.style.display = 'block';
