@@ -2,6 +2,9 @@
 
 This project is a simple web application that allows users to generate a custom LeetCode badge URL by entering their LeetCode username. The badge displays the user's statistics and can be easily shared.
 
+## Example
+[![LcBadge](http://64.176.66.30:8080/api/slug/ZORRIX/badge.svg)](https://github.com/andrew-pavlov-ua/LeetCode-Widget)
+
 ## Features
 
 - **Username Input:** Users can enter their LeetCode username to generate a badge URL.
