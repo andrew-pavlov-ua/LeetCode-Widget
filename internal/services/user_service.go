@@ -101,7 +101,8 @@ func (s *UserService) UpdateUserStats(ctx context.Context, userData *v1.LcUserDa
 			TotalSubmits: sql.NullInt64{
 				Int64: userData.TotalCount,
 				Valid: true},
-			UpdatedAt: now})
+			UpdatedAt: now,
+			UserID:    userId})
 
 	return err
 }
