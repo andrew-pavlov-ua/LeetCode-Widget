@@ -85,7 +85,7 @@ func (s *UserService) GetByStatsById(ctx context.Context, userId int64) (*v1.LcU
 }
 
 func (s *UserService) UpdateUserStats(ctx context.Context, userData *v1.LcUserData, userId int64) error {
-	now := time.Now().UTC().Add(-20 * time.Minute)
+	now := time.Now().UTC()
 
 	err := s.repository.Queries().UpdateLcStats(ctx,
 		dbs.UpdateLcStatsParams{

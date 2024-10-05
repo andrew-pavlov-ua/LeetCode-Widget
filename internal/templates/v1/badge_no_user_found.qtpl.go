@@ -21,7 +21,6 @@ var (
 func StreamBadgeNoUserFound(qw422016 *qt422016.Writer) {
 //line internal/templates/v1/badge_no_user_found.qtpl:1
 	qw422016.N().S(`
-<a href="https://github.com/andrew-pavlov-ua/LeetCode-Widget" target="_blank">
 <svg width="500" height="200" viewBox="0 0 500 200" fill="none" xmlns="http://www.w3.org/2000/svg">
   <!-- Background -->
   <rect width="500" height="200" rx="12" fill="#1E1E1E"></rect>
@@ -61,33 +60,32 @@ func StreamBadgeNoUserFound(qw422016 *qt422016.Writer) {
     <text x="470" y="170" font-size="14" fill="#FFF" text-anchor="end">N/A / N/A</text>
   </g>
 </svg>
-</a>
 `)
-//line internal/templates/v1/badge_no_user_found.qtpl:43
+//line internal/templates/v1/badge_no_user_found.qtpl:41
 }
 
-//line internal/templates/v1/badge_no_user_found.qtpl:43
+//line internal/templates/v1/badge_no_user_found.qtpl:41
 func WriteBadgeNoUserFound(qq422016 qtio422016.Writer) {
-//line internal/templates/v1/badge_no_user_found.qtpl:43
+//line internal/templates/v1/badge_no_user_found.qtpl:41
 	qw422016 := qt422016.AcquireWriter(qq422016)
-//line internal/templates/v1/badge_no_user_found.qtpl:43
+//line internal/templates/v1/badge_no_user_found.qtpl:41
 	StreamBadgeNoUserFound(qw422016)
-//line internal/templates/v1/badge_no_user_found.qtpl:43
+//line internal/templates/v1/badge_no_user_found.qtpl:41
 	qt422016.ReleaseWriter(qw422016)
-//line internal/templates/v1/badge_no_user_found.qtpl:43
+//line internal/templates/v1/badge_no_user_found.qtpl:41
 }
 
-//line internal/templates/v1/badge_no_user_found.qtpl:43
+//line internal/templates/v1/badge_no_user_found.qtpl:41
 func BadgeNoUserFound() string {
-//line internal/templates/v1/badge_no_user_found.qtpl:43
+//line internal/templates/v1/badge_no_user_found.qtpl:41
 	qb422016 := qt422016.AcquireByteBuffer()
-//line internal/templates/v1/badge_no_user_found.qtpl:43
+//line internal/templates/v1/badge_no_user_found.qtpl:41
 	WriteBadgeNoUserFound(qb422016)
-//line internal/templates/v1/badge_no_user_found.qtpl:43
+//line internal/templates/v1/badge_no_user_found.qtpl:41
 	qs422016 := string(qb422016.B)
-//line internal/templates/v1/badge_no_user_found.qtpl:43
+//line internal/templates/v1/badge_no_user_found.qtpl:41
 	qt422016.ReleaseByteBuffer(qb422016)
-//line internal/templates/v1/badge_no_user_found.qtpl:43
+//line internal/templates/v1/badge_no_user_found.qtpl:41
 	return qs422016
-//line internal/templates/v1/badge_no_user_found.qtpl:43
+//line internal/templates/v1/badge_no_user_found.qtpl:41
 }

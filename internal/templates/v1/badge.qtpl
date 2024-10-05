@@ -1,5 +1,4 @@
 {% func Badge(stats LcUserData, barsWidth BarsWidth) %}
-<a href="https://github.com/andrew-pavlov-ua/LeetCode-Widget" target="_blank">
   <svg width="500" height="200" viewBox="0 0 500 200" fill="none" xmlns="http://www.w3.org/2000/svg">
     <!-- Background -->
     <rect width="500" height="200" rx="12" fill="#1E1E1E"></rect>
@@ -49,5 +48,4 @@
       <text x="470" y="170" font-size="14" fill="#FFF" text-anchor="end">{%dl stats.HardCount %} / {%dl HardMaxValue %}</text>
     </g>
   </svg>
-</a>
 {% endfunc %}
