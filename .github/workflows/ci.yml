@@ -52,9 +52,10 @@ jobs:
           echo "$SSH_PRIVATE_KEY" > private_key
           chmod 600 private_key
           
-          scp -i private_key -o StrictHostKeyChecking=no -r ./ user@${{ secrets.REMOTE_HOST }}:/path/to/deploy
+          scp -i private_key -o StrictHostKeyChecking=no -r ./ ${{ secrets.REMOTE_USER }}@${{ secrets.REMOTE_HOST }}:/LeetCode-Widget
           
           ssh -i private_key -o StrictHostKeyChecking=no ${{ secrets.REMOTE_USER }}@${{ secrets.REMOTE_HOST }} << 'EOF'
-            cd /path/to/deploy
-            make app-start  # Выполняем запуск приложения на сервере
+            cd /LeetCode-Widget
+            make app-build
+            make app-restart  
           EOF
