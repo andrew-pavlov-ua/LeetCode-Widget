@@ -3,4 +3,5 @@
 
 cmd/test
 
+log
 .docker/volumes/
