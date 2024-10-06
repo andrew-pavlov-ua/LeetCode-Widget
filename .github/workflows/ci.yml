@@ -58,7 +58,4 @@ jobs:
       - name: Build the app
         run: make app-build
 
-      - name: Build the app
-        run: make app-restart
-
       
