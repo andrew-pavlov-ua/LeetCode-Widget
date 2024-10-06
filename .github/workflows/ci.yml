@@ -40,13 +40,15 @@ jobs:
           version: v1.61.0
           args: --timeout 5m
 
+      - name: Create directory for PostgreSQL data
+        run: mkdir -p .docker/volumes/postgresql/data
+      
       - name: Install Compose
         uses: ndeloof/install-compose-action@v0.0.1
         with:
-          version: v2.1.0 # defaults to 'latest'
-          legacy: true    # will also install in PATH as `docker-compose`
+          version: latest
 
-      - name: up env
+      - name: Envoirnment up
         run: make env-up
 
       - name: Build the app
