@@ -5,12 +5,14 @@ import (
 	"cmd/internal/db"
 	"cmd/internal/env"
 	"cmd/internal/services"
+	"fmt"
 	"github.com/gin-gonic/gin"
 	"log"
 	"os"
 )
 
 func main() {
+	fmt.Println("Started program")
 	// Creating variables app need to connect to db with correct dsn and port
 	var (
 		dsn  = env.Must("POSTGRES_DSN")
