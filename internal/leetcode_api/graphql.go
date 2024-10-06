@@ -27,14 +27,6 @@ func getQueryUserData() string {
 `
 }
 
-func getQueryQntyQuestions() string {
-	return `{ allQuestionsCount { 
-			difficulty 
-			count 
-			}
-		}`
-}
-
 func getUserProfile(username string) (map[string]interface{}, error) {
 	client := graphql.NewClient("https://leetcode.com/graphql")
 	query := getQueryUserData()

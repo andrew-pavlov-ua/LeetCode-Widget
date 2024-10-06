@@ -4,6 +4,7 @@ import (
 	"cmd/internal/storage/dbs"
 	"context"
 	"database/sql"
+	"log"
 )
 
 type Repository struct {
@@ -53,12 +54,20 @@ func withTransaction(ctx context.Context, db *sql.DB, queries *dbs.Queries, fn f
 	defer func() {
 		if p := recover(); p != nil {
 			// a panic occurred, rollback and repanic
-			tx.Rollback()
+			err := tx.Rollback()
+			if err != nil {
+				log.Println("Rollback failed: ", err)
+				return
+			}
 
 			panic(p)
 		} else if err != nil {
 			// something went wrong, rollback
-			tx.Rollback()
+			err := tx.Rollback()
+			if err != nil {
+				log.Println("Rollback failed: ", err)
+				return
+			}
 		} else {
 			// all good, commit
 			err = tx.Commit()
