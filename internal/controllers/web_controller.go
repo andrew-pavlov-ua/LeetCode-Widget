@@ -36,7 +36,7 @@ func (c *WebController) StatsBadgeBySlug(ctx *gin.Context) {
 	if err != nil {
 		log.Println("err 38: ", err)
 		ctx.HTML(http.StatusInternalServerError, "error.html", gin.H{})
-	} else if userData != nil {
+	} else if userData != nil && userData.Rank != 0 {
 		// Calculating bars width (px) in the badge
 		barsWidth := v1.BarsWidth{
 			EasyWidth:   c.CalculateWidth(userData.EasyCount, v1.EasyMaxValue),

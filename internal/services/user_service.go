@@ -67,7 +67,7 @@ func (s *UserService) GetByStatsById(ctx context.Context, userId int64) (*v1.LcU
 		return nil, err
 	}
 
-	// If user stats were changed more than 15mins ago, updating it
+	// If user stats were changed more than 15mins ago, update it
 	if userStatsByIDRow.UpdatedAt.UTC().Before(now.Add(-15 * time.Minute)) {
 		userProfileData := *(leetcode_api.MatchedUserMapToUserProfile(userStatsByIDRow.Userslug))
 		lcData := v1.NewLcUserDataFromReq(userProfileData)

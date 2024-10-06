@@ -53,7 +53,7 @@ func getUserProfile(username string) (map[string]interface{}, error) {
 
 func MatchedUserMapToUserProfile(username string) *UserProfileData {
 	matchedUser, err := getUserProfile(username)
-	if err != nil || matchedUser["matchedUser"] == nil {
+	if err != nil {
 		fmt.Printf("Error getting matched user: %v", err)
 		return &UserProfileData{
 			Username: username + " user doesn't exist",
