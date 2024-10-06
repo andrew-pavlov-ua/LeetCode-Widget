@@ -35,16 +35,9 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y make docker-compose
 
-      - name: Start application containers
-        run: make env-up
-
-      - name: Build the application
-        run: make app-build
-
-      - name: Run database migrations
-        run: make migrate-pgsql-up
-
       - name: start the application
         run: |
+          make env-up
+          make migrate-pgsql-up
           make app-build
           docker-compose up -d lc_badge_app
