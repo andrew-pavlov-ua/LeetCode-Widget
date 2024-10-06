@@ -28,7 +28,6 @@ func (c *WebController) StatsBadgeBySlug(ctx *gin.Context) {
 	// Init userNotFound badge and getting userSlug (Leetcode id) from the url
 	var badge = []byte(v1.BadgeNoUserFound())
 	userSlug := ctx.Param("leetcode_user_slug")
-	log.Printf("got userSlug: %s", userSlug)
 
 	userId := c.userService.Upsert(ctx.Request.Context(), userSlug)
 	log.Printf("userId:%v\n", userId)
