@@ -59,6 +59,7 @@ jobs:
           
           ssh -i private_key -o StrictHostKeyChecking=no ${{ secrets.REMOTE_USER }}@${{ secrets.REMOTE_HOST }} << 'EOF'
             cd /LeetCode-Widget
+            make env-up
             make app-build
             make app-restart  
           EOF
