@@ -51,6 +51,9 @@ jobs:
       - name: Envoirnment up
         run: make env-up
 
+      - name: Migrate up db
+        run: make migrate-pgsql-up
+
       - name: Build the app
         run: make app-build
 
