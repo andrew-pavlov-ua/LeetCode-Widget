@@ -4,8 +4,8 @@ import (
 	_ "cmd/internal/db"
 	"cmd/internal/services"
 	v1 "cmd/internal/templates/v1"
-	"fmt"
 	"github.com/gin-gonic/gin"
+	"log"
 	"net/http"
 	"os"
 )
@@ -28,16 +28,17 @@ func (c *WebController) StatsBadgeBySlug(ctx *gin.Context) {
 	// Init userNotFound badge and getting userSlug (Leetcode id) from the url
 	var badge = []byte(v1.BadgeNoUserFound())
 	userSlug := ctx.Param("leetcode_user_slug")
+	log.Printf("got userSlug: %s", userSlug)
 
 	userId := c.userService.Upsert(ctx.Request.Context(), userSlug)
-	fmt.Printf("userId:%v\n", userId)
+	log.Printf("userId:%v\n", userId)
 
 	userData, err := c.userService.GetByStatsById(ctx, userId)
 	if err != nil {
-		fmt.Println("err 38")
-		fmt.Println(err)
+		log.Println("err 38: ", err)
 		ctx.HTML(http.StatusInternalServerError, "error.html", gin.H{})
 	} else if userData != nil {
+		// Calculating bars width (px) in the badge
 		barsWidth := v1.BarsWidth{
 			EasyWidth:   c.CalculateWidth(userData.EasyCount, v1.EasyMaxValue),
 			MediumWidth: c.CalculateWidth(userData.MediumCount, v1.MediumMaxValue),
@@ -65,6 +66,7 @@ func (c *WebController) CalculateWidth(count int64, max int64) float64 {
 func (c *WebController) GetLeetCodeLogo(ctx *gin.Context) {
 	imgData, err := os.ReadFile("images/LeetCodeLogo.png")
 	if err != nil {
+		log.Println("Error reading image file: ", err)
 		ctx.String(http.StatusInternalServerError, "Error reading image file")
 		return
 	}

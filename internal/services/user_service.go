@@ -8,7 +8,6 @@ import (
 	"context"
 	"database/sql"
 	"errors"
-	"fmt"
 	"log"
 	"time"
 )
@@ -28,24 +27,26 @@ func (s *UserService) Upsert(ctx context.Context, userSlug string) int64 {
 	if errors.Is(err, sql.ErrNoRows) {
 		matchedUser := leetcode_api.MatchedUserMapToUserProfile(userSlug)
 		userData := v1.NewLcUserDataFromReq(*matchedUser)
-		fmt.Println("userData", userData)
+		log.Println("userData", userData)
 
+		//creating new user in db (table users)
 		id, err := s.repository.Queries().UserNewAndParse(ctx, dbs.UserNewAndParseParams{
 			Username:             userData.Username,
 			SocialProviderUserID: userData.UserSlug})
 		if err != nil {
-			fmt.Println("39str ", err)
+			log.Printf("Database error 39: %s\n", err)
 
 			return 0
 		}
+
+		// Inserting user stats to lc_stats table
 		err = s.InsertUserStats(ctx, userData, id)
 		if err != nil {
-			log.Printf("Database err %s\n", err)
+			log.Printf("Database err 45: %s\n", err)
 		}
 		return id
 	} else if err != nil {
-		fmt.Println("56str ", err)
-		log.Printf("Database err %s\n", err)
+		log.Printf("Database err 56: %s\n", err)
 	}
 	return id
 }
@@ -56,20 +57,22 @@ func (s *UserService) GetByStatsById(ctx context.Context, userId int64) (*v1.LcU
 		userProfileData *v1.LcUserData
 		err             error
 	)
+	//Getting userStats by id from db
 	userStatsByIDRow, err := s.repository.Queries().UserGetStatsByID(ctx, userId)
-	if err == sql.ErrNoRows {
-		fmt.Println("No user stats row: ", err)
+	if errors.Is(err, sql.ErrNoRows) {
+		log.Printf("No user stats row: %s\n", err)
 		return nil, err
 	} else if err != nil {
-		fmt.Println("Database err ", err)
+		log.Printf("Database err 65: %s\n", err)
 		return nil, err
 	}
 
+	// If user stats were changed more than 15mins ago, updating it
 	if userStatsByIDRow.UpdatedAt.UTC().Before(now.Add(-15 * time.Minute)) {
 		userProfileData := *(leetcode_api.MatchedUserMapToUserProfile(userStatsByIDRow.Userslug))
 		lcData := v1.NewLcUserDataFromReq(userProfileData)
 		err = s.UpdateUserStats(ctx, lcData, userId)
-		fmt.Println("getting info from LC, difference: ", userStatsByIDRow.UpdatedAt.UTC().Sub(now).Minutes())
+		log.Println("getting info from LC, difference: ", userStatsByIDRow.UpdatedAt.UTC().Sub(now).Minutes())
 	}
 	userProfileData = &v1.LcUserData{
 		Username:    userStatsByIDRow.Username,
@@ -81,6 +84,7 @@ func (s *UserService) GetByStatsById(ctx context.Context, userId int64) (*v1.LcU
 		TotalCount:  userStatsByIDRow.TotalSubmits.Int64,
 	}
 
+	log.Println("Parsed user: ", userProfileData.UserSlug)
 	return userProfileData, err
 }
 

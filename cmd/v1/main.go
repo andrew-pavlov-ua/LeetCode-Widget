@@ -5,9 +5,9 @@ import (
 	"cmd/internal/db"
 	"cmd/internal/env"
 	"cmd/internal/services"
-	"fmt"
 	"github.com/gin-gonic/gin"
 	"log"
+	"os"
 )
 
 func main() {
@@ -16,6 +16,15 @@ func main() {
 		dsn  = env.Must("POSTGRES_DSN")
 		port = env.Must("PORT")
 	)
+
+	file, err := os.OpenFile("app.log", os.O_CREATE|os.O_WRONLY|os.O_APPEND, 0666)
+	if err != nil {
+		log.Fatalf("Error while log file opening: %v", err)
+	}
+	defer file.Close()
+	log.SetOutput(file)
+
+	log.Println("Starting app")
 
 	// Setting up connection with db
 	var pgConnection = db.MustConnection(dsn)
@@ -37,8 +46,7 @@ func main() {
 
 	r.
 		//Icons
-		Static("/favicon.ico", "./internal/templates/v1/img/LeetCodeLogo.png").
-		Static("/LeetCodeLogo.png", "./internal/templates/v1/img/LeetCodeLogo.png")
+		Static("/favicon.ico", "./internal/templates/v1/img/LeetCodeLogo.png")
 
 	var serverErr = r.Run(port) // Running app on the port from .env
 	if serverErr != nil {
@@ -46,5 +54,5 @@ func main() {
 
 		return
 	}
-	fmt.Println("Server started on http://localhost:8080")
+	log.Println("Server started on http://localhost:8080")
 }
