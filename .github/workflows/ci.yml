@@ -9,8 +9,7 @@ on:
       - master
 
 jobs:
-  build:
-    timeout-minutes: 5
+  deploy:
     runs-on: ubuntu-latest
 
     steps:
@@ -22,16 +21,6 @@ jobs:
         with:
           go-version: 1.23
 
-#      - name: Cache Go modules
-#        uses: actions/cache@v3
-#        with:
-#          path: |
-#            ~/go/pkg/mod
-#            ~/.cache/go-build
-#          key: ${{ runner.os }}-go-${{ hashFiles('**/go.sum') }}
-#          restore-keys: |
-#            ${{ runner.os }}-go-
-
       - name: Install dependencies
         run: go mod download
 
@@ -41,21 +30,21 @@ jobs:
           version: v1.61.0
           args: --timeout 5m
 
-      - name: Create directory for PostgreSQL data
-        run: mkdir -p .docker/volumes/postgresql/data
-      
-      - name: Install Compose
-        uses: ndeloof/install-compose-action@v0.0.1
-        with:
-          version: latest
+      - name: Install Make and Docker
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y make docker-compose
 
-      - name: Envoirnment up
+      - name: Start application containers
         run: make env-up
 
-      - name: Migrate up db
-        run: make migrate-pgsql-up
-
-      - name: Build the app
+      - name: Build the application
         run: make app-build
 
-      
+      - name: Run database migrations
+        run: make migrate-pgsql-up
+
+      - name: start the application
+        run: |
+          make app-build
+          docker-compose up -d lc_badge_app
