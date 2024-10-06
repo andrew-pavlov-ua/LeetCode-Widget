@@ -40,26 +40,13 @@ jobs:
           version: v1.61.0
           args: --timeout 5m
 
+      - name: up env
+        run: make env-up
+
       - name: Build the app
         run: make app-build
 
-      - name: Deploy to remote server
-        env:
-          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
-          REMOTE_HOST: ${{ secrets.REMOTE_HOST }}
-          REMOTE_USER: ${{ secrets.REMOTE_USER }}
-          ACTIONS_RUNNER_DEBUG: true
-          ACTIONS_STEP_DEBUG: true
+      - name: Build the app
+        run: make app-restart
 
-        run: |
-          echo "$SSH_PRIVATE_KEY" > private_key
-          chmod 600 private_key
-          
-          scp -i private_key -o StrictHostKeyChecking=no -r ./ ${{ secrets.REMOTE_USER }}@${{ secrets.REMOTE_HOST }}:/LeetCode-Widget
-          
-          ssh -i private_key -o StrictHostKeyChecking=no ${{ secrets.REMOTE_USER }}@${{ secrets.REMOTE_HOST }} << 'EOF'
-            cd /LeetCode-Widget
-            make env-up
-            make app-build
-            make app-restart  
-          EOF
+      
