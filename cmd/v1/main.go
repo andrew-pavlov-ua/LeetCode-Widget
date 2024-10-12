@@ -12,7 +12,7 @@ import (
 )
 
 func main() {
-	fmt.Println("Started program")
+	fmt.Println("Started program ")
 	// Creating variables app need to connect to db with correct dsn and port
 	var (
 		dsn  = env.Must("POSTGRES_DSN")
