@@ -1,43 +1,51 @@
-name: CI with Deploy
+name: Deploy Application
 
 on:
   push:
     branches:
-      - master
-  pull_request:
-    branches:
-      - master
+      - main
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
 
+    services:
+      postgres:
+        image: postgres:14.2
+        env:
+          POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
+          POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
+          POSTGRES_DB: ${{ secrets.POSTGRES_DB }}
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U ${{ secrets.POSTGRES_USER }}" 
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
     steps:
-      - name: Checkout code
+      - name: Checkout repository
         uses: actions/checkout@v3
 
-      - name: Set up Go
+      - name: Set up Go environment
         uses: actions/setup-go@v4
         with:
-          go-version: 1.23
+          go-version: 1.21
 
-      - name: Install dependencies
-        run: go mod download
+      - name: Set up Docker Compose
+        run: docker-compose -f docker-compose.yml --env-file .env up -d
 
-      - name: Run linters with golangci-lint
-        uses: golangci/golangci-lint-action@v4
-        with:
-          version: v1.61.0
-          args: --timeout 5m
+      - name: Build Go application
+        run: make app-build
 
-      - name: Install Make and Docker
+      - name: Run database migrations
+        run: make migrate-pgsql-up
+
+      - name: Start application
         run: |
-          sudo apt-get update
-          sudo apt-get install -y make docker-compose
+          make app-start &
+          sleep 10  # Даем серверу время подняться
 
-      - name: start the application
-        run: |
-          make env-up
-          make migrate-pgsql-up
-          make app-build
-          docker-compose up -d lc_badge_app
+      - name: Verify application is running
+        run: curl --fail http://localhost:8080 || exit 1
