@@ -54,6 +54,7 @@ func (ns NullSocialProvider) Value() (driver.Value, error) {
 
 type LcStat struct {
 	UserID        int64
+	Username      string
 	EasySubmits   sql.NullInt64
 	MediumSubmits sql.NullInt64
 	HardSubmits   sql.NullInt64
@@ -64,7 +65,6 @@ type LcStat struct {
 }
 
 type User struct {
-	ID                   int64
-	SocialProviderUserID string
-	Username             string
+	ID       int64
+	LcUserID string
 }

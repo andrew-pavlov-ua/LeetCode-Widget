@@ -6,13 +6,13 @@ CREATE TYPE SOCIAL_PROVIDER AS ENUM (
 
 CREATE TABLE users (
                        id                      BIGSERIAL PRIMARY KEY NOT NULL,
-                       social_provider_user_id  VARCHAR NOT NULL,
-                       username                 VARCHAR NOT NULL,
-                       UNIQUE (social_provider_user_id)
+                       lc_user_id  VARCHAR NOT NULL,
+                       UNIQUE (lc_user_id)
 );
 
 CREATE TABLE lc_stats (
                           user_id                 BIGINT PRIMARY KEY REFERENCES users(id),
+                          username                VARCHAR NOT NULL,
                           easy_submits            BIGINT,
                           medium_submits          BIGINT,
                           hard_submits            BIGINT,

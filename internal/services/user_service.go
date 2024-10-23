@@ -8,6 +8,7 @@ import (
 	"context"
 	"database/sql"
 	"errors"
+	"fmt"
 	"log"
 	"time"
 )
@@ -21,32 +22,35 @@ func NewUserService(repository *db.Repository) *UserService {
 }
 
 func (s *UserService) Upsert(ctx context.Context, userSlug string) int64 {
-	id, err := s.repository.Queries().UserGetBySocialProviderId(ctx, userSlug)
+	id, err := s.repository.Queries().UserGetByLeetCodeId(ctx, userSlug)
 
 	// If there's no users in db with id we need, creating user
+	fmt.Println(err)
 	if errors.Is(err, sql.ErrNoRows) {
+		fmt.Println("If there's no users in db with id we need, creating use")
+		fmt.Println("Getting data from lc api..")
 		matchedUser := leetcode_api.MatchedUserMapToUserProfile(userSlug)
 		userData := v1.NewLcUserDataFromReq(*matchedUser)
 		log.Println("userData", userData)
 
 		//creating new user in db (table users)
-		id, err := s.repository.Queries().UserNewAndParse(ctx, dbs.UserNewAndParseParams{
-			Username:             userData.Username,
-			SocialProviderUserID: userData.UserSlug})
+		fmt.Println("creating new user in db (table users)")
+		id, err := s.repository.Queries().UserNewAndParse(ctx, userData.UserSlug)
 		if err != nil {
-			log.Printf("Database error 39: %s\n", err)
+			log.Printf("Database error 39: %s\n\n", err)
 
 			return 0
 		}
 
 		// Inserting user stats to lc_stats table
+		fmt.Println("Inserting user stats to lc_stats table")
 		err = s.InsertUserStats(ctx, userData, id)
 		if err != nil {
-			log.Printf("Database err 45: %s\n", err)
+			log.Printf("Database err 45: %s\n\n", err)
 		}
 		return id
 	} else if err != nil {
-		log.Printf("Database err 56: %s\n", err)
+		log.Println("Database err 56: %s\n", err)
 	}
 	return id
 }
@@ -60,10 +64,10 @@ func (s *UserService) GetByStatsById(ctx context.Context, userId int64) (*v1.LcU
 	//Getting userStats by id from db
 	userStatsByIDRow, err := s.repository.Queries().UserGetStatsByID(ctx, userId)
 	if errors.Is(err, sql.ErrNoRows) {
-		log.Printf("No user stats row: %s\n", err)
+		log.Println("No user stats row: %s\n", err)
 		return nil, err
 	} else if err != nil {
-		log.Printf("Database err 65: %s\n", err)
+		log.Println("Database err 65: %s\n", err)
 		return nil, err
 	}
 
@@ -115,8 +119,9 @@ func (s *UserService) InsertUserStats(ctx context.Context, userData *v1.LcUserDa
 	now := time.Now().UTC()
 
 	err := s.repository.Queries().InsertStatsInfo(ctx, dbs.InsertStatsInfoParams{
-		UserID: userId,
-		Rank:   int64(userData.Rank),
+		UserID:   userId,
+		Rank:     int64(userData.Rank),
+		Username: userData.Username,
 		EasySubmits: sql.NullInt64{
 			Int64: userData.EasyCount,
 			Valid: true},

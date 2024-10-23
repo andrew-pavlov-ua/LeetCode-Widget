@@ -12,12 +12,13 @@ import (
 )
 
 const insertStatsInfo = `-- name: InsertStatsInfo :exec
-INSERT INTO lc_stats (user_id, easy_submits, medium_submits, hard_submits, total_submits, rank, created_at, updated_at)
-       VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
+INSERT INTO lc_stats (user_id, username, easy_submits, medium_submits, hard_submits, total_submits, rank, created_at, updated_at)
+       VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)
 `
 
 type InsertStatsInfoParams struct {
 	UserID        int64
+	Username      string
 	EasySubmits   sql.NullInt64
 	MediumSubmits sql.NullInt64
 	HardSubmits   sql.NullInt64
@@ -30,6 +31,7 @@ type InsertStatsInfoParams struct {
 func (q *Queries) InsertStatsInfo(ctx context.Context, arg InsertStatsInfoParams) error {
 	_, err := q.exec(ctx, q.insertStatsInfoStmt, insertStatsInfo,
 		arg.UserID,
+		arg.Username,
 		arg.EasySubmits,
 		arg.MediumSubmits,
 		arg.HardSubmits,
@@ -72,13 +74,13 @@ func (q *Queries) UpdateLcStats(ctx context.Context, arg UpdateLcStatsParams) er
 	return err
 }
 
-const userGetBySocialProviderId = `-- name: UserGetBySocialProviderId :one
+const userGetByLeetCodeId = `-- name: UserGetByLeetCodeId :one
 SELECT id FROM users
-WHERE social_provider_user_id = $1
+WHERE lc_user_id = $1
 `
 
-func (q *Queries) UserGetBySocialProviderId(ctx context.Context, userSlug string) (int64, error) {
-	row := q.queryRow(ctx, q.userGetBySocialProviderIdStmt, userGetBySocialProviderId, userSlug)
+func (q *Queries) UserGetByLeetCodeId(ctx context.Context, userSlug string) (int64, error) {
+	row := q.queryRow(ctx, q.userGetByLeetCodeIdStmt, userGetByLeetCodeId, userSlug)
 	var id int64
 	err := row.Scan(&id)
 	return id, err
@@ -86,8 +88,8 @@ func (q *Queries) UserGetBySocialProviderId(ctx context.Context, userSlug string
 
 const userGetStatsByID = `-- name: UserGetStatsByID :one
 SELECT u.id,
-       u.social_provider_user_id AS userSlug,
-       u.username,
+       u.lc_user_id AS userSlug,
+       s.username,
        s.easy_submits,
        s.medium_submits,
        s.hard_submits,
@@ -129,18 +131,13 @@ func (q *Queries) UserGetStatsByID(ctx context.Context, id int64) (UserGetStatsB
 }
 
 const userNewAndParse = `-- name: UserNewAndParse :one
-INSERT INTO users (social_provider_user_id, username)
-    VALUES ($1, $2)
+INSERT INTO users (lc_user_id)
+    VALUES ($1)
 RETURNING id
 `
 
-type UserNewAndParseParams struct {
-	SocialProviderUserID string
-	Username             string
-}
-
-func (q *Queries) UserNewAndParse(ctx context.Context, arg UserNewAndParseParams) (int64, error) {
-	row := q.queryRow(ctx, q.userNewAndParseStmt, userNewAndParse, arg.SocialProviderUserID, arg.Username)
+func (q *Queries) UserNewAndParse(ctx context.Context, lcUserID string) (int64, error) {
+	row := q.queryRow(ctx, q.userNewAndParseStmt, userNewAndParse, lcUserID)
 	var id int64
 	err := row.Scan(&id)
 	return id, err

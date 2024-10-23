@@ -1,20 +1,20 @@
 -- name: UserNewAndParse :one
-INSERT INTO users (social_provider_user_id, username)
-    VALUES (@social_provider_user_id, @username)
+INSERT INTO users (lc_user_id)
+    VALUES (@lc_user_id)
 RETURNING id;
 
 -- name: InsertStatsInfo :exec
-INSERT INTO lc_stats (user_id, easy_submits, medium_submits, hard_submits, total_submits, rank, created_at, updated_at)
-       VALUES (@user_id, @easy_submits, @medium_submits, @hard_submits, @total_submits, @rank, @created_at, @updated_at);
+INSERT INTO lc_stats (user_id, username, easy_submits, medium_submits, hard_submits, total_submits, rank, created_at, updated_at)
+       VALUES (@user_id, @username, @easy_submits, @medium_submits, @hard_submits, @total_submits, @rank, @created_at, @updated_at);
 
--- name: UserGetBySocialProviderId :one
+-- name: UserGetByLeetCodeId :one
 SELECT id FROM users
-WHERE social_provider_user_id = @user_slug;
+WHERE lc_user_id = @user_slug;
 
 -- name: UserGetStatsByID :one
 SELECT u.id,
-       u.social_provider_user_id AS userSlug,
-       u.username,
+       u.lc_user_id AS userSlug,
+       s.username,
        s.easy_submits,
        s.medium_submits,
        s.hard_submits,

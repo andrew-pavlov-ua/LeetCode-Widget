@@ -30,8 +30,8 @@ func Prepare(ctx context.Context, db DBTX) (*Queries, error) {
 	if q.updateLcStatsStmt, err = db.PrepareContext(ctx, updateLcStats); err != nil {
 		return nil, fmt.Errorf("error preparing query UpdateLcStats: %w", err)
 	}
-	if q.userGetBySocialProviderIdStmt, err = db.PrepareContext(ctx, userGetBySocialProviderId); err != nil {
-		return nil, fmt.Errorf("error preparing query UserGetBySocialProviderId: %w", err)
+	if q.userGetByLeetCodeIdStmt, err = db.PrepareContext(ctx, userGetByLeetCodeId); err != nil {
+		return nil, fmt.Errorf("error preparing query UserGetByLeetCodeId: %w", err)
 	}
 	if q.userGetStatsByIDStmt, err = db.PrepareContext(ctx, userGetStatsByID); err != nil {
 		return nil, fmt.Errorf("error preparing query UserGetStatsByID: %w", err)
@@ -54,9 +54,9 @@ func (q *Queries) Close() error {
 			err = fmt.Errorf("error closing updateLcStatsStmt: %w", cerr)
 		}
 	}
-	if q.userGetBySocialProviderIdStmt != nil {
-		if cerr := q.userGetBySocialProviderIdStmt.Close(); cerr != nil {
-			err = fmt.Errorf("error closing userGetBySocialProviderIdStmt: %w", cerr)
+	if q.userGetByLeetCodeIdStmt != nil {
+		if cerr := q.userGetByLeetCodeIdStmt.Close(); cerr != nil {
+			err = fmt.Errorf("error closing userGetByLeetCodeIdStmt: %w", cerr)
 		}
 	}
 	if q.userGetStatsByIDStmt != nil {
@@ -106,23 +106,23 @@ func (q *Queries) queryRow(ctx context.Context, stmt *sql.Stmt, query string, ar
 }
 
 type Queries struct {
-	db                            DBTX
-	tx                            *sql.Tx
-	insertStatsInfoStmt           *sql.Stmt
-	updateLcStatsStmt             *sql.Stmt
-	userGetBySocialProviderIdStmt *sql.Stmt
-	userGetStatsByIDStmt          *sql.Stmt
-	userNewAndParseStmt           *sql.Stmt
+	db                      DBTX
+	tx                      *sql.Tx
+	insertStatsInfoStmt     *sql.Stmt
+	updateLcStatsStmt       *sql.Stmt
+	userGetByLeetCodeIdStmt *sql.Stmt
+	userGetStatsByIDStmt    *sql.Stmt
+	userNewAndParseStmt     *sql.Stmt
 }
 
 func (q *Queries) WithTx(tx *sql.Tx) *Queries {
 	return &Queries{
-		db:                            tx,
-		tx:                            tx,
-		insertStatsInfoStmt:           q.insertStatsInfoStmt,
-		updateLcStatsStmt:             q.updateLcStatsStmt,
-		userGetBySocialProviderIdStmt: q.userGetBySocialProviderIdStmt,
-		userGetStatsByIDStmt:          q.userGetStatsByIDStmt,
-		userNewAndParseStmt:           q.userNewAndParseStmt,
+		db:                      tx,
+		tx:                      tx,
+		insertStatsInfoStmt:     q.insertStatsInfoStmt,
+		updateLcStatsStmt:       q.updateLcStatsStmt,
+		userGetByLeetCodeIdStmt: q.userGetByLeetCodeIdStmt,
+		userGetStatsByIDStmt:    q.userGetStatsByIDStmt,
+		userNewAndParseStmt:     q.userNewAndParseStmt,
 	}
 }
