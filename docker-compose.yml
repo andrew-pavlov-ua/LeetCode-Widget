@@ -28,6 +28,6 @@ services:
       GITHUB_CLIENT_ID: ${GITHUB_CLIENT_ID:-"default-client-id"}
       GITHUB_CLIENT_SECRET: ${GITHUB_CLIENT_SECRET:-"default-client-secret"}
     ports:
-      - "8080:8080"
+      - "80:8080"
     depends_on:
       - postgres
