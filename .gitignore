@@ -3,5 +3,5 @@
 
 cmd/test
 
-log
+app.log
 .docker/volumes/
