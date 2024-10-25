@@ -1,12 +1,8 @@
 -- +goose Up
 -- +goose StatementBegin
-CREATE TYPE SOCIAL_PROVIDER AS ENUM (
-    'leetcode'
-);
-
 CREATE TABLE users (
                        id                      BIGSERIAL PRIMARY KEY NOT NULL,
-                       lc_user_id  VARCHAR NOT NULL,
+                       lc_user_id              VARCHAR NOT NULL,
                        UNIQUE (lc_user_id)
 );
 
@@ -29,5 +25,4 @@ CREATE TABLE lc_stats (
 DROP TABLE lc_stats;
 DROP TABLE users;
 
-DROP TYPE SOCIAL_PROVIDER;
 -- +goose StatementEnd

@@ -56,5 +56,5 @@ func main() {
 
 		return
 	}
-	log.Println("Server started on http://localhost:8080")
+	log.Println("Server started on http://localhost:80")
 }
