@@ -16,7 +16,6 @@ CREATE TABLE lc_stats (
                           rank                    BIGINT NOT NULL,
                           created_at              TIMESTAMP WITH TIME ZONE NOT NULL,
                           updated_at              TIMESTAMP WITH TIME ZONE NOT NULL,
-                          UNIQUE (user_id)
 );
 -- +goose StatementEnd
 

@@ -43,8 +43,8 @@ func main() {
 
 	webController := controllers.NewWebController(userService)
 
-	r.GET("/", webController.ReturnIndex)                                            // Returning main index.html
-	r.GET("/api/slug/:leetcode_user_slug/badge.svg", webController.StatsBadgeBySlug) // Starting with badge creation
+	r.GET("/lcb", webController.ReturnIndex)                                             // Returning main index.html
+	r.GET("/lcb/api/slug/:leetcode_user_slug/badge.svg", webController.StatsBadgeBySlug) // Starting with badge creation
 
 	r.
 		//Icons

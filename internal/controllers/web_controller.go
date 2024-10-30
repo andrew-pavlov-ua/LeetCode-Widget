@@ -26,7 +26,7 @@ func (c *WebController) ReturnIndex(ctx *gin.Context) {
 
 func (c *WebController) StatsBadgeBySlug(ctx *gin.Context) {
 	// Init userNotFound badge and getting userSlug (Leetcode id) from the url
-	var badge = []byte(v1.BadgeNoUserFound())
+	var badge []byte
 	userSlug := ctx.Param("leetcode_user_slug")
 
 	userId := c.userService.Upsert(ctx.Request.Context(), userSlug)
@@ -36,7 +36,9 @@ func (c *WebController) StatsBadgeBySlug(ctx *gin.Context) {
 	if err != nil {
 		log.Println("err 38: ", err)
 		ctx.HTML(http.StatusInternalServerError, "error.html", gin.H{})
-	} else if userData != nil && userData.Rank != 0 {
+	} else if userData == nil || userData.Rank == 0 {
+		badge = []byte(v1.BadgeNoUserFound())
+	} else {
 		// Calculating bars width (px) in the badge
 		barsWidth := v1.BarsWidth{
 			EasyWidth:   c.CalculateWidth(userData.EasyCount, v1.EasyMaxValue),
