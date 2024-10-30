@@ -7,22 +7,21 @@ package dbs
 
 import (
 	"context"
-	"database/sql"
 	"time"
 )
 
 const insertStatsInfo = `-- name: InsertStatsInfo :exec
-INSERT INTO lc_stats (user_id, username, easy_submits, medium_submits, hard_submits, total_submits, rank, created_at, updated_at)
+INSERT INTO lc_stats (lc_user_id, username, easy_submits, medium_submits, hard_submits, total_submits, rank, created_at, updated_at)
        VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)
 `
 
 type InsertStatsInfoParams struct {
-	UserID        int64
+	LcUserID      string
 	Username      string
-	EasySubmits   sql.NullInt64
-	MediumSubmits sql.NullInt64
-	HardSubmits   sql.NullInt64
-	TotalSubmits  sql.NullInt64
+	EasySubmits   int64
+	MediumSubmits int64
+	HardSubmits   int64
+	TotalSubmits  int64
 	Rank          int64
 	CreatedAt     time.Time
 	UpdatedAt     time.Time
@@ -30,7 +29,7 @@ type InsertStatsInfoParams struct {
 
 func (q *Queries) InsertStatsInfo(ctx context.Context, arg InsertStatsInfoParams) error {
 	_, err := q.exec(ctx, q.insertStatsInfoStmt, insertStatsInfo,
-		arg.UserID,
+		arg.LcUserID,
 		arg.Username,
 		arg.EasySubmits,
 		arg.MediumSubmits,
@@ -50,16 +49,16 @@ SET easy_submits = $1,
     hard_submits = $3,
     total_submits = $4,
     updated_at = $5
-WHERE user_id = $6 IS NOT NULL
+WHERE lc_user_id = $6
 `
 
 type UpdateLcStatsParams struct {
-	EasySubmits   sql.NullInt64
-	MediumSubmits sql.NullInt64
-	HardSubmits   sql.NullInt64
-	TotalSubmits  sql.NullInt64
+	EasySubmits   int64
+	MediumSubmits int64
+	HardSubmits   int64
+	TotalSubmits  int64
 	UpdatedAt     time.Time
-	UserID        int64
+	LcUserID      string
 }
 
 func (q *Queries) UpdateLcStats(ctx context.Context, arg UpdateLcStatsParams) error {
@@ -69,55 +68,39 @@ func (q *Queries) UpdateLcStats(ctx context.Context, arg UpdateLcStatsParams) er
 		arg.HardSubmits,
 		arg.TotalSubmits,
 		arg.UpdatedAt,
-		arg.UserID,
+		arg.LcUserID,
 	)
 	return err
 }
 
-const userGetByLeetCodeId = `-- name: UserGetByLeetCodeId :one
-SELECT id FROM users
+const userGetStatsBySlug = `-- name: UserGetStatsBySlug :one
+SELECT lc_user_id AS userSlug,
+       username,
+       easy_submits,
+       medium_submits,
+       hard_submits,
+       total_submits,
+       rank,
+       updated_at
+FROM lc_stats
 WHERE lc_user_id = $1
 `
 
-func (q *Queries) UserGetByLeetCodeId(ctx context.Context, userSlug string) (int64, error) {
-	row := q.queryRow(ctx, q.userGetByLeetCodeIdStmt, userGetByLeetCodeId, userSlug)
-	var id int64
-	err := row.Scan(&id)
-	return id, err
-}
-
-const userGetStatsByID = `-- name: UserGetStatsByID :one
-SELECT u.id,
-       u.lc_user_id AS userSlug,
-       s.username,
-       s.easy_submits,
-       s.medium_submits,
-       s.hard_submits,
-       s.total_submits,
-       s.rank,
-       s.updated_at
-FROM users u
-         INNER JOIN lc_stats s ON u.id = s.user_id
-WHERE u.id = $1
-`
-
-type UserGetStatsByIDRow struct {
-	ID            int64
+type UserGetStatsBySlugRow struct {
 	Userslug      string
 	Username      string
-	EasySubmits   sql.NullInt64
-	MediumSubmits sql.NullInt64
-	HardSubmits   sql.NullInt64
-	TotalSubmits  sql.NullInt64
+	EasySubmits   int64
+	MediumSubmits int64
+	HardSubmits   int64
+	TotalSubmits  int64
 	Rank          int64
 	UpdatedAt     time.Time
 }
 
-func (q *Queries) UserGetStatsByID(ctx context.Context, id int64) (UserGetStatsByIDRow, error) {
-	row := q.queryRow(ctx, q.userGetStatsByIDStmt, userGetStatsByID, id)
-	var i UserGetStatsByIDRow
+func (q *Queries) UserGetStatsBySlug(ctx context.Context, lcUserID string) (UserGetStatsBySlugRow, error) {
+	row := q.queryRow(ctx, q.userGetStatsBySlugStmt, userGetStatsBySlug, lcUserID)
+	var i UserGetStatsBySlugRow
 	err := row.Scan(
-		&i.ID,
 		&i.Userslug,
 		&i.Username,
 		&i.EasySubmits,
@@ -128,17 +111,4 @@ func (q *Queries) UserGetStatsByID(ctx context.Context, id int64) (UserGetStatsB
 		&i.UpdatedAt,
 	)
 	return i, err
-}
-
-const userNewAndParse = `-- name: UserNewAndParse :one
-INSERT INTO users (lc_user_id)
-    VALUES ($1)
-RETURNING id
-`
-
-func (q *Queries) UserNewAndParse(ctx context.Context, lcUserID string) (int64, error) {
-	row := q.queryRow(ctx, q.userNewAndParseStmt, userNewAndParse, lcUserID)
-	var id int64
-	err := row.Scan(&id)
-	return id, err
 }

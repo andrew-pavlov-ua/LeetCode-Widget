@@ -21,75 +21,36 @@ func NewUserService(repository *db.Repository) *UserService {
 	return &UserService{repository: repository}
 }
 
-func (s *UserService) Upsert(ctx context.Context, userSlug string) int64 {
-	id, err := s.repository.Queries().UserGetByLeetCodeId(ctx, userSlug)
+func (s *UserService) Upsert(ctx context.Context, userSlug string) (*v1.LcUserData, error) {
+	now := time.Now().UTC()
+	dbUserData, err := s.repository.Queries().UserGetStatsBySlug(ctx, userSlug)
 
-	// If there's no users in db with id we need, creating user
-	fmt.Println(err)
-	if errors.Is(err, sql.ErrNoRows) {
-		fmt.Println("If there's no users in db with id we need, creating use")
-		fmt.Println("Getting data from lc api..")
+	if errors.Is(err, sql.ErrNoRows) || dbUserData.UpdatedAt.Before(now.Add(-15*time.Minute)) {
 		matchedUser := leetcode_api.MatchedUserMapToUserProfile(userSlug)
 		userData := v1.NewLcUserDataFromReq(*matchedUser)
 		log.Println("userData", userData)
 
-		//creating new user in db (table users)
-		fmt.Println("creating new user in db (table users)")
-		id, err := s.repository.Queries().UserNewAndParse(ctx, userData.UserSlug)
-		if err != nil {
-			log.Printf("Database error 39: %s\n\n", err)
-
-			return 0
-		}
-
 		// Inserting user stats to lc_stats table
 		fmt.Println("Inserting user stats to lc_stats table")
-		err = s.InsertUserStats(ctx, userData, id)
+		err = s.InsertUserStats(ctx, userData)
 		if err != nil {
-			log.Printf("Database err 45: %s\n\n", err)
+			log.Println("err 37: ", err)
 		}
-		return id
-	} else if err != nil {
-		log.Println("Database err 56: %s\n", err)
+		return userData, err
+	} else if err != nil && err != sql.ErrNoRows {
+		fmt.Println("err41 : ", err)
 	}
-	return id
-}
+	fmt.Printf("fje23igjf23h")
+	userData := &v1.LcUserData{
+		UserSlug:    userSlug,
+		Username:    dbUserData.Username,
+		EasyCount:   dbUserData.EasySubmits,
+		MediumCount: dbUserData.MediumSubmits,
+		HardCount:   dbUserData.HardSubmits,
+		TotalCount:  dbUserData.TotalSubmits,
+		Rank:        float64(dbUserData.Rank)}
 
-func (s *UserService) GetByStatsById(ctx context.Context, userId int64) (*v1.LcUserData, error) {
-	now := time.Now().UTC()
-	var (
-		userProfileData *v1.LcUserData
-		err             error
-	)
-	//Getting userStats by id from db
-	userStatsByIDRow, err := s.repository.Queries().UserGetStatsByID(ctx, userId)
-	if errors.Is(err, sql.ErrNoRows) {
-		log.Println("No user stats row: %s\n", err)
-		return nil, err
-	} else if err != nil {
-		log.Println("Database err 65: %s\n", err)
-		return nil, err
-	}
-
-	// If user stats were changed more than 15mins ago, update it
-	if userStatsByIDRow.UpdatedAt.UTC().Before(now.Add(-15 * time.Minute)) {
-		userProfileData := *(leetcode_api.MatchedUserMapToUserProfile(userStatsByIDRow.Userslug))
-		lcData := v1.NewLcUserDataFromReq(userProfileData)
-		err = s.UpdateUserStats(ctx, lcData, userId)
-		log.Println("getting info from LC, difference: ", userStatsByIDRow.UpdatedAt.UTC().Sub(now).Minutes())
-	}
-	userProfileData = &v1.LcUserData{
-		Username:    userStatsByIDRow.Username,
-		UserSlug:    userStatsByIDRow.Userslug,
-		Rank:        float64(userStatsByIDRow.Rank),
-		EasyCount:   userStatsByIDRow.EasySubmits.Int64,
-		MediumCount: userStatsByIDRow.MediumSubmits.Int64,
-		HardCount:   userStatsByIDRow.HardSubmits.Int64,
-		TotalCount:  userStatsByIDRow.TotalSubmits.Int64,
-	}
-
-	log.Println("Parsed user: ", userProfileData.UserSlug)
-	return userProfileData, err
+	return userData, nil
 }
 
 func (s *UserService) UpdateUserStats(ctx context.Context, userData *v1.LcUserData, userId int64) error {
@@ -97,45 +58,28 @@ func (s *UserService) UpdateUserStats(ctx context.Context, userData *v1.LcUserDa
 
 	err := s.repository.Queries().UpdateLcStats(ctx,
 		dbs.UpdateLcStatsParams{
-			EasySubmits: sql.NullInt64{
-				Int64: userData.EasyCount,
-				Valid: true},
-			MediumSubmits: sql.NullInt64{
-				Int64: userData.MediumCount,
-				Valid: true},
-			HardSubmits: sql.NullInt64{
-				Int64: userData.HardCount,
-				Valid: true},
-			TotalSubmits: sql.NullInt64{
-				Int64: userData.TotalCount,
-				Valid: true},
-			UpdatedAt: now,
-			UserID:    userId})
+			EasySubmits:   userData.EasyCount,
+			MediumSubmits: userData.MediumCount,
+			HardSubmits:   userData.HardCount,
+			TotalSubmits:  userData.TotalCount,
+			UpdatedAt:     now})
 
 	return err
 }
 
-func (s *UserService) InsertUserStats(ctx context.Context, userData *v1.LcUserData, userId int64) error {
+func (s *UserService) InsertUserStats(ctx context.Context, userData *v1.LcUserData) error {
 	now := time.Now().UTC()
 
 	err := s.repository.Queries().InsertStatsInfo(ctx, dbs.InsertStatsInfoParams{
-		UserID:   userId,
-		Rank:     int64(userData.Rank),
-		Username: userData.Username,
-		EasySubmits: sql.NullInt64{
-			Int64: userData.EasyCount,
-			Valid: true},
-		MediumSubmits: sql.NullInt64{
-			Int64: userData.MediumCount,
-			Valid: true},
-		HardSubmits: sql.NullInt64{
-			Int64: userData.HardCount,
-			Valid: true},
-		TotalSubmits: sql.NullInt64{
-			Int64: userData.TotalCount,
-			Valid: true},
-		CreatedAt: now,
-		UpdatedAt: now})
+		Rank:          int64(userData.Rank),
+		LcUserID:      userData.UserSlug,
+		Username:      userData.Username,
+		EasySubmits:   userData.EasyCount,
+		MediumSubmits: userData.MediumCount,
+		HardSubmits:   userData.HardCount,
+		TotalSubmits:  userData.TotalCount,
+		CreatedAt:     now,
+		UpdatedAt:     now})
 
 	return err
 }

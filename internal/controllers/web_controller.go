@@ -4,6 +4,7 @@ import (
 	_ "cmd/internal/db"
 	"cmd/internal/services"
 	v1 "cmd/internal/templates/v1"
+	"fmt"
 	"github.com/gin-gonic/gin"
 	"log"
 	"net/http"
@@ -29,13 +30,10 @@ func (c *WebController) StatsBadgeBySlug(ctx *gin.Context) {
 	var badge []byte
 	userSlug := ctx.Param("leetcode_user_slug")
 
-	userId := c.userService.Upsert(ctx.Request.Context(), userSlug)
-	log.Printf("userId:%v\n", userId)
+	userData, err := c.userService.Upsert(ctx.Request.Context(), userSlug)
 
-	userData, err := c.userService.GetByStatsById(ctx, userId)
 	if err != nil {
-		log.Println("err 38: ", err)
-		ctx.HTML(http.StatusInternalServerError, "error.html", gin.H{})
+		fmt.Println("err 38: ", err)
 	} else if userData == nil || userData.Rank == 0 {
 		badge = []byte(v1.BadgeNoUserFound())
 	} else {

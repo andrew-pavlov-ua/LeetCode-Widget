@@ -30,14 +30,8 @@ func Prepare(ctx context.Context, db DBTX) (*Queries, error) {
 	if q.updateLcStatsStmt, err = db.PrepareContext(ctx, updateLcStats); err != nil {
 		return nil, fmt.Errorf("error preparing query UpdateLcStats: %w", err)
 	}
-	if q.userGetByLeetCodeIdStmt, err = db.PrepareContext(ctx, userGetByLeetCodeId); err != nil {
-		return nil, fmt.Errorf("error preparing query UserGetByLeetCodeId: %w", err)
-	}
-	if q.userGetStatsByIDStmt, err = db.PrepareContext(ctx, userGetStatsByID); err != nil {
-		return nil, fmt.Errorf("error preparing query UserGetStatsByID: %w", err)
-	}
-	if q.userNewAndParseStmt, err = db.PrepareContext(ctx, userNewAndParse); err != nil {
-		return nil, fmt.Errorf("error preparing query UserNewAndParse: %w", err)
+	if q.userGetStatsBySlugStmt, err = db.PrepareContext(ctx, userGetStatsBySlug); err != nil {
+		return nil, fmt.Errorf("error preparing query UserGetStatsBySlug: %w", err)
 	}
 	return &q, nil
 }
@@ -54,19 +48,9 @@ func (q *Queries) Close() error {
 			err = fmt.Errorf("error closing updateLcStatsStmt: %w", cerr)
 		}
 	}
-	if q.userGetByLeetCodeIdStmt != nil {
-		if cerr := q.userGetByLeetCodeIdStmt.Close(); cerr != nil {
-			err = fmt.Errorf("error closing userGetByLeetCodeIdStmt: %w", cerr)
-		}
-	}
-	if q.userGetStatsByIDStmt != nil {
-		if cerr := q.userGetStatsByIDStmt.Close(); cerr != nil {
-			err = fmt.Errorf("error closing userGetStatsByIDStmt: %w", cerr)
-		}
-	}
-	if q.userNewAndParseStmt != nil {
-		if cerr := q.userNewAndParseStmt.Close(); cerr != nil {
-			err = fmt.Errorf("error closing userNewAndParseStmt: %w", cerr)
+	if q.userGetStatsBySlugStmt != nil {
+		if cerr := q.userGetStatsBySlugStmt.Close(); cerr != nil {
+			err = fmt.Errorf("error closing userGetStatsBySlugStmt: %w", cerr)
 		}
 	}
 	return err
@@ -106,23 +90,19 @@ func (q *Queries) queryRow(ctx context.Context, stmt *sql.Stmt, query string, ar
 }
 
 type Queries struct {
-	db                      DBTX
-	tx                      *sql.Tx
-	insertStatsInfoStmt     *sql.Stmt
-	updateLcStatsStmt       *sql.Stmt
-	userGetByLeetCodeIdStmt *sql.Stmt
-	userGetStatsByIDStmt    *sql.Stmt
-	userNewAndParseStmt     *sql.Stmt
+	db                     DBTX
+	tx                     *sql.Tx
+	insertStatsInfoStmt    *sql.Stmt
+	updateLcStatsStmt      *sql.Stmt
+	userGetStatsBySlugStmt *sql.Stmt
 }
 
 func (q *Queries) WithTx(tx *sql.Tx) *Queries {
 	return &Queries{
-		db:                      tx,
-		tx:                      tx,
-		insertStatsInfoStmt:     q.insertStatsInfoStmt,
-		updateLcStatsStmt:       q.updateLcStatsStmt,
-		userGetByLeetCodeIdStmt: q.userGetByLeetCodeIdStmt,
-		userGetStatsByIDStmt:    q.userGetStatsByIDStmt,
-		userNewAndParseStmt:     q.userNewAndParseStmt,
+		db:                     tx,
+		tx:                     tx,
+		insertStatsInfoStmt:    q.insertStatsInfoStmt,
+		updateLcStatsStmt:      q.updateLcStatsStmt,
+		userGetStatsBySlugStmt: q.userGetStatsBySlugStmt,
 	}
 }

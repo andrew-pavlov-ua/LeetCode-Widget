@@ -5,23 +5,17 @@
 package dbs
 
 import (
-	"database/sql"
 	"time"
 )
 
 type LcStat struct {
-	UserID        int64
+	LcUserID      string
 	Username      string
-	EasySubmits   sql.NullInt64
-	MediumSubmits sql.NullInt64
-	HardSubmits   sql.NullInt64
-	TotalSubmits  sql.NullInt64
+	EasySubmits   int64
+	MediumSubmits int64
+	HardSubmits   int64
+	TotalSubmits  int64
 	Rank          int64
 	CreatedAt     time.Time
 	UpdatedAt     time.Time
-}
-
-type User struct {
-	ID       int64
-	LcUserID string
 }
