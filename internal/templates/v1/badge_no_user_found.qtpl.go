@@ -32,7 +32,7 @@ func StreamBadgeNoUserFound(qw422016 *qt422016.Writer) {
 
   <!-- No User Info Text -->
   <g fill="#FFF" font-family="Verdana, sans-serif">
-    <text x="250" y="0" font-size="24" font-weight="bold" text-anchor="middle">No User Found</text>
+    <text x="250" y="50" font-size="24" font-weight="bold" text-anchor="middle">No User Found</text>
   </g>
 
   <!-- Placeholder for Circle and Progress Bars -->

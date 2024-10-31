@@ -22,10 +22,9 @@ func NewUserService(repository *db.Repository) *UserService {
 }
 
 func (s *UserService) Upsert(ctx context.Context, userSlug string) (*v1.LcUserData, error) {
-	now := time.Now().UTC()
 	dbUserData, err := s.repository.Queries().UserGetStatsBySlug(ctx, userSlug)
 
-	if errors.Is(err, sql.ErrNoRows) || dbUserData.UpdatedAt.Before(now.Add(-15*time.Minute)) {
+	if errors.Is(err, sql.ErrNoRows) {
 		matchedUser := leetcode_api.MatchedUserMapToUserProfile(userSlug)
 		userData := v1.NewLcUserDataFromReq(*matchedUser)
 		log.Println("userData", userData)
@@ -40,7 +39,6 @@ func (s *UserService) Upsert(ctx context.Context, userSlug string) (*v1.LcUserDa
 	} else if err != nil && err != sql.ErrNoRows {
 		fmt.Println("err41 : ", err)
 	}
-	fmt.Printf("fje23igjf23h")
 	userData := &v1.LcUserData{
 		UserSlug:    userSlug,
 		Username:    dbUserData.Username,
@@ -50,10 +48,14 @@ func (s *UserService) Upsert(ctx context.Context, userSlug string) (*v1.LcUserDa
 		TotalCount:  dbUserData.TotalSubmits,
 		Rank:        float64(dbUserData.Rank)}
 
+	if dbUserData.UpdatedAt.Before(time.Now().UTC().Add(-15 * time.Minute)) {
+		s.UpdateUserStats(ctx, userData)
+	}
+
 	return userData, nil
 }
 
-func (s *UserService) UpdateUserStats(ctx context.Context, userData *v1.LcUserData, userId int64) error {
+func (s *UserService) UpdateUserStats(ctx context.Context, userData *v1.LcUserData) error {
 	now := time.Now().UTC()
 
 	err := s.repository.Queries().UpdateLcStats(ctx,
