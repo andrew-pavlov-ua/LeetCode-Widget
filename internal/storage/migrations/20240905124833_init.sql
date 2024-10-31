@@ -17,7 +17,7 @@ CREATE TABLE profile_hourly_views (
     time TIMESTAMP NOT NULL,
     count       BIGINT NOT NULL,
     PRIMARY KEY (user_slug, TIME)
-)
+);
 -- +goose StatementEnd
 
 -- +goose Down
