@@ -29,23 +29,11 @@
 </footer>
 
 <script>
-    function fnv1a(str) {
-        let h = 2166136261;
-        for (let i = 0; i < str.length; i++) {
-            h ^= str.charCodeAt(i);
-            h += (h << 1) + (h << 4) + (h << 7) + (h << 8) + (h << 24);
-        }
-        return h >>> 0;
-    }
-
     document.getElementById('usernameForm').addEventListener('submit', function(event) {
         event.preventDefault();
 
         const username = document.getElementById('usernameInput').value.trim();
-        // const hashedUsername = fnv1a(username);
-        // const badgeUrl = `http://localhost:80/lcb/api/slug/${hashedUsername}/badge.svg`;
         const badgeUrl = `http://andrewpavlov.org/lcb/api/slug/${username}/badge.svg`;
-
 
         const badgeLinkDiv = document.getElementById('badgeLink');
         badgeLinkDiv.style.display = 'block';
@@ -55,13 +43,21 @@
         copyButton.style.display = 'inline-block';
 
         copyButton.addEventListener('click', function() {
-            navigator.clipboard.writeText(badgeUrl).then(function() {
-                showCopyNotification();
-            }, function(err) {
-                console.log('Failed to copy URL');
-            });
+            copyToClipboard(badgeUrl);
         });
     });
+
+    // Function to copy text to clipboard
+    function copyToClipboard(text) {
+        const tempInput = document.createElement('input');
+        tempInput.value = text;
+        document.body.appendChild(tempInput);
+        tempInput.select();
+        document.execCommand('copy');
+        document.body.removeChild(tempInput);
+
+        showCopyNotification();
+    }
 
     // Successful copy message
     function showCopyNotification() {

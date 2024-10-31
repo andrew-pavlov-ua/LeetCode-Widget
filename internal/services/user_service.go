@@ -74,7 +74,7 @@ func (s *UserService) InsertUserStats(ctx context.Context, userData *v1.LcUserDa
 
 	err := s.repository.Queries().InsertStatsInfo(ctx, dbs.InsertStatsInfoParams{
 		Rank:          int64(userData.Rank),
-		LcUserID:      userData.UserSlug,
+		UserSlug:      userData.UserSlug,
 		Username:      userData.Username,
 		EasySubmits:   userData.EasyCount,
 		MediumSubmits: userData.MediumCount,

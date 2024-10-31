@@ -9,7 +9,7 @@ import (
 )
 
 type LcStat struct {
-	LcUserID      string
+	UserSlug      string
 	Username      string
 	EasySubmits   int64
 	MediumSubmits int64
@@ -18,4 +18,10 @@ type LcStat struct {
 	Rank          int64
 	CreatedAt     time.Time
 	UpdatedAt     time.Time
+}
+
+type ProfileHourlyView struct {
+	UserSlug string
+	Time     time.Time
+	Count    int64
 }

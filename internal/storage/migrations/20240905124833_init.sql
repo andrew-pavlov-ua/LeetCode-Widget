@@ -1,7 +1,7 @@
 -- +goose Up
 -- +goose StatementBegin
 CREATE TABLE lc_stats (
-                          lc_user_id              VARCHAR NOT NULL PRIMARY KEY,
+                          user_slug              VARCHAR NOT NULL PRIMARY KEY,
                           username                VARCHAR NOT NULL,
                           easy_submits            BIGINT NOT NULL,
                           medium_submits          BIGINT NOT NULL,
@@ -11,10 +11,18 @@ CREATE TABLE lc_stats (
                           created_at              TIMESTAMP WITH TIME ZONE NOT NULL,
                           updated_at              TIMESTAMP WITH TIME ZONE NOT NULL
 );
+
+CREATE TABLE profile_hourly_views (
+    user_slug   VARCHAR NOT NULL REFERENCES lc_stats (user_slug),
+    time TIMESTAMP NOT NULL,
+    count       BIGINT NOT NULL,
+    PRIMARY KEY (user_slug, TIME)
+)
 -- +goose StatementEnd
 
 -- +goose Down
 -- +goose StatementBegin
 DROP TABLE lc_stats;
+DROP TABLE profile_hourly_views;
 
 -- +goose StatementEnd

@@ -21,62 +21,62 @@ var (
 func StreamBadge(qw422016 *qt422016.Writer, stats LcUserData, barsWidth BarsWidth) {
 //line internal/templates/v1/badge.qtpl:1
 	qw422016.N().S(`
-<a href="http://www.andrewpavlov.org/lcb/redirect" target="_blank">
-  <svg width="500" height="200" viewBox="0 0 500 200" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <!-- Background -->
-    <rect width="500" height="200" rx="12" fill="#1E1E1E"></rect>
+  <a href="http://www.andrewpavlov.org/lcb/redirect" target="_blank">
+    <svg width="500" height="200" viewBox="0 0 500 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <!-- Background -->
+      <rect width="500" height="200" rx="12" fill="#1E1E1E"></rect>
 
-    <!-- LeetCode Logo -->
-    <g>
-      <image src="/favicon.ico" x="20" y="10" width="30" height="30" />
-    </g>
+      <!-- LeetCode Logo -->
+      <g>
+        <image src="/favicon.ico" x="20" y="10" width="30" height="30" />
+      </g>
 
-    <!-- User Info -->
-    <g fill="#FFF" font-family="Verdana, sans-serif">
-      <!-- Username next to the logo -->
-      <text x="60" y="35" font-size="24" font-weight="bold">`)
+      <!-- User Info -->
+      <g fill="#FFF" font-family="Verdana, sans-serif">
+        <!-- Username next to the logo -->
+        <text x="60" y="35" font-size="24" font-weight="bold">`)
 //line internal/templates/v1/badge.qtpl:15
 	qw422016.E().S(stats.UserSlug)
 //line internal/templates/v1/badge.qtpl:15
 	qw422016.N().S(`</text>
 
-      <!-- Real Name under the Username -->
-      <text x="60" y="60" font-size="18" fill="#888">`)
+        <!-- Real Name under the Username -->
+        <text x="60" y="60" font-size="18" fill="#888">`)
 //line internal/templates/v1/badge.qtpl:18
 	qw422016.E().S(stats.Username)
 //line internal/templates/v1/badge.qtpl:18
 	qw422016.N().S(`</text>
 
-      <!-- Rank on the top right corner -->
-      <text x="450" y="35" font-size="18" fill="#888" text-anchor="end">#`)
+        <!-- Rank on the top right corner -->
+        <text x="450" y="35" font-size="18" fill="#888" text-anchor="end">#`)
 //line internal/templates/v1/badge.qtpl:21
 	qw422016.N().F(stats.Rank)
 //line internal/templates/v1/badge.qtpl:21
 	qw422016.N().S(`</text>
-    </g>
+      </g>
 
-    <!-- Circle with number and border -->
-    <g>
-      <circle cx="80" cy="140" r="45" fill="none" stroke="#FFA116" stroke-width="5"></circle>
-      <circle cx="80" cy="140" r="40" fill="#444"></circle>
-      <text x="80" y="145" font-size="28" fill="#FFF" font-family="Verdana, sans-serif" text-anchor="middle" alignment-baseline="middle" dominant-baseline="middle">`)
+      <!-- Circle with number and border -->
+      <g>
+        <circle cx="80" cy="140" r="45" fill="none" stroke="#FFA116" stroke-width="5"></circle>
+        <circle cx="80" cy="140" r="40" fill="#444"></circle>
+        <text x="80" y="145" font-size="28" fill="#FFF" font-family="Verdana, sans-serif" text-anchor="middle" alignment-baseline="middle" dominant-baseline="middle">`)
 //line internal/templates/v1/badge.qtpl:28
 	qw422016.N().DL(stats.TotalCount)
 //line internal/templates/v1/badge.qtpl:28
 	qw422016.N().S(`</text>
-    </g>
+      </g>
 
-    <!-- Progress Bars for Problem Difficulty -->
-    <g font-family="Verdana, sans-serif">
-      <!-- Easy -->
-      <text x="150" y="120" font-size="18" fill="#FFF">Easy</text>
-      <rect x="240" y="110" width="220" height="10" fill="#333" rx="5"></rect>
-      <rect x="240" y="110" width="`)
+      <!-- Progress Bars for Problem Difficulty -->
+      <g font-family="Verdana, sans-serif">
+        <!-- Easy -->
+        <text x="150" y="120" font-size="18" fill="#FFF">Easy</text>
+        <rect x="240" y="110" width="220" height="10" fill="#333" rx="5"></rect>
+        <rect x="240" y="110" width="`)
 //line internal/templates/v1/badge.qtpl:36
 	qw422016.N().F(barsWidth.EasyWidth)
 //line internal/templates/v1/badge.qtpl:36
 	qw422016.N().S(`" height="10" fill="#4CAF50" rx="5"></rect>
-      <text x="470" y="120" font-size="14" fill="#FFF" text-anchor="end">`)
+        <text x="470" y="120" font-size="14" fill="#FFF" text-anchor="end">`)
 //line internal/templates/v1/badge.qtpl:37
 	qw422016.N().DL(stats.EasyCount)
 //line internal/templates/v1/badge.qtpl:37
@@ -86,15 +86,15 @@ func StreamBadge(qw422016 *qt422016.Writer, stats LcUserData, barsWidth BarsWidt
 //line internal/templates/v1/badge.qtpl:37
 	qw422016.N().S(`</text>
 
-      <!-- Medium -->
-      <text x="150" y="145" font-size="18" fill="#FFF">Medium</text>
-      <rect x="240" y="135" width="220" height="10" fill="#333" rx="5"></rect>
-      <rect x="240" y="135" width="`)
+        <!-- Medium -->
+        <text x="150" y="145" font-size="18" fill="#FFF">Medium</text>
+        <rect x="240" y="135" width="220" height="10" fill="#333" rx="5"></rect>
+        <rect x="240" y="135" width="`)
 //line internal/templates/v1/badge.qtpl:42
 	qw422016.N().F(barsWidth.MediumWidth)
 //line internal/templates/v1/badge.qtpl:42
 	qw422016.N().S(`" height="10" fill="#FF9800" rx="5"></rect>
-      <text x="470" y="145" font-size="14" fill="#FFF" text-anchor="end">`)
+        <text x="470" y="145" font-size="14" fill="#FFF" text-anchor="end">`)
 //line internal/templates/v1/badge.qtpl:43
 	qw422016.N().DL(stats.MediumCount)
 //line internal/templates/v1/badge.qtpl:43
@@ -104,15 +104,15 @@ func StreamBadge(qw422016 *qt422016.Writer, stats LcUserData, barsWidth BarsWidt
 //line internal/templates/v1/badge.qtpl:43
 	qw422016.N().S(`</text>
 
-      <!-- Hard -->
-      <text x="150" y="170" font-size="18" fill="#FFF">Hard</text>
-      <rect x="240" y="160" width="220" height="10" fill="#333" rx="5"></rect>
-      <rect x="240" y="160" width="`)
+        <!-- Hard -->
+        <text x="150" y="170" font-size="18" fill="#FFF">Hard</text>
+        <rect x="240" y="160" width="220" height="10" fill="#333" rx="5"></rect>
+        <rect x="240" y="160" width="`)
 //line internal/templates/v1/badge.qtpl:48
 	qw422016.N().F(barsWidth.HardWidth)
 //line internal/templates/v1/badge.qtpl:48
 	qw422016.N().S(`" height="10" fill="#F44336" rx="5"></rect>
-      <text x="470" y="170" font-size="14" fill="#FFF" text-anchor="end">`)
+        <text x="470" y="170" font-size="14" fill="#FFF" text-anchor="end">`)
 //line internal/templates/v1/badge.qtpl:49
 	qw422016.N().DL(stats.HardCount)
 //line internal/templates/v1/badge.qtpl:49
@@ -121,9 +121,9 @@ func StreamBadge(qw422016 *qt422016.Writer, stats LcUserData, barsWidth BarsWidt
 	qw422016.N().DL(HardMaxValue)
 //line internal/templates/v1/badge.qtpl:49
 	qw422016.N().S(`</text>
-    </g>
-  </svg>
- </a>
+      </g>
+    </svg>
+  </a>
 `)
 //line internal/templates/v1/badge.qtpl:53
 }
