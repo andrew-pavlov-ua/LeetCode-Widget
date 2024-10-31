@@ -22,7 +22,7 @@ CREATE TABLE profile_hourly_views (
 
 -- +goose Down
 -- +goose StatementBegin
-DROP TABLE lc_stats;
 DROP TABLE profile_hourly_views;
+DROP TABLE lc_stats;
 
 -- +goose StatementEnd
