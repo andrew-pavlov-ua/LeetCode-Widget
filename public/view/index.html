@@ -5,7 +5,24 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>LeetCode Badge</title>
     <style>
-        body, html {height: 100%;margin: 0;display: flex;flex-direction: column;justify-content: center;align-items: center;background-color: #f0f0f0;font-family: Arial, sans-serif;}  h1 {font-size: 5rem;color: #333;margin-bottom: 20px;}body, html {height: 100%;margin: 0;display: flex;flex-direction: column;justify-content: center;align-items: center;background-color: #f0f0f0;font-family: Arial, sans-serif;}  h1 {font-size: 5rem;color: #333;margin-bottom: 20px;}  .input-container {display: flex;flex-direction: column;align-items: center;}  .input {padding: 10px;font-size: 1.2rem;margin-bottom: 20px;border: 1px solid #ccc;border-radius: 5px;width: 300px;text-align: center;}  .button {padding: 15px 30px;font-size: 1.2rem;color: #fff;background-color: #007bff;border: none;border-radius: 5px;cursor: pointer;text-decoration: none;text-align: center;display: inline-block;transition: background-color 0.3s, transform 0.3s;}  .button:hover {background-color: #0056b3;transform: scale(1.05);}  .badge-link-container {display: flex;align-items: center;margin-top: 20px;}  .badge-link {font-size: 1.2rem;color: #007bff;padding: 10px 15px;border: 2px solid #007bff;border-radius: 5px;background-color: #fff;transition: background-color 0.3s, color 0.3s;display: inline-block;text-align: center;width: fit-content;margin-right: 10px;}  .badge-link a {color: #007bff;text-decoration: none;}  .badge-link:hover {background-color: #007bff;color: #fff;}  .badge-link a:hover {color: #fff;}  .copy-button {padding: 10px 20px;font-size: 1.2rem;color: #fff;background-color: #28a745;border: none;border-radius: 5px;cursor: pointer;transition: background-color 0.3s, transform 0.3s;}  .copy-button:hover {background-color: #218838;transform: scale(1.05);}  .copy-notification {position: fixed;top: 20px;right: 20px;padding: 10px 20px;background-color: #28a745;color: #fff;border-radius: 5px;box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);opacity: 0;transition: opacity 0.5s ease-in-out;z-index: 1000;display: none;}  footer {position: absolute;bottom: 10px;font-size: 0.9rem;color: #888;}  footer a {color: #007bff;text-decoration: none;}  footer a:hover {text-decoration: underline;}  .input-container {display: flex;flex-direction: column;align-items: center;}  .input {padding: 10px;font-size: 1.2rem;margin-bottom: 20px;border: 1px solid #ccc;border-radius: 5px;width: 300px;text-align: center;}  .button {padding: 15px 30px;font-size: 1.2rem;color: #fff;background-color: #007bff;border: none;border-radius: 5px;cursor: pointer;text-decoration: none;text-align: center;display: inline-block;transition: background-color 0.3s, transform 0.3s;}  .button:hover {background-color: #0056b3;transform: scale(1.05);}  .badge-link-container {display: flex;align-items: center;margin-top: 20px;}  .badge-link {font-size: 1.2rem;color: #007bff;padding: 10px 15px;border: 2px solid #007bff;border-radius: 5px;background-color: #fff;transition: background-color 0.3s, color 0.3s;display: inline-block;text-align: center;width: fit-content;margin-right: 10px;}  .badge-link a {color: #007bff;text-decoration: none;}  .badge-link:hover {background-color: #007bff;color: #fff;}  .badge-link a:hover {color: #fff;}  .copy-button {padding: 10px 20px;font-size: 1.2rem;color: #fff;background-color: #28a745;border: none;border-radius: 5px;cursor: pointer;transition: background-color 0.3s, transform 0.3s;}  .copy-button:hover {background-color: #218838;transform: scale(1.05);}  footer {position: absolute;bottom: 10px;font-size: 0.9rem;color: #888;}  footer a {color: #007bff;text-decoration: none;}  footer a:hover {text-decoration: underline;}
+        body, html {height: 100%; margin: 0; display: flex; flex-direction: column; justify-content: center; align-items: center; background-color: #f0f0f0; font-family: Arial, sans-serif;}
+        h1 {font-size: 5rem; color: #333; margin-bottom: 20px;}
+        .input-container {display: flex; flex-direction: column; align-items: center;}
+        .input {padding: 10px; font-size: 1.2rem; margin-bottom: 20px; border: 1px solid #ccc; border-radius: 5px; width: 300px; text-align: center;}
+        .button {padding: 15px 30px; font-size: 1.2rem; color: #fff; background-color: #007bff; border: none; border-radius: 5px; cursor: pointer; transition: background-color 0.3s, transform 0.3s;}
+        .button:hover {background-color: #0056b3; transform: scale(1.05);}
+        .badge-link-container {display: flex; flex-direction: column; align-items: center; margin-top: 20px; width: 100%; text-align: center;}
+        .embed-container {display: flex; gap: 20px; margin-top: 20px; width: 100%; justify-content: center;}
+        .embed-box {border: 1px solid #ccc; border-radius: 5px; padding: 10px; width: 250px; background-color: #fff; display: flex; flex-direction: column; align-items: center;}
+        .embed-title {font-size: 1.2rem; margin-bottom: 10px; text-align: center; font-weight: bold;}
+        .embed-content {display: flex; flex-direction: column; gap: 10px; width: 100%;}
+        .embed-code {padding: 10px; background-color: #f8f9fa; border: 1px solid #ddd; border-radius: 5px; font-family: monospace; font-size: 0.9rem; white-space: pre-wrap; word-wrap: break-word; overflow-wrap: break-word;}
+        .copy-button {padding: 10px; position: fixed;  font-size: 1rem; color: #fff; background-color: #007bff; border: none; border-radius: 5px; cursor: pointer; transition: background-color 0.3s;}
+        .copy-button:hover {background-color: #0056b3;}
+        .copy-notification {position: fixed; top: 20px; right: 20px; padding: 10px 20px; background-color: #28a745; color: #fff; border-radius: 5px; opacity: 0; transition: opacity 0.5s ease-in-out; z-index: 1000; display: none;}
+        footer {position: absolute; bottom: 10px; font-size: 0.9rem; color: #888;}
+        footer a {color: #007bff; text-decoration: none;}
+        footer a:hover {text-decoration: underline;}
     </style>
 </head>
 <body>
@@ -14,15 +31,29 @@
 <div class="input-container">
     <form id="usernameForm">
         <input type="text" id="usernameInput" name="username" placeholder="Enter your LeetCode username" class="input" required>
-        <button type="submit" class="button">Get Badge Link</button>
+        <button type="submit" class="button">Get Badge Code</button>
     </form>
-    <div class="badge-link-container">
-        <div id="badgeLink" class="badge-link" style="display: none;"></div>
-        <button id="copyButton" class="copy-button" style="display: none;">Copy URL</button>
+    <div class="badge-link-container" id="badgeLinks" style="display: none;">
+        <div class="embed-container">
+            <div class="embed-box">
+                <div class="embed-title">Markdown:</div>
+                <div class="embed-content">
+                    <div id="markdownEmbed" class="embed-code"></div>
+                    <button class="copy-button" onclick="copyToClipboard('markdownEmbed')">Copy</button>
+                </div>
+            </div>
+            <div class="embed-box">
+                <div class="embed-title">HTML:</div>
+                <div class="embed-content">
+                    <div id="htmlEmbed" class="embed-code"></div>
+                    <button class="copy-button" onclick="copyToClipboard('htmlEmbed')">Copy</button>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 
-<div id="copyNotification" class="copy-notification">URL copied to clipboard!</div>
+<div id="copyNotification" class="copy-notification">Code copied to clipboard!</div>
 
 <footer>
     Created by <a href="https://github.com/andrew-pavlov-ua" target="_blank">Andrew Pavlov</a>
@@ -34,32 +65,32 @@
 
         const username = document.getElementById('usernameInput').value.trim();
         const badgeUrl = `http://andrewpavlov.org/lcb/api/slug/${username}/badge.svg`;
+        const redirectUrl = `http://www.andrewpavlov.org/lcb/${username}/redirect`;
 
-        const badgeLinkDiv = document.getElementById('badgeLink');
-        badgeLinkDiv.style.display = 'block';
-        badgeLinkDiv.innerHTML = `<a href="${badgeUrl}" target="_blank">${badgeUrl}</a>`;
+        // Generate Markdown Embed Code
+        document.getElementById('markdownEmbed').textContent = `![LeetCode Badge](${badgeUrl})`;
 
-        const copyButton = document.getElementById('copyButton');
-        copyButton.style.display = 'inline-block';
+        // Generate HTML Embed Code
+        document.getElementById('htmlEmbed').textContent = `<a href="${redirectUrl}" target="_blank"><img src="${badgeUrl}" alt="LeetCode Badge"></a>`;
 
-        copyButton.addEventListener('click', function() {
-            copyToClipboard(badgeUrl);
-        });
+        // Show the badge link container
+        document.getElementById('badgeLinks').style.display = 'block';
     });
 
     // Function to copy text to clipboard
-    function copyToClipboard(text) {
-        const tempInput = document.createElement('input');
+    function copyToClipboard(elementId) {
+        const text = document.getElementById(elementId).textContent;
+        const tempInput = document.createElement('textarea');
         tempInput.value = text;
         document.body.appendChild(tempInput);
         tempInput.select();
         document.execCommand('copy');
         document.body.removeChild(tempInput);
-
+        
         showCopyNotification();
     }
 
-    // Successful copy message
+    // Show copy notification
     function showCopyNotification() {
         const notification = document.getElementById('copyNotification');
         notification.style.display = 'block';
@@ -69,8 +100,8 @@
                 notification.style.opacity = '0';
                 setTimeout(() => {
                     notification.style.display = 'none';
-                }, 500); // Match with the fade-out transition duration
-            }, 2000); // Visible for 2 seconds
+                }, 500);
+            }, 2000);
         }, 10);
     }
 </script>
