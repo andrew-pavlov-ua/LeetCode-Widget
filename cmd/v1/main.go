@@ -6,9 +6,10 @@ import (
 	"cmd/internal/env"
 	"cmd/internal/services"
 	"fmt"
-	"github.com/gin-gonic/gin"
 	"log"
 	"os"
+
+	"github.com/gin-gonic/gin"
 )
 
 func main() {
@@ -35,16 +36,18 @@ func main() {
 	var repository = db.MustRepository(pgConnection)
 	defer repository.Close()
 
-	// creating service that manipulates with users
+	// creating services
 	var userService = services.NewUserService(repository)
+	var visitsService = services.NewVisistsStatsService(repository)
 
 	r := gin.Default()
 	r.LoadHTMLGlob("public/view/*.html")
 
-	webController := controllers.NewWebController(userService)
+	webController := controllers.NewWebController(userService, visitsService)
 
 	r.GET("/lcb", webController.ReturnIndex)                                             // Returning main index.html
 	r.GET("/lcb/api/slug/:leetcode_user_slug/badge.svg", webController.StatsBadgeBySlug) // Starting with badge creation
+	r.GET("lcb/:leetcode_user_slug/redirect", webController.VisitsCountRedirect)         // Processing profile view
 
 	r.
 		//Icons

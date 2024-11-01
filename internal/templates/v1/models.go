@@ -25,6 +25,13 @@ type BarsWidth struct {
 	HardWidth   float64
 }
 
+type VisitsStats struct {
+	DailyVisits   int64
+	WeeklyVisits  int64
+	MonthlyVisits int64
+	TotalVisits   int64
+}
+
 func NewLcUserData(username string, userSlug string, easyCount int64, mediumCount int64, hardCount int64, totalCount int64) *LcUserData {
 	var result = &LcUserData{
 		UserSlug:    userSlug,
@@ -35,6 +42,16 @@ func NewLcUserData(username string, userSlug string, easyCount int64, mediumCoun
 		TotalCount:  totalCount,
 	}
 	return result
+}
+
+func NewVisitsStats(DailyVisits int64, WeeklyVisits int64, MonthlyVisits int64, TotalVisits int64) *VisitsStats {
+	return &VisitsStats{
+		DailyVisits:   DailyVisits,
+		WeeklyVisits:  WeeklyVisits,
+		MonthlyVisits: MonthlyVisits,
+		TotalVisits:   TotalVisits,
+	}
+
 }
 
 func NewLcUserDataFromReq(profileData leetcode_api.UserProfileData) *LcUserData {

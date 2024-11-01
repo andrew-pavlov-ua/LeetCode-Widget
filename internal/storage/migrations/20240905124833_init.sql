@@ -12,7 +12,7 @@ CREATE TABLE lc_stats (
                           updated_at              TIMESTAMP WITH TIME ZONE NOT NULL
 );
 
-CREATE TABLE profile_hourly_views (
+CREATE TABLE profile_hourly_visits_stats (
     user_slug   VARCHAR NOT NULL REFERENCES lc_stats (user_slug),
     time TIMESTAMP NOT NULL,
     count       BIGINT NOT NULL,
@@ -22,7 +22,6 @@ CREATE TABLE profile_hourly_views (
 
 -- +goose Down
 -- +goose StatementBegin
-DROP TABLE profile_hourly_views;
+DROP TABLE profile_hourly_visits_stats;
 DROP TABLE lc_stats;
-
 -- +goose StatementEnd

@@ -20,7 +20,7 @@ type LcStat struct {
 	UpdatedAt     time.Time
 }
 
-type ProfileHourlyView struct {
+type ProfileHourlyVisitsStat struct {
 	UserSlug string
 	Time     time.Time
 	Count    int64

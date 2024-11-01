@@ -5,20 +5,22 @@ import (
 	"cmd/internal/services"
 	v1 "cmd/internal/templates/v1"
 	"fmt"
-	"github.com/gin-gonic/gin"
 	"log"
 	"net/http"
 	"os"
+
+	"github.com/gin-gonic/gin"
 )
 
 type WebController struct {
-	userService *services.UserService
+	userService   *services.UserService
+	visitsService *services.VisitsStatsService
 }
 
-func NewWebController(userService *services.UserService) *WebController {
+func NewWebController(userService *services.UserService, visitsService *services.VisitsStatsService) *WebController {
 	return &WebController{
-		userService: userService,
-	}
+		userService:   userService,
+		visitsService: visitsService}
 }
 
 func (c *WebController) ReturnIndex(ctx *gin.Context) {
@@ -28,6 +30,7 @@ func (c *WebController) ReturnIndex(ctx *gin.Context) {
 func (c *WebController) StatsBadgeBySlug(ctx *gin.Context) {
 	// Init userNotFound badge and getting userSlug (Leetcode id) from the url
 	var badge []byte
+	var visitStats v1.VisitsStats
 	userSlug := ctx.Param("leetcode_user_slug")
 
 	userData, err := c.userService.Upsert(ctx.Request.Context(), userSlug)
@@ -43,7 +46,13 @@ func (c *WebController) StatsBadgeBySlug(ctx *gin.Context) {
 			MediumWidth: c.CalculateWidth(userData.MediumCount, v1.MediumMaxValue),
 			HardWidth:   c.CalculateWidth(userData.HardCount, v1.HardMaxValue)}
 
-		badge = []byte(v1.Badge(*userData, barsWidth))
+		// Founding user's lc vivsits count
+		visitStats, err = c.visitsService.GetFullStatsCount(ctx, userSlug)
+		if err != nil {
+			fmt.Println("error getting visitstats count 52: ", err)
+		}
+
+		badge = []byte(v1.Badge(*userData, barsWidth, visitStats))
 	}
 
 	c.renderImage(ctx, badge)
@@ -60,6 +69,17 @@ func (c *WebController) CalculateWidth(count int64, max int64) float64 {
 	countPerPixel := float64(v1.BarWidthValue) / float64(max)
 	result := countPerPixel * float64(count)
 	return result
+}
+
+func (c *WebController) VisitsCountRedirect(ctx *gin.Context) {
+	userSlug := ctx.Param("leetcode_user_slug")
+	redirectUrl := fmt.Sprintf("https://leetcode.com/u/%s/", userSlug)
+
+	err := c.visitsService.InsertCount(ctx, userSlug)
+	if err != nil {
+		fmt.Println("Error web_controller 79: ", err)
+	}
+	ctx.Redirect(http.StatusFound, redirectUrl)
 }
 
 func (c *WebController) GetLeetCodeLogo(ctx *gin.Context) {

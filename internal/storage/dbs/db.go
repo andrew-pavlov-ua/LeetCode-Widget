@@ -27,6 +27,18 @@ func Prepare(ctx context.Context, db DBTX) (*Queries, error) {
 	if q.insertStatsInfoStmt, err = db.PrepareContext(ctx, insertStatsInfo); err != nil {
 		return nil, fmt.Errorf("error preparing query InsertStatsInfo: %w", err)
 	}
+	if q.profileHourlyViewsStatsStmt, err = db.PrepareContext(ctx, profileHourlyViewsStats); err != nil {
+		return nil, fmt.Errorf("error preparing query ProfileHourlyViewsStats: %w", err)
+	}
+	if q.profileHourlyVisitsStatsUpsertStmt, err = db.PrepareContext(ctx, profileHourlyVisitsStatsUpsert); err != nil {
+		return nil, fmt.Errorf("error preparing query ProfileHourlyVisitsStatsUpsert: %w", err)
+	}
+	if q.profileVisitsStatsByPeriodStmt, err = db.PrepareContext(ctx, profileVisitsStatsByPeriod); err != nil {
+		return nil, fmt.Errorf("error preparing query ProfileVisitsStatsByPeriod: %w", err)
+	}
+	if q.totalCountStmt, err = db.PrepareContext(ctx, totalCount); err != nil {
+		return nil, fmt.Errorf("error preparing query TotalCount: %w", err)
+	}
 	if q.updateLcStatsStmt, err = db.PrepareContext(ctx, updateLcStats); err != nil {
 		return nil, fmt.Errorf("error preparing query UpdateLcStats: %w", err)
 	}
@@ -41,6 +53,26 @@ func (q *Queries) Close() error {
 	if q.insertStatsInfoStmt != nil {
 		if cerr := q.insertStatsInfoStmt.Close(); cerr != nil {
 			err = fmt.Errorf("error closing insertStatsInfoStmt: %w", cerr)
+		}
+	}
+	if q.profileHourlyViewsStatsStmt != nil {
+		if cerr := q.profileHourlyViewsStatsStmt.Close(); cerr != nil {
+			err = fmt.Errorf("error closing profileHourlyViewsStatsStmt: %w", cerr)
+		}
+	}
+	if q.profileHourlyVisitsStatsUpsertStmt != nil {
+		if cerr := q.profileHourlyVisitsStatsUpsertStmt.Close(); cerr != nil {
+			err = fmt.Errorf("error closing profileHourlyVisitsStatsUpsertStmt: %w", cerr)
+		}
+	}
+	if q.profileVisitsStatsByPeriodStmt != nil {
+		if cerr := q.profileVisitsStatsByPeriodStmt.Close(); cerr != nil {
+			err = fmt.Errorf("error closing profileVisitsStatsByPeriodStmt: %w", cerr)
+		}
+	}
+	if q.totalCountStmt != nil {
+		if cerr := q.totalCountStmt.Close(); cerr != nil {
+			err = fmt.Errorf("error closing totalCountStmt: %w", cerr)
 		}
 	}
 	if q.updateLcStatsStmt != nil {
@@ -90,19 +122,27 @@ func (q *Queries) queryRow(ctx context.Context, stmt *sql.Stmt, query string, ar
 }
 
 type Queries struct {
-	db                     DBTX
-	tx                     *sql.Tx
-	insertStatsInfoStmt    *sql.Stmt
-	updateLcStatsStmt      *sql.Stmt
-	userGetStatsBySlugStmt *sql.Stmt
+	db                                 DBTX
+	tx                                 *sql.Tx
+	insertStatsInfoStmt                *sql.Stmt
+	profileHourlyViewsStatsStmt        *sql.Stmt
+	profileHourlyVisitsStatsUpsertStmt *sql.Stmt
+	profileVisitsStatsByPeriodStmt     *sql.Stmt
+	totalCountStmt                     *sql.Stmt
+	updateLcStatsStmt                  *sql.Stmt
+	userGetStatsBySlugStmt             *sql.Stmt
 }
 
 func (q *Queries) WithTx(tx *sql.Tx) *Queries {
 	return &Queries{
-		db:                     tx,
-		tx:                     tx,
-		insertStatsInfoStmt:    q.insertStatsInfoStmt,
-		updateLcStatsStmt:      q.updateLcStatsStmt,
-		userGetStatsBySlugStmt: q.userGetStatsBySlugStmt,
+		db:                                 tx,
+		tx:                                 tx,
+		insertStatsInfoStmt:                q.insertStatsInfoStmt,
+		profileHourlyViewsStatsStmt:        q.profileHourlyViewsStatsStmt,
+		profileHourlyVisitsStatsUpsertStmt: q.profileHourlyVisitsStatsUpsertStmt,
+		profileVisitsStatsByPeriodStmt:     q.profileVisitsStatsByPeriodStmt,
+		totalCountStmt:                     q.totalCountStmt,
+		updateLcStatsStmt:                  q.updateLcStatsStmt,
+		userGetStatsBySlugStmt:             q.userGetStatsBySlugStmt,
 	}
 }

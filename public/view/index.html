@@ -17,7 +17,7 @@
         .embed-title {font-size: 1.2rem; margin-bottom: 10px; text-align: center; font-weight: bold;}
         .embed-content {display: flex; flex-direction: column; gap: 10px; width: 100%;}
         .embed-code {padding: 10px; background-color: #f8f9fa; border: 1px solid #ddd; border-radius: 5px; font-family: monospace; font-size: 0.9rem; white-space: pre-wrap; word-wrap: break-word; overflow-wrap: break-word;}
-        .copy-button {padding: 10px; position: fixed;  font-size: 1rem; color: #fff; background-color: #007bff; border: none; border-radius: 5px; cursor: pointer; transition: background-color 0.3s;}
+        .copy-button {padding: 10px; font-size: 1rem; color: #fff; background-color: #007bff; border: none; border-radius: 5px; cursor: pointer; transition: background-color 0.3s;}
         .copy-button:hover {background-color: #0056b3;}
         .copy-notification {position: fixed; top: 20px; right: 20px; padding: 10px 20px; background-color: #28a745; color: #fff; border-radius: 5px; opacity: 0; transition: opacity 0.5s ease-in-out; z-index: 1000; display: none;}
         footer {position: absolute; bottom: 10px; font-size: 0.9rem; color: #888;}
@@ -68,7 +68,7 @@
         const redirectUrl = `http://www.andrewpavlov.org/lcb/${username}/redirect`;
 
         // Generate Markdown Embed Code
-        document.getElementById('markdownEmbed').textContent = `![LeetCode Badge](${badgeUrl})`;
+        document.getElementById('markdownEmbed').textContent = `[![LeetCode Badge](${badgeUrl})](${redirectUrl})`;
 
         // Generate HTML Embed Code
         document.getElementById('htmlEmbed').textContent = `<a href="${redirectUrl}" target="_blank"><img src="${badgeUrl}" alt="LeetCode Badge"></a>`;
