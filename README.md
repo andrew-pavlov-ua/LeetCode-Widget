@@ -5,7 +5,7 @@ This project is a simple web application that allows users to generate a custom 
 ### Project web page: http://www.andrewpavlov.org/lcb
 
 ## Example
-[![LcBadge](http://andrewpavlov.org/lcb/api/slug/ZORRIX/badge.svg)](http://andrewpavlov.org/lcb)
+[![LeetCode Badge](http://andrewpavlov.org/lcb/api/slug/ZORRIX/badge.svg)](http://www.andrewpavlov.org/lcb/ZORRIX/redirect)
 
 ## Features
 
