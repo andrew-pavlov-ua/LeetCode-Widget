@@ -27,7 +27,7 @@ func StreamBadge(qw422016 *qt422016.Writer, stats LcUserData, barsWidth BarsWidt
 
     <!-- LeetCode Logo -->
     <g>
-      <image href="https://pathrise-website-guide-wp.s3.us-west-1.amazonaws.com/guides/wp-content/uploads/2019/05/10175228/images-11.png" x="10" y="10" width="40" height="40" />
+      <image href="http://andrewpavlov.org/assets/images/lc_logo.png" x="10" y="10" width="40" height="40" />
     </g>
 
     <!-- User Info -->
