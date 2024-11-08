@@ -1,9 +1,11 @@
 # LeetCode Badge Generator
 
-This project is a simple web application that allows users to generate a custom LeetCode badge URL by entering their LeetCode username. The badge displays the user's statistics and can be easily shared.
+This project is a simple web application that allows users to generate a custom LeetCode badge URL by entering their LeetCode username. The badge displays the user's lc statisticsz lc profile visits and can be easily shared.
+
+### Project web page: http://www.andrewpavlov.org/lcb
 
 ## Example
-[![LcBadge](http://andrewpavlov.org/lcb/api/slug/ZORRIX/badge.svg)](http://andrewpavlov.org/lcb)
+[![LeetCode Badge](http://andrewpavlov.org/lcb/api/slug/ZORRIX/badge.svg)](http://www.andrewpavlov.org/lcb/ZORRIX/redirect)
 
 ## Features
 
@@ -30,7 +32,7 @@ make app-start
 ````
 
 ## Usage
-Once the application is running, navigate to http://localhost:8080 in your web browser. Enter your LeetCode username in the input field, click "Get Badge Link," and you will be provided with a URL to your custom badge. You can also copy the URL using the "Copy URL" button.
+Once the application is running, navigate to http://localhost:80 in your web browser. Enter your LeetCode username in the input field, click "Get Badge Link," and you will be provided with a URL to your custom badge. You can also copy the URL using the "Copy URL" button.
 
 ## Author
 Created by Andrew Pavlov.
