@@ -42,16 +42,14 @@ func main() {
 
 	r := gin.Default()
 	r.LoadHTMLGlob("public/view/*.html")
+	r.Static("/assets/images", "./public/assets/images")
 
 	webController := controllers.NewWebController(userService, visitsService)
 
 	r.GET("/lcb", webController.ReturnIndex)                                             // Returning main index.html
 	r.GET("/lcb/api/slug/:leetcode_user_slug/badge.svg", webController.StatsBadgeBySlug) // Starting with badge creation
-	r.GET("lcb/:leetcode_user_slug/redirect", webController.VisitsCountRedirect)         // Processing profile view
-
-	r.
-		//Icons
-		Static("/favicon.ico", "./internal/templates/v1/img/LeetCodeLogo.png")
+	r.GET("/lcb/:leetcode_user_slug/redirect", webController.VisitsCountRedirect)        // Processing profile view
+	// r.GET("/lcb/assets/images/lc_logo.png", webController.GetLeetCodeLogo)
 
 	var serverErr = r.Run(port) // Running app on the port from .env
 	if serverErr != nil {

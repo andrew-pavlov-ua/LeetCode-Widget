@@ -22,3 +22,4 @@ SET easy_submits = @easy_submits,
     total_submits = @total_submits,
     updated_at = @updated_at
 WHERE user_slug = @user_slug;
+

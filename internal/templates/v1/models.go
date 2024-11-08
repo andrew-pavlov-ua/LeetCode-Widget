@@ -51,7 +51,6 @@ func NewVisitsStats(DailyVisits int64, WeeklyVisits int64, MonthlyVisits int64, 
 		MonthlyVisits: MonthlyVisits,
 		TotalVisits:   TotalVisits,
 	}
-
 }
 
 func NewLcUserDataFromReq(profileData leetcode_api.UserProfileData) *LcUserData {

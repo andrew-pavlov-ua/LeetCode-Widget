@@ -83,7 +83,8 @@ func (c *WebController) VisitsCountRedirect(ctx *gin.Context) {
 }
 
 func (c *WebController) GetLeetCodeLogo(ctx *gin.Context) {
-	imgData, err := os.ReadFile("images/LeetCodeLogo.png")
+	imgData, err := os.ReadFile("./public/assets/images/lc_logo.png")
+	fmt.Println("img read: ", imgData)
 	if err != nil {
 		log.Println("Error reading image file: ", err)
 		ctx.String(http.StatusInternalServerError, "Error reading image file")

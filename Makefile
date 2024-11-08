@@ -55,3 +55,4 @@ local-go-app-run:
 
 qtc-gen:
 	qtc -dir=internal/templates/v1
+
