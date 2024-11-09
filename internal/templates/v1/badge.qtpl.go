@@ -27,7 +27,7 @@ func StreamBadge(qw422016 *qt422016.Writer, stats LcUserData, barsWidth BarsWidt
 
     <!-- LeetCode Logo -->
     <g>
-      <image href="http://andrewpavlov.org/assets/images/lc_logo.png?sanitize=true" x="10" y="10" width="40" height="40" />
+      <image href="https://github.com/andrew-pavlov-ua/LeetCode-Widget/blob/19e6331eb9b197ec153524cedd5737a501d33096/public/assets/images/lc_logo.png?raw=true" x="10" y="10" width="40" height="40" />
     </g>
 
     <!-- User Info -->
