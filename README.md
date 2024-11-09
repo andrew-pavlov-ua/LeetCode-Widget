@@ -7,7 +7,7 @@ This project is a simple web application that allows users to generate a custom 
 ## Example
 [![LeetCode Badge](http://andrewpavlov.org/lcb/api/slug/ZORRIX/badge.svg)](http://www.andrewpavlov.org/lcb/ZORRIX/redirect)
 
-[(http://andrewpavlov.org/assets/images/lc_logo.png)]
+[![ww](http://andrewpavlov.org/assets/images/lc_logo.png)]
 
 ## Features
 
