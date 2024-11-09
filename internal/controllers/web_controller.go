@@ -5,7 +5,6 @@ import (
 	"cmd/internal/services"
 	v1 "cmd/internal/templates/v1"
 	"fmt"
-	"log"
 	"net/http"
 	"os"
 
@@ -31,6 +30,7 @@ func (c *WebController) StatsBadgeBySlug(ctx *gin.Context) {
 	// Init userNotFound badge and getting userSlug (Leetcode id) from the url
 	var badge []byte
 	var visitStats v1.VisitsStats
+	logo_path := "public/assets/images/logo_base64.txt"
 	userSlug := ctx.Param("leetcode_user_slug")
 
 	userData, err := c.userService.Upsert(ctx.Request.Context(), userSlug)
@@ -52,7 +52,9 @@ func (c *WebController) StatsBadgeBySlug(ctx *gin.Context) {
 			fmt.Println("error getting visitstats count 52: ", err)
 		}
 
-		badge = []byte(v1.Badge(*userData, barsWidth, visitStats))
+		logo_base64 := c.readFile(logo_path)
+
+		badge = []byte(v1.Badge(*userData, barsWidth, visitStats, logo_base64))
 	}
 
 	c.renderImage(ctx, badge)
@@ -82,13 +84,13 @@ func (c *WebController) VisitsCountRedirect(ctx *gin.Context) {
 	ctx.Redirect(http.StatusFound, redirectUrl)
 }
 
-func (c *WebController) GetLeetCodeLogo(ctx *gin.Context) {
-	imgData, err := os.ReadFile("./public/assets/images/lc_logo.png")
-	fmt.Println("img read: ", imgData)
+func (c *WebController) readFile(path string) string {
+	r, err := os.ReadFile(path)
 	if err != nil {
-		log.Println("Error reading image file: ", err)
-		ctx.String(http.StatusInternalServerError, "Error reading image file")
-		return
+		fmt.Println("Error reading file")
 	}
-	ctx.Data(http.StatusOK, "image/png", imgData)
+
+	str := string(r)
+
+	return str
 }

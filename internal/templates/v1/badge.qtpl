@@ -1,11 +1,11 @@
-{% func Badge(stats LcUserData, barsWidth BarsWidth, visitStats VisitsStats) %}
+{% func Badge(stats LcUserData, barsWidth BarsWidth, visitStats VisitsStats, logo_base64 string) %}
   <svg width="500" height="240" viewBox="0 0 500 240" fill="none" xmlns="http://www.w3.org/2000/svg">
     <!-- Background -->
     <rect width="500" height="240" rx="12" fill="#1E1E1E"></rect>
 
     <!-- LeetCode Logo -->
     <g>
-      <image href="https://github.com/andrew-pavlov-ua/LeetCode-Widget/blob/19e6331eb9b197ec153524cedd5737a501d33096/public/assets/images/lc_logo.png?raw=true" x="10" y="10" width="40" height="40" />
+      <image href="data:image/png;base64,{%s logo_base64%}" x="10" y="10" width="40" height="40" />
     </g>
 
     <!-- User Info -->

@@ -18,7 +18,7 @@ var (
 )
 
 //line internal/templates/v1/badge.qtpl:1
-func StreamBadge(qw422016 *qt422016.Writer, stats LcUserData, barsWidth BarsWidth, visitStats VisitsStats) {
+func StreamBadge(qw422016 *qt422016.Writer, stats LcUserData, barsWidth BarsWidth, visitStats VisitsStats, logo_base64 string) {
 //line internal/templates/v1/badge.qtpl:1
 	qw422016.N().S(`
   <svg width="500" height="240" viewBox="0 0 500 240" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -27,7 +27,11 @@ func StreamBadge(qw422016 *qt422016.Writer, stats LcUserData, barsWidth BarsWidt
 
     <!-- LeetCode Logo -->
     <g>
-      <image href="https://github.com/andrew-pavlov-ua/LeetCode-Widget/blob/19e6331eb9b197ec153524cedd5737a501d33096/public/assets/images/lc_logo.png?raw=true" x="10" y="10" width="40" height="40" />
+      <image href="data:image/png;base64,`)
+//line internal/templates/v1/badge.qtpl:8
+	qw422016.E().S(logo_base64)
+//line internal/templates/v1/badge.qtpl:8
+	qw422016.N().S(`" x="10" y="10" width="40" height="40" />
     </g>
 
     <!-- User Info -->
@@ -163,22 +167,22 @@ func StreamBadge(qw422016 *qt422016.Writer, stats LcUserData, barsWidth BarsWidt
 }
 
 //line internal/templates/v1/badge.qtpl:71
-func WriteBadge(qq422016 qtio422016.Writer, stats LcUserData, barsWidth BarsWidth, visitStats VisitsStats) {
+func WriteBadge(qq422016 qtio422016.Writer, stats LcUserData, barsWidth BarsWidth, visitStats VisitsStats, logo_base64 string) {
 //line internal/templates/v1/badge.qtpl:71
 	qw422016 := qt422016.AcquireWriter(qq422016)
 //line internal/templates/v1/badge.qtpl:71
-	StreamBadge(qw422016, stats, barsWidth, visitStats)
+	StreamBadge(qw422016, stats, barsWidth, visitStats, logo_base64)
 //line internal/templates/v1/badge.qtpl:71
 	qt422016.ReleaseWriter(qw422016)
 //line internal/templates/v1/badge.qtpl:71
 }
 
 //line internal/templates/v1/badge.qtpl:71
-func Badge(stats LcUserData, barsWidth BarsWidth, visitStats VisitsStats) string {
+func Badge(stats LcUserData, barsWidth BarsWidth, visitStats VisitsStats, logo_base64 string) string {
 //line internal/templates/v1/badge.qtpl:71
 	qb422016 := qt422016.AcquireByteBuffer()
 //line internal/templates/v1/badge.qtpl:71
-	WriteBadge(qb422016, stats, barsWidth, visitStats)
+	WriteBadge(qb422016, stats, barsWidth, visitStats, logo_base64)
 //line internal/templates/v1/badge.qtpl:71
 	qs422016 := string(qb422016.B)
 //line internal/templates/v1/badge.qtpl:71
