@@ -6,7 +6,6 @@ import (
 	v1 "cmd/internal/templates/v1"
 	"fmt"
 	"net/http"
-	"os"
 
 	"github.com/gin-gonic/gin"
 )
@@ -52,7 +51,7 @@ func (c *WebController) StatsBadgeBySlug(ctx *gin.Context) {
 			fmt.Println("error getting visitstats count 52: ", err)
 		}
 
-		logo_base64 := c.readFile(logo_path)
+		logo_base64 := services.ReadFile(logo_path)
 
 		badge = []byte(v1.Badge(*userData, barsWidth, visitStats, logo_base64))
 	}
@@ -82,15 +81,4 @@ func (c *WebController) VisitsCountRedirect(ctx *gin.Context) {
 		fmt.Println("Error web_controller 79: ", err)
 	}
 	ctx.Redirect(http.StatusFound, redirectUrl)
-}
-
-func (c *WebController) readFile(path string) string {
-	r, err := os.ReadFile(path)
-	if err != nil {
-		fmt.Println("Error reading file")
-	}
-
-	str := string(r)
-
-	return str
 }

@@ -3,6 +3,7 @@ package leetcode_api
 import (
 	"context"
 	"fmt"
+
 	"github.com/machinebox/graphql"
 )
 
@@ -23,7 +24,6 @@ func getQueryUserData() string {
     				}
   				}
 				}
-
 `
 }
 
@@ -43,12 +43,12 @@ func getUserProfile(username string) (map[string]interface{}, error) {
 	return response, nil
 }
 
-func MatchedUserMapToUserProfile(username string) *UserProfileData {
-	matchedUser, err := getUserProfile(username)
+func MatchedUserMapToUserProfile(userSlug string) *UserProfileData {
+	matchedUser, err := getUserProfile(userSlug)
 	if err != nil {
 		fmt.Printf("Error getting matched user: %v", err)
 		return &UserProfileData{
-			Username: username + " user doesn't exist",
+			Username: "User with lcId " + userSlug + " doesn't exist",
 			UserSlug: "",
 			Rank:     0,
 			AllProblemCount: []Submission{
@@ -79,40 +79,3 @@ func MatchedUserMapToUserProfile(username string) *UserProfileData {
 
 	return &profileData
 }
-
-//doesn't work :(
-
-//func GetUserProfile(username string) (*UserProfileData, error) {
-//	var (
-//		matchedUser MatchedUser
-//		requestUser UserProfileData
-//	)
-//
-//	client := graphql.NewClient("https://leetcode.com/graphql")
-//	query := getQueryUserData()
-//	req := graphql.NewRequest(query)
-//	req.Var("username", username)
-//	ctx := context.Background()
-//
-//	// Debugging: Log the raw JSON response
-//	var rawResponse map[string]interface{}
-//	err := client.Run(ctx, req, &rawResponse)
-//	if err != nil {
-//		return nil, fmt.Errorf("error making GraphQL request: %v", err)
-//	}
-//	fmt.Printf("Raw GraphQL response: %+v\n", rawResponse)
-//
-//	err = client.Run(ctx, req, &matchedUser)
-//	if err != nil {
-//		return nil, fmt.Errorf("error making GraphQL request: %v", err)
-//	}
-//
-//	fmt.Printf("GraphQL response: %+v\n", matchedUser)
-//
-//	requestUser.Username = username
-//	requestUser.AllProblemCount = matchedUser.SubmitStats.AcSubmissionNum
-//	requestUser.Rank = matchedUser.Profile.Rank
-//	requestUser.UserSlug = matchedUser.Profile.UserSlug
-//
-//	return &requestUser, nil
-//}
