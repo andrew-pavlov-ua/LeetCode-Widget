@@ -56,3 +56,5 @@ local-go-app-run:
 qtc-gen:
 	qtc -dir=internal/templates/v1
 
+run-tests:
+	docker exec lc_badge_app go test -v ./...
