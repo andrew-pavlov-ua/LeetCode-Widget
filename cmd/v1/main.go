@@ -1,13 +1,14 @@
 package main
 
 import (
+	"fmt"
+	"log"
+	"os"
+
 	"cmd/internal/controllers"
 	"cmd/internal/db"
 	"cmd/internal/env"
 	"cmd/internal/services"
-	"fmt"
-	"log"
-	"os"
 
 	"github.com/gin-gonic/gin"
 )

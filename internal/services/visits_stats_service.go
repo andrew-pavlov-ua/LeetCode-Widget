@@ -1,12 +1,14 @@
 package services
 
 import (
-	"cmd/internal/db"
-	"cmd/internal/storage/dbs"
-	v1 "cmd/internal/templates/v1"
 	"context"
 	"fmt"
 	"time"
+
+	"cmd/internal/db"
+	"cmd/internal/storage/dbs"
+
+	v1 "cmd/internal/templates/v1"
 )
 
 type VisitsStatsService struct {

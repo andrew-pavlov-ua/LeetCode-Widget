@@ -1,15 +1,17 @@
 package services
 
 import (
-	"cmd/internal/db"
-	"cmd/internal/leetcode_api"
-	"cmd/internal/storage/dbs"
-	v1 "cmd/internal/templates/v1"
 	"context"
-	"database/sql"
 	"errors"
 	"fmt"
 	"time"
+
+	"cmd/internal/db"
+	"cmd/internal/leetcode_api"
+	"cmd/internal/storage/dbs"
+	"database/sql"
+
+	v1 "cmd/internal/templates/v1"
 )
 
 type UserService struct {

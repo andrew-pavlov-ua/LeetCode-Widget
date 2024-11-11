@@ -1,8 +1,9 @@
 package testing
 
 import (
-	"cmd/internal/services"
 	"testing"
+
+	"cmd/internal/services"
 
 	"github.com/stretchr/testify/assert"
 )

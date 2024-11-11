@@ -1,11 +1,12 @@
 package testing
 
 import (
-	. "cmd/internal/leetcode_api"
 	"fmt"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
+
+	. "cmd/internal/leetcode_api"
 )
 
 func TestMatchedUserMapToUserProfile(t *testing.T) {

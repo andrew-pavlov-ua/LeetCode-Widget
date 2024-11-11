@@ -1,11 +1,12 @@
 package db
 
 import (
-	"cmd/internal/storage/dbs"
 	"context"
-	"database/sql"
 	"fmt"
 	"log"
+
+	"cmd/internal/storage/dbs"
+	"database/sql"
 )
 
 type Repository struct {
