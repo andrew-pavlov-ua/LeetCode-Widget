@@ -9,7 +9,6 @@ import (
 	"database/sql"
 	"errors"
 	"fmt"
-	"log"
 	"time"
 )
 
@@ -25,19 +24,20 @@ func (s *UserService) Upsert(ctx context.Context, userSlug string) (*v1.LcUserDa
 	dbUserData, err := s.repository.Queries().UserGetStatsBySlug(ctx, userSlug)
 
 	if errors.Is(err, sql.ErrNoRows) {
-		matchedUser := leetcode_api.MatchedUserMapToUserProfile(userSlug)
+		matchedUser, err := leetcode_api.MatchedUserMapToUserProfile(userSlug)
 		userData := v1.NewLcUserDataFromReq(*matchedUser)
-		log.Println("userData", userData)
+		if err != nil {
+			return userData, fmt.Errorf("Upsert: error getting user stats in user_service from lc_api: %w", err)
+		}
 
 		// Inserting user stats to lc_stats table
-		fmt.Println("Inserting user stats to lc_stats table")
 		err = s.InsertUserStats(ctx, userData)
 		if err != nil {
-			log.Println("err 37: ", err)
+			return userData, fmt.Errorf("Upsert: error inserting new user_stats in user_service: %w", err)
 		}
-		return userData, err
+		return userData, nil
 	} else if err != nil && err != sql.ErrNoRows {
-		fmt.Println("err41 : ", err)
+		return nil, fmt.Errorf("Upsert: if err != nil && err != sql.ErrNoRows in user_service: %w", err)
 	}
 	userData := &v1.LcUserData{
 		UserSlug:    userSlug,

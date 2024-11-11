@@ -2,6 +2,7 @@ package testing
 
 import (
 	. "cmd/internal/leetcode_api"
+	"fmt"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -15,7 +16,12 @@ func TestMatchedUserMapToUserProfile(t *testing.T) {
 	medSubmissions := &Submission{Count: 3, Difficulty: "Medium"}
 	hardSubmissions := &Submission{Count: 0, Difficulty: "Hard"}
 
-	actualUser := *MatchedUserMapToUserProfile(userSlug)
+	actualUser, err := MatchedUserMapToUserProfile(userSlug)
+
+	if err != nil {
+		fmt.Printf("TestMatchedUserMapToUserProfile: err testing: %e", err)
+		assert.Failf(t, "TestMatchedUserMapToUserProfile: err", "err testing: %e", err)
+	}
 
 	expectedUser := UserProfileData{
 		Username:        "Andrew",
@@ -24,5 +30,5 @@ func TestMatchedUserMapToUserProfile(t *testing.T) {
 		AllProblemCount: []Submission{*allSubmissions, *ezSubmissions, *medSubmissions, *hardSubmissions},
 	}
 
-	assert.Equal(t, expectedUser, actualUser, "Parsed user data should be same as simulated")
+	assert.Equal(t, expectedUser, *actualUser, "Parsed user data should be same as simulated")
 }

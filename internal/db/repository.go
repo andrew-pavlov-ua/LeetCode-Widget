@@ -4,6 +4,7 @@ import (
 	"cmd/internal/storage/dbs"
 	"context"
 	"database/sql"
+	"fmt"
 	"log"
 )
 
@@ -15,7 +16,7 @@ type Repository struct {
 func NewRepository(connection *sql.DB) (*Repository, error) {
 	var queries, err = dbs.Prepare(context.Background(), connection)
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("NewRepository: error creating new repo: %w", err)
 	}
 
 	return &Repository{connection, queries}, nil
@@ -48,7 +49,7 @@ func (r *Repository) WithTransaction(ctx context.Context, fn func(queries *dbs.Q
 func withTransaction(ctx context.Context, db *sql.DB, queries *dbs.Queries, fn func(queries *dbs.Queries) error) (err error) {
 	tx, err := db.BeginTx(ctx, nil)
 	if err != nil {
-		return
+		return fmt.Errorf("withTransaction: error: %w", err)
 	}
 
 	defer func() {

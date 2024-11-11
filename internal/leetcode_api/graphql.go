@@ -43,10 +43,9 @@ func getUserProfile(username string) (map[string]interface{}, error) {
 	return response, nil
 }
 
-func MatchedUserMapToUserProfile(userSlug string) *UserProfileData {
+func MatchedUserMapToUserProfile(userSlug string) (*UserProfileData, error) {
 	matchedUser, err := getUserProfile(userSlug)
 	if err != nil {
-		fmt.Printf("Error getting matched user: %v", err)
 		return &UserProfileData{
 			Username: "User with lcId " + userSlug + " doesn't exist",
 			UserSlug: "",
@@ -56,7 +55,7 @@ func MatchedUserMapToUserProfile(userSlug string) *UserProfileData {
 				{Count: 0, Difficulty: "Medium"},
 				{Count: 0, Difficulty: "Hard"},
 			},
-		}
+		}, fmt.Errorf("MatchedUserMapToUserProfile: requesting user from ;lc api: %w", err)
 	}
 
 	_username := matchedUser["matchedUser"].(map[string]interface{})["profile"].(map[string]interface{})["realName"].(string)
@@ -77,5 +76,5 @@ func MatchedUserMapToUserProfile(userSlug string) *UserProfileData {
 		})
 	}
 
-	return &profileData
+	return &profileData, nil
 }

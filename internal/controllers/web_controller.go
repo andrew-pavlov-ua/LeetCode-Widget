@@ -35,7 +35,7 @@ func (c *WebController) StatsBadgeBySlug(ctx *gin.Context) {
 	userData, err := c.userService.Upsert(ctx.Request.Context(), userSlug)
 
 	if err != nil {
-		fmt.Println("err 38: ", err)
+		fmt.Println("StatsBadgeBySlug: error upserting stats ", err)
 	} else if userData == nil || userData.Rank == 0 {
 		badge = []byte(v1.BadgeNoUserFound())
 	} else {
@@ -48,7 +48,7 @@ func (c *WebController) StatsBadgeBySlug(ctx *gin.Context) {
 		// Founding user's lc vivsits count
 		visitStats, err = c.visitsService.GetFullStatsCount(ctx, userSlug)
 		if err != nil {
-			fmt.Println("error getting visitstats count 52: ", err)
+			fmt.Println("StatsBadgeBySlug: error getting full count stats", err)
 		}
 
 		logo_base64 := services.ReadFile(logo_path)
@@ -76,9 +76,10 @@ func (c *WebController) VisitsCountRedirect(ctx *gin.Context) {
 	userSlug := ctx.Param("leetcode_user_slug")
 	redirectUrl := fmt.Sprintf("https://leetcode.com/u/%s/", userSlug)
 
+	// Adding 1 to current hour's profile visits
 	err := c.visitsService.InsertCount(ctx, userSlug)
 	if err != nil {
-		fmt.Println("Error web_controller 79: ", err)
+		fmt.Println("VisitsCountRedirect: error redirecting user", err)
 	}
 	ctx.Redirect(http.StatusFound, redirectUrl)
 }

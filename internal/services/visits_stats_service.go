@@ -57,14 +57,12 @@ func (s *VisitsStatsService) GetFullStatsCount(ctx context.Context, userSlug str
 		UserSlug: userSlug})
 
 	if err != nil {
-		fmt.Println("err 49 in visits service:", err)
-		return visitStats, err
+		return visitStats, fmt.Errorf("GetFullStatsCount: error with count requesting: %w", err)
 	}
 
 	totalVisitCount, err = s.repository.Queries().TotalCount(ctx, userSlug)
 	if err != nil {
-		fmt.Println("err 55 in visits service:", err)
-		return visitStats, err
+		return visitStats, fmt.Errorf("GetFullStatsCount: error with total count requesting: %w", err)
 	}
 
 	visitStats = *v1.NewVisitsStats(rawViewsStats.DayCount, rawViewsStats.WeekCount, rawViewsStats.MonthCount, totalVisitCount)
