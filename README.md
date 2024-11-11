@@ -11,7 +11,8 @@ This project is a simple web application that allows users to generate a custom 
 
 - **Username Input:** Users can enter their LeetCode username to generate a badge URL.
 - **Caching of user data:** data is stored in the postgres database, and updated if statistics were saved more than 15 minutes ago.
-- **Copy URL Button:** A button to easily copy the generated badge URL.
+- **Copy URL Button:** A button to easily copy the generated badge Markdown and HTML.
+- **Counting your lc acc's visits:** every time someone clicks on a badge, app is counting it and saves to db by time period.
 ## Prerequisites
 
 Before you begin, ensure you have the following installed:
