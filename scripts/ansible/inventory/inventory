@@ -1,6 +1,9 @@
 [web]
-andrewpavlov.prg ansible_host=localhost
+andrewpavlov.org ansible_host=localhost
 
 [web:vars]
+become: yes
+ansible_become_method=sudo
+ansible_become_user=root
 ansible_ssh_user=root
 ansible_ssh_private_key_file="{{ lookup('env', 'SSH_KEYDIR') }}/id_rsa"
