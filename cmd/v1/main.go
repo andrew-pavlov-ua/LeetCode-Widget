@@ -54,7 +54,7 @@ func main() {
 	r.GET("/lcb/api/slug/:leetcode_user_slug/badge.svg", webController.StatsBadgeBySlug) // Starting with badge creation
 	r.GET("/lcb/:leetcode_user_slug/redirect", webController.VisitsCountRedirect)        // Processing profile view
 
-	var serverErr = r.RunTLS(":"+port, certiFile, keyFile) // Running app on the port from .env
+	var serverErr = r.RunTLS(port, certiFile, keyFile) // Running app on the port from .env
 	if serverErr != nil {
 		log.Fatalln(serverErr)
 
