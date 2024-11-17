@@ -8,6 +8,7 @@ import (
 	"cmd/internal/controllers"
 	"cmd/internal/db"
 	"cmd/internal/env"
+	"cmd/internal/server"
 	"cmd/internal/services"
 
 	"github.com/gin-gonic/gin"
@@ -17,10 +18,7 @@ func main() {
 	fmt.Println("Started program ")
 	// Creating variables app need to connect to db with correct dsn and port
 	var (
-		dsn       = env.Must("POSTGRES_DSN")
-		port      = env.Must("PORT")
-		certiFile = "/etc/letsencrypt/live/andrewpavlov.org/fullchain.pem"
-		keyFile   = "/etc/letsencrypt/live/andrewpavlov.org/privkey.pem"
+		dsn = env.Must("POSTGRES_DSN")
 	)
 
 	file, err := os.OpenFile("app.log", os.O_CREATE|os.O_WRONLY|os.O_APPEND, 0666)
@@ -54,11 +52,5 @@ func main() {
 	r.GET("/lcb/api/slug/:leetcode_user_slug/badge.svg", webController.StatsBadgeBySlug) // Starting with badge creation
 	r.GET("/lcb/:leetcode_user_slug/redirect", webController.VisitsCountRedirect)        // Processing profile view
 
-	var serverErr = r.RunTLS(port, certiFile, keyFile) // Running app on the port from .env
-	if serverErr != nil {
-		log.Fatalln(serverErr)
-
-		return
-	}
-	log.Println("Server started on https://localhost:80")
+	server.Run(r.Handler())
 }
