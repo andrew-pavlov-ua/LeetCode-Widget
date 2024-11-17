@@ -51,10 +51,14 @@ func runProduction(handler http.Handler) {
 		return server.ListenAndServeTLS("", "") // Key and cert are coming from Let's Encrypt
 	})
 
+	fmt.Print(g.Wait())
 	log.Fatal(g.Wait())
 }
 
 func runDevelopment(handler http.Handler) {
 	fmt.Println("Started dev")
-	log.Fatal(http.ListenAndServe(":http", handler))
+	err := http.ListenAndServe(":http", handler)
+	if err != nil {
+		log.Fatal("runDevelopment: ", err)
+	}
 }

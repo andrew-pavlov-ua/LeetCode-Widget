@@ -24,11 +24,12 @@ services:
       ENVIRONMENT: ${ENVIRONMENT}
       POSTGRES_DSN: ${POSTGRES_DSN}
       GOOSE_DBSTRING: ${POSTGRES_DSN}
-      GIN_MODE: release
       PORT: ${PORT}
       HOST: ${HOST}
       TLS_CERTIFICATES_DIR: ${TLS_CERTIFICATES_DIR}
+      GIN_MODE: release
     ports:
       - "80:80"
+      - "443:443"
     depends_on:
       - postgres
