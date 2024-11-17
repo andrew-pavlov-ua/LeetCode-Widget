@@ -44,7 +44,7 @@ func main() {
 	r := gin.Default()
 	r.LoadHTMLGlob("public/view/*.html")
 	r.Static("/assets/images", "./public/assets/images")
-	r.Static("/.well-known", "./.well-known")
+	r.Static("/.well-known/acme-challenge", "./.well-known/acme-challenge")
 
 	webController := controllers.NewWebController(userService, visitsService)
 
