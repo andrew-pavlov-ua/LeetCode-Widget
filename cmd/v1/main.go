@@ -44,7 +44,7 @@ func main() {
 	r := gin.Default()
 	r.LoadHTMLGlob("public/view/*.html")
 	r.Static("/assets/images", "./public/assets/images")
-	r.Static("/.well-known/pki-validation", "./.well-known/pki-validation")
+	r.Static("/.well-known", "./.well-known")
 
 	webController := controllers.NewWebController(userService, visitsService)
 
