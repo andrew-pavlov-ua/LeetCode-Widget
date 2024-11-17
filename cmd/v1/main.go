@@ -19,8 +19,8 @@ func main() {
 	var (
 		dsn       = env.Must("POSTGRES_DSN")
 		port      = env.Must("PORT")
-		certiFile = env.Must("CERT_FILE")
-		keyFile   = env.Must("KEY_FILE")
+		certiFile = "/etc/letsencrypt/live/andrewpavlov.org/fullchain.pem"
+		keyFile   = "/etc/letsencrypt/live/andrewpavlov.org/privkey.pem"
 	)
 
 	file, err := os.OpenFile("app.log", os.O_CREATE|os.O_WRONLY|os.O_APPEND, 0666)
