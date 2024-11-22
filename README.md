@@ -2,10 +2,10 @@
 
 This project is a simple web application that allows users to generate a custom LeetCode badge URL by entering their LeetCode username. The badge displays the user's lc statistics lc profile visits and can be easily shared.
 
-### Project web page: http://www.andrewpavlov.org/lcb
+### Project web page: https://andrewpavlov.org/lcb
 
 ## Example
-[![LeetCode Badge](http://andrewpavlov.org/lcb/api/slug/MURASAME_/badge.svg)](http://www.andrewpavlov.org/lcb/MURASAME_/redirect)
+[![LeetCode Badge](https://andrewpavlov.org/lcb/api/slug/MURASAME_/badge.svg)](https://andrewpavlov.org/lcb/MURASAME_/redirect)
 
 ## Features
 
