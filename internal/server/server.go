@@ -3,6 +3,7 @@ package server
 import (
 	"fmt"
 	"log"
+	"strings"
 
 	"cmd/internal/env"
 	"crypto/tls"
@@ -28,7 +29,7 @@ func Run(handler http.Handler) {
 func runProduction(handler http.Handler) {
 	certManager := autocert.Manager{
 		Prompt:     autocert.AcceptTOS,
-		HostPolicy: autocert.HostWhitelist(env.Must("HOST")),
+		HostPolicy: autocert.HostWhitelist(strings.Split(env.Must("HOSTS"), ",")...),
 		Cache:      autocert.DirCache(env.Must("TLS_CERTIFICATES_DIR")),
 	}
 
