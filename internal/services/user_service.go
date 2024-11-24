@@ -22,24 +22,38 @@ func NewUserService(repository *db.Repository) *UserService {
 	return &UserService{repository: repository}
 }
 
-func (s *UserService) Upsert(ctx context.Context, userSlug string) (*v1.LcUserData, error) {
+func (s *UserService) GetOrCreate(ctx context.Context, userSlug string) (*v1.LcUserData, error) {
 	dbUserData, err := s.repository.Queries().UserGetStatsBySlug(ctx, userSlug)
+	deprecatedStats := dbUserData.UpdatedAt.Before(time.Now().Add(-15 * time.Minute))
 
 	if errors.Is(err, sql.ErrNoRows) {
 		matchedUser, err := leetcode_api.MatchedUserMapToUserProfile(userSlug)
 		userData := v1.NewLcUserDataFromReq(*matchedUser)
 		if err != nil {
-			return userData, fmt.Errorf("Upsert: error getting user stats in user_service from lc_api: %w", err)
+			return userData, fmt.Errorf("GetOrCreate: error getting user stats in user_service from lc_api: %w", err)
 		}
 
 		// Inserting user stats to lc_stats table
 		err = s.InsertUserStats(ctx, userData)
 		if err != nil {
-			return userData, fmt.Errorf("Upsert: error inserting new user_stats in user_service: %w", err)
+			return userData, fmt.Errorf("GetOrCreate: error inserting new user_stats in user_service: %w", err)
 		}
 		return userData, nil
-	} else if err != nil && err != sql.ErrNoRows {
-		return nil, fmt.Errorf("Upsert: if err != nil && err != sql.ErrNoRows in user_service: %w", err)
+	} else if deprecatedStats {
+		matchedUser, err := leetcode_api.MatchedUserMapToUserProfile(userSlug)
+		userData := v1.NewLcUserDataFromReq(*matchedUser)
+		if err != nil {
+			return userData, fmt.Errorf("GetOrCreate: error getting user stats in user_service from lc_api: %w", err)
+		}
+
+		err = s.UpdateUserStats(ctx, userData)
+		if err != nil {
+			return userData, fmt.Errorf("GetOrCreate: error updating user stats in user_service from lc_api: %w", err)
+		}
+
+		return userData, nil
+	} else if err != nil {
+		return nil, fmt.Errorf("GetOrCreate: if err != nil && err != sql.ErrNoRows in user_service: %w", err)
 	}
 	userData := &v1.LcUserData{
 		UserSlug:    userSlug,
@@ -49,10 +63,6 @@ func (s *UserService) Upsert(ctx context.Context, userSlug string) (*v1.LcUserDa
 		HardCount:   dbUserData.HardSubmits,
 		TotalCount:  dbUserData.TotalSubmits,
 		Rank:        float64(dbUserData.Rank)}
-
-	if dbUserData.UpdatedAt.Before(time.Now().UTC().Add(-15 * time.Minute)) {
-		s.UpdateUserStats(ctx, userData)
-	}
 
 	return userData, nil
 }

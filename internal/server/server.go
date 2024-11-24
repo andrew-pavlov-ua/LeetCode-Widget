@@ -53,7 +53,6 @@ func runProduction(handler http.Handler) {
 	})
 
 	fmt.Print(g.Wait())
-	log.Fatal(g.Wait())
 }
 
 func runDevelopment(handler http.Handler) {

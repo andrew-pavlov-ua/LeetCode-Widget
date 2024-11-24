@@ -20,7 +20,6 @@ Before you begin, ensure you have the following installed:
 - [Docker](https://www.docker.com/)
 - [Docker Compose](https://docs.docker.com/compose/install/)
 - [Golang](https://go.dev/doc/install)
-- [PostgreSQL](https://www.postgresql.org/download/)
 - [Make](https://www.gnu.org/software/make/)
 
 ## Starting project locally
@@ -33,7 +32,7 @@ make app-start
 ````
 
 ## Usage
-Once the application is running, navigate to http://localhost:80 in your web browser. Enter your LeetCode username in the input field, click "Get Badge Link," and you will be provided with a URL to your custom badge. You can also copy the URL using the "Copy URL" button.
+Once the application is running, navigate to http://localhost in your web browser. Enter your LeetCode username in the input field, click "Get Badge Link," and you will be provided with a URL to your custom badge. You can also copy the URL using the "Copy URL" button.
 
 ## Author
 Created by Andrew Pavlov.

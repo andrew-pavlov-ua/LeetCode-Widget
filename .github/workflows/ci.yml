@@ -48,7 +48,7 @@ jobs:
       - name: Start application
         run: |
           make app-start &
-          sleep 10  # Даем серверу время подняться
+          sleep 10 
 
       - name: Verify application is running
-        run: curl --fail http://localhost:8080 || exit 1
+        run: curl --fail http://localhost || exit 1

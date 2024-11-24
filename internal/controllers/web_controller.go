@@ -32,7 +32,7 @@ func (c *WebController) StatsBadgeBySlug(ctx *gin.Context) {
 	logo_path := "public/assets/images/logo_base64.txt"
 	userSlug := ctx.Param("leetcode_user_slug")
 
-	userData, err := c.userService.Upsert(ctx.Request.Context(), userSlug)
+	userData, err := c.userService.GetOrCreate(ctx.Request.Context(), userSlug)
 
 	if err != nil {
 		fmt.Println("StatsBadgeBySlug: error upserting stats ", err)

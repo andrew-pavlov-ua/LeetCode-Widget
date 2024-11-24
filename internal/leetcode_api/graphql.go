@@ -55,7 +55,7 @@ func MatchedUserMapToUserProfile(userSlug string) (*UserProfileData, error) {
 				{Count: 0, Difficulty: "Medium"},
 				{Count: 0, Difficulty: "Hard"},
 			},
-		}, fmt.Errorf("MatchedUserMapToUserProfile: requesting user from ;lc api: %w", err)
+		}, fmt.Errorf("MatchedUserMapToUserProfile: requesting user from lc api: %w", err)
 	}
 
 	_username := matchedUser["matchedUser"].(map[string]interface{})["profile"].(map[string]interface{})["realName"].(string)
