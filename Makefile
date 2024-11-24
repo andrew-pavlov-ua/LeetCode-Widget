@@ -50,9 +50,6 @@ go-mod-update:
 	go mod tidy
 	go mod vendor
 
-local-go-app-run:
-	POSTGRES_DSN=$(POSTGRES_DSN) PORT=:8080 go run ./cmd/v1/main.go
-
 qtc-gen:
 	qtc -dir=internal/templates/v1
 
