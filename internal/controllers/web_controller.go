@@ -11,11 +11,11 @@ import (
 )
 
 type WebController struct {
-	userService   *services.UserService
+	userService   *services.LcUserService
 	visitsService *services.VisitsStatsService
 }
 
-func NewWebController(userService *services.UserService, visitsService *services.VisitsStatsService) *WebController {
+func NewWebController(userService *services.LcUserService, visitsService *services.VisitsStatsService) *WebController {
 	return &WebController{
 		userService:   userService,
 		visitsService: visitsService}
@@ -46,7 +46,12 @@ func (c *WebController) StatsBadgeBySlug(ctx *gin.Context) {
 			HardWidth:   c.CalculateWidth(userData.HardCount, v1.HardMaxValue)}
 
 		// Founding user's lc vivsits count
-		visitStats, err = c.visitsService.GetFullStatsCount(ctx, userSlug)
+		user_id, err := c.userService.GetUserIdBySlug(ctx, userSlug)
+		if err != nil {
+			fmt.Println("StatsBadgeBySlug: error getting userId", err)
+		}
+
+		visitStats, err = c.visitsService.GetFullStatsCount(ctx, user_id)
 		if err != nil {
 			fmt.Println("StatsBadgeBySlug: error getting full count stats", err)
 		}
@@ -74,12 +79,28 @@ func (c *WebController) CalculateWidth(count int64, max int64) float64 {
 
 func (c *WebController) VisitsCountRedirect(ctx *gin.Context) {
 	userSlug := ctx.Param("leetcode_user_slug")
+	userId, err := c.userService.GetUserIdBySlug(ctx, userSlug)
+	if err != nil {
+		fmt.Println("VisitsCountRedirect: error getting userId", err)
+	}
+
 	redirectUrl := fmt.Sprintf("https://leetcode.com/u/%s/", userSlug)
 
 	// Adding 1 to current hour's profile visits
-	err := c.visitsService.InsertCount(ctx, userSlug)
+	err = c.visitsService.InsertCount(ctx, userId)
 	if err != nil {
 		fmt.Println("VisitsCountRedirect: error redirecting user", err)
 	}
 	ctx.Redirect(http.StatusFound, redirectUrl)
 }
+
+// In development
+// func (c *WebController) ReturnCWStatsById(ctx *gin.Context) {
+// 	userId := ctx.Param("cw_user_id")
+// 	data, err := codewars_api.GetUserProfile(userId)
+// 	if err != nil {
+// 		fmt.Printf("ReturnCWStatsById: err: %v", err)
+// 	}
+
+// 	ctx.Data(http.StatusOK, "application/json", []byte(services.FormatJSON(data)))
+// }

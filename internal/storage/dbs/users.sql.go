@@ -10,8 +10,21 @@ import (
 	"time"
 )
 
+const getIdBySlug = `-- name: GetIdBySlug :one
+SELECT id 
+FROM lc_stats
+WHERE lc_user_slug = $1
+`
+
+func (q *Queries) GetIdBySlug(ctx context.Context, lcUserSlug string) (int64, error) {
+	row := q.queryRow(ctx, q.getIdBySlugStmt, getIdBySlug, lcUserSlug)
+	var id int64
+	err := row.Scan(&id)
+	return id, err
+}
+
 const insertStatsInfo = `-- name: InsertStatsInfo :exec
-INSERT INTO lc_stats (user_slug, username, easy_submits, medium_submits, hard_submits, total_submits, rank, created_at, updated_at)
+INSERT INTO lc_stats (lc_user_slug, username, easy_submits, medium_submits, hard_submits, total_submits, rank, created_at, updated_at)
        VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)
 `
 
@@ -49,7 +62,7 @@ SET easy_submits = $1,
     hard_submits = $3,
     total_submits = $4,
     updated_at = $5
-WHERE user_slug = $6
+WHERE lc_user_slug = $6
 `
 
 type UpdateLcStatsParams struct {
@@ -58,7 +71,7 @@ type UpdateLcStatsParams struct {
 	HardSubmits   int64
 	TotalSubmits  int64
 	UpdatedAt     time.Time
-	UserSlug      string
+	LcUserSlug    string
 }
 
 func (q *Queries) UpdateLcStats(ctx context.Context, arg UpdateLcStatsParams) error {
@@ -68,13 +81,13 @@ func (q *Queries) UpdateLcStats(ctx context.Context, arg UpdateLcStatsParams) er
 		arg.HardSubmits,
 		arg.TotalSubmits,
 		arg.UpdatedAt,
-		arg.UserSlug,
+		arg.LcUserSlug,
 	)
 	return err
 }
 
 const userGetStatsBySlug = `-- name: UserGetStatsBySlug :one
-SELECT user_slug,
+SELECT lc_user_slug,
        username,
        easy_submits,
        medium_submits,
@@ -83,11 +96,11 @@ SELECT user_slug,
        rank,
        updated_at
 FROM lc_stats
-WHERE user_slug = $1
+WHERE lc_user_slug = $1
 `
 
 type UserGetStatsBySlugRow struct {
-	UserSlug      string
+	LcUserSlug    string
 	Username      string
 	EasySubmits   int64
 	MediumSubmits int64
@@ -97,11 +110,11 @@ type UserGetStatsBySlugRow struct {
 	UpdatedAt     time.Time
 }
 
-func (q *Queries) UserGetStatsBySlug(ctx context.Context, userSlug string) (UserGetStatsBySlugRow, error) {
-	row := q.queryRow(ctx, q.userGetStatsBySlugStmt, userGetStatsBySlug, userSlug)
+func (q *Queries) UserGetStatsBySlug(ctx context.Context, lcUserSlug string) (UserGetStatsBySlugRow, error) {
+	row := q.queryRow(ctx, q.userGetStatsBySlugStmt, userGetStatsBySlug, lcUserSlug)
 	var i UserGetStatsBySlugRow
 	err := row.Scan(
-		&i.UserSlug,
+		&i.LcUserSlug,
 		&i.Username,
 		&i.EasySubmits,
 		&i.MediumSubmits,

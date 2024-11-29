@@ -1,28 +1,113 @@
-body, html {
-    height: 100%;
+* {
     margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body,
+html {
+    height: 100%;
+    font-family: Arial, sans-serif;
+    background: linear-gradient(180deg, #f0f0f0 60%, #e8e8e8);
     display: flex;
     flex-direction: column;
+}
+
+header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+    background-color: #ffffffcc;
+    /* Белый с прозрачностью */
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+    color: #555555;
+    /* Серый цвет текста */
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #555555;
+    /* Серый цвет текста */
+}
+
+.logo img {
+    width: 40px;
+    height: 40px;
+}
+
+.github-link {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: #555555;
+    /* Серый цвет текста */
+    text-decoration: none;
+    font-size: 1rem;
+}
+
+.github-link:hover {
+    text-decoration: underline;
+    color: #007bff;
+    /* Синий цвет при наведении */
+}
+
+.github-star {
+    background-color: #f6f8fa;
+    /* Light gray background */
+    border: 1px solid #d1d5da;
+    /* Subtle border with a slightly darker gray */
+    color: #24292f;
+    /* Dark text color */
+    font-size: 1rem;
+    padding: 8px 16px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    border-radius: 6px;
+    /* Rounded corners */
+    cursor: pointer;
+    transition: background-color 0.3s, border 0.3s;
+}
+
+.github-star:hover {
+    background-color: #e1e4e8;
+    /* Slightly darker background on hover */
+    border-color: #c8d1d8;
+    /* Slightly darker border on hover */
+}
+
+.github-star img {
+    width: 16px;
+    /* Adjust the size of the GitHub icon */
+    height: 16px;
+}
+
+.github-star:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.4);
+    /* Focus effect for accessibility */
+}
+
+
+main {
+    flex: 1;
+    display: flex;
     justify-content: center;
     align-items: center;
-    background-color: #f0f0f0;
-    font-family: Arial, sans-serif;
+    flex-direction: column;
+    padding-top: 80px;
+    /* Чтобы контент не накрывался хедером */
 }
-
-h1 {
-    font-size: 5rem;
-    color: #333;
-    margin-bottom: 20px;
-}body, html {
-     height: 100%;
-     margin: 0;
-     display: flex;
-     flex-direction: column;
-     justify-content: center;
-     align-items: center;
-     background-color: #f0f0f0;
-     font-family: Arial, sans-serif;
- }
 
 h1 {
     font-size: 5rem;
@@ -54,9 +139,6 @@ h1 {
     border: none;
     border-radius: 5px;
     cursor: pointer;
-    text-decoration: none;
-    text-align: center;
-    display: inline-block;
     transition: background-color 0.3s, transform 0.3s;
 }
 
@@ -65,76 +147,13 @@ h1 {
     transform: scale(1.05);
 }
 
-.badge-link-container {
-    display: flex;
-    align-items: center;
-    margin-top: 20px;
-}
-
-.badge-link {
-    font-size: 1.2rem;
-    color: #007bff;
-    padding: 10px 15px;
-    border: 2px solid #007bff;
-    border-radius: 5px;
-    background-color: #fff;
-    transition: background-color 0.3s, color 0.3s;
-    display: inline-block;
-    text-align: center;
-    width: fit-content;
-    margin-right: 10px;
-}
-
-.badge-link a {
-    color: #007bff;
-    text-decoration: none;
-}
-
-.badge-link:hover {
-    background-color: #007bff;
-    color: #fff;
-}
-
-.badge-link a:hover {
-    color: #fff;
-}
-
-.copy-button {
-    padding: 10px 20px;
-    font-size: 1.2rem;
-    color: #fff;
-    background-color: #28a745;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s, transform 0.3s;
-}
-
-.copy-button:hover {
-    background-color: #218838;
-    transform: scale(1.05);
-}
-
-.copy-notification {
-    position: fixed;
-    top: 20px;
-    right: 20px;
-    padding: 10px 20px;
-    background-color: #28a745;
-    color: #fff;
-    border-radius: 5px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    opacity: 0;
-    transition: opacity 0.5s ease-in-out;
-    z-index: 1000;
-    display: none;
-}
-
 footer {
-    position: absolute;
-    bottom: 10px;
-    font-size: 0.9rem;
+    text-align: center;
+    padding: 10px 0;
+    background-color: #f8f8f8;
     color: #888;
+    font-size: 0.9rem;
+    margin-top: auto;
 }
 
 footer a {
@@ -146,104 +165,79 @@ footer a:hover {
     text-decoration: underline;
 }
 
+.embed-container {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 20px;
+    margin-top: 20px;
+}
 
-.input-container {
+.embed-box {
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 10px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    width: 300px;
+}
+
+.embed-container {
+    display: flex;
+    gap: 20px;
+    margin-top: 20px;
+    width: 100%;
+    justify-content: center;
+}
+
+.embed-box {
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 10px;
+    width: 250px;
+    background-color: #fff;
     display: flex;
     flex-direction: column;
     align-items: center;
 }
 
-.input {
-    padding: 10px;
+.embed-title {
     font-size: 1.2rem;
-    margin-bottom: 20px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    width: 300px;
+    margin-bottom: 10px;
     text-align: center;
+    font-weight: bold;
 }
 
-.button {
-    padding: 15px 30px;
-    font-size: 1.2rem;
-    color: #fff;
-    background-color: #007bff;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    text-decoration: none;
-    text-align: center;
-    display: inline-block;
-    transition: background-color 0.3s, transform 0.3s;
-}
-
-.button:hover {
-    background-color: #0056b3;
-    transform: scale(1.05);
-}
-
-.badge-link-container {
+.embed-content {
     display: flex;
-    align-items: center;
-    margin-top: 20px;
+    flex-direction: column;
+    gap: 10px;
+    width: 100%;
 }
 
-.badge-link {
-    font-size: 1.2rem;
-    color: #007bff;
-    padding: 10px 15px;
-    border: 2px solid #007bff;
+.embed-code {
+    padding: 10px;
+    background-color: #f8f9fa;
+    border: 1px solid #ddd;
     border-radius: 5px;
-    background-color: #fff;
-    transition: background-color 0.3s, color 0.3s;
-    display: inline-block;
-    text-align: center;
-    width: fit-content;
-    margin-right: 10px;
-}
-
-.badge-link a {
-    color: #007bff;
-    text-decoration: none;
-}
-
-.badge-link:hover {
-    background-color: #007bff;
-    color: #fff;
-}
-
-.badge-link a:hover {
-    color: #fff;
+    font-family: monospace;
+    font-size: 0.9rem;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
 }
 
 .copy-button {
-    padding: 10px 20px;
-    font-size: 1.2rem;
+    padding: 5px 10px;
+    font-size: 0.9rem;
+    background-color: #007bff;
     color: #fff;
-    background-color: #28a745;
     border: none;
     border-radius: 5px;
     cursor: pointer;
-    transition: background-color 0.3s, transform 0.3s;
+    transition: background-color 0.3s;
 }
 
 .copy-button:hover {
-    background-color: #218838;
-    transform: scale(1.05);
-}
-
-footer {
-    position: absolute;
-    bottom: 10px;
-    font-size: 0.9rem;
-    color: #888;
-}
-
-footer a {
-    color: #007bff;
-    text-decoration: none;
-}
-
-footer a:hover {
-    text-decoration: underline;
+    background-color: #0056b3;
 }

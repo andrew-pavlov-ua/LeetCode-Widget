@@ -15,16 +15,16 @@ SELECT COALESCE(SUM(count) FILTER ( WHERE time >= $1 ), 0)::BIGINT  AS day_count
        COALESCE(SUM(count) FILTER ( WHERE time >= $2 ), 0)::BIGINT AS week_count,
        SUM(count)                                                     AS month_count
 FROM profile_hourly_visits_stats
-WHERE user_slug = $3
+WHERE user_id = $3
   AND time >= $4
-GROUP BY user_slug
+GROUP BY user_id
 `
 
 type ProfileHourlyViewsStatsParams struct {
-	Day      time.Time
-	Week     time.Time
-	UserSlug string
-	Month    time.Time
+	Day    time.Time
+	Week   time.Time
+	UserID int64
+	Month  time.Time
 }
 
 type ProfileHourlyViewsStatsRow struct {
@@ -37,7 +37,7 @@ func (q *Queries) ProfileHourlyViewsStats(ctx context.Context, arg ProfileHourly
 	row := q.queryRow(ctx, q.profileHourlyViewsStatsStmt, profileHourlyViewsStats,
 		arg.Day,
 		arg.Week,
-		arg.UserSlug,
+		arg.UserID,
 		arg.Month,
 	)
 	var i ProfileHourlyViewsStatsRow
@@ -46,37 +46,37 @@ func (q *Queries) ProfileHourlyViewsStats(ctx context.Context, arg ProfileHourly
 }
 
 const profileHourlyVisitsStatsUpsert = `-- name: ProfileHourlyVisitsStatsUpsert :exec
-INSERT INTO profile_hourly_visits_stats (user_slug, time, count)
+INSERT INTO profile_hourly_visits_stats (user_id, time, count)
 VALUES ($1, $2, $3)
-ON CONFLICT (user_slug, time) DO UPDATE
+ON CONFLICT (user_id, time) DO UPDATE
     SET count = profile_hourly_visits_stats.count + $3
 `
 
 type ProfileHourlyVisitsStatsUpsertParams struct {
-	UserSlug string
-	Time     time.Time
-	Count    int64
+	UserID int64
+	Time   time.Time
+	Count  int64
 }
 
 func (q *Queries) ProfileHourlyVisitsStatsUpsert(ctx context.Context, arg ProfileHourlyVisitsStatsUpsertParams) error {
-	_, err := q.exec(ctx, q.profileHourlyVisitsStatsUpsertStmt, profileHourlyVisitsStatsUpsert, arg.UserSlug, arg.Time, arg.Count)
+	_, err := q.exec(ctx, q.profileHourlyVisitsStatsUpsertStmt, profileHourlyVisitsStatsUpsert, arg.UserID, arg.Time, arg.Count)
 	return err
 }
 
 const profileVisitsStatsByPeriod = `-- name: ProfileVisitsStatsByPeriod :one
 SELECT COALESCE(SUM(count), 0)::BIGINT as count
 FROM profile_hourly_visits_stats
-WHERE user_slug = $1
+WHERE user_id = $1
     AND time >= $2
 `
 
 type ProfileVisitsStatsByPeriodParams struct {
-	UserSlug  string
+	UserID    int64
 	StartTime time.Time
 }
 
 func (q *Queries) ProfileVisitsStatsByPeriod(ctx context.Context, arg ProfileVisitsStatsByPeriodParams) (int64, error) {
-	row := q.queryRow(ctx, q.profileVisitsStatsByPeriodStmt, profileVisitsStatsByPeriod, arg.UserSlug, arg.StartTime)
+	row := q.queryRow(ctx, q.profileVisitsStatsByPeriodStmt, profileVisitsStatsByPeriod, arg.UserID, arg.StartTime)
 	var count int64
 	err := row.Scan(&count)
 	return count, err
@@ -85,11 +85,11 @@ func (q *Queries) ProfileVisitsStatsByPeriod(ctx context.Context, arg ProfileVis
 const totalCount = `-- name: TotalCount :one
 SELECT COALESCE(SUM(count), 0)::BIGINT as count 
 FROM profile_hourly_visits_stats 
-WHERE user_slug = $1
+WHERE user_id = $1
 `
 
-func (q *Queries) TotalCount(ctx context.Context, userSlug string) (int64, error) {
-	row := q.queryRow(ctx, q.totalCountStmt, totalCount, userSlug)
+func (q *Queries) TotalCount(ctx context.Context, userID int64) (int64, error) {
+	row := q.queryRow(ctx, q.totalCountStmt, totalCount, userID)
 	var count int64
 	err := row.Scan(&count)
 	return count, err

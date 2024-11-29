@@ -1,6 +1,8 @@
 package v1
 
-import "cmd/internal/leetcode_api"
+import (
+	"cmd/internal/leetcode_api"
+)
 
 const (
 	EasyMaxValue   int64 = 819

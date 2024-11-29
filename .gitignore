@@ -5,3 +5,4 @@ cmd/test
 
 app.log
 .docker/volumes/
+cw_api

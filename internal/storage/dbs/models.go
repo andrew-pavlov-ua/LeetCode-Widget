@@ -9,7 +9,8 @@ import (
 )
 
 type LcStat struct {
-	UserSlug      string
+	ID            int64
+	LcUserSlug    string
 	Username      string
 	EasySubmits   int64
 	MediumSubmits int64
@@ -21,7 +22,7 @@ type LcStat struct {
 }
 
 type ProfileHourlyVisitsStat struct {
-	UserSlug string
-	Time     time.Time
-	Count    int64
+	UserID int64
+	Time   time.Time
+	Count  int64
 }

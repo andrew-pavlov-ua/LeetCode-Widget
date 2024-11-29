@@ -38,19 +38,21 @@ func main() {
 	defer repository.Close()
 
 	// creating services
-	var userService = services.NewUserService(repository)
+	var userService = services.NewLcUserService(repository)
 	var visitsService = services.NewVisistsStatsService(repository)
 
 	r := gin.Default()
 	r.LoadHTMLGlob("public/view/*.html")
 	r.Static("/assets/images", "./public/assets/images")
+	r.Static("/style", "./public/view/style")
 	// r.Static("/.well-known/acme-challenge", "./.well-known/acme-challenge")
 
 	webController := controllers.NewWebController(userService, visitsService)
 
-	r.GET("/lcb", webController.ReturnIndex)                                             // Returning main index.html
-	r.GET("/lcb/api/slug/:leetcode_user_slug/badge.svg", webController.StatsBadgeBySlug) // Starting with badge creation
-	r.GET("/lcb/:leetcode_user_slug/redirect", webController.VisitsCountRedirect)        // Processing profile view
+	r.GET("/", webController.ReturnIndex)                                            // Returning main index.html
+	r.GET("/api/slug/:leetcode_user_slug/badge.svg", webController.StatsBadgeBySlug) // Starting with badge creation
+	r.GET("/:leetcode_user_slug/redirect", webController.VisitsCountRedirect)        // Processing profile view
+	// r.GET("/lcb/api/cw/id/:cw_user_id/stats", webController.ReturnCWStatsById)
 
 	server.Run(r.Handler())
 }

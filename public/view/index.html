@@ -5,62 +5,58 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>LeetCode Badge</title>
     <link rel="shortcut icon" href="assets/images/site_ico.ico" type="image/x-icon">
-    <style>
-        body, html {height: 100%; margin: 0; display: flex; flex-direction: column; justify-content: center; align-items: center; background-color: #f0f0f0; font-family: Arial, sans-serif;}
-        h1 {font-size: 5rem; color: #333; margin-bottom: 20px;}
-        .input-container {display: flex; flex-direction: column; align-items: center;}
-        .input {padding: 10px; font-size: 1.2rem; margin-bottom: 20px; border: 1px solid #ccc; border-radius: 5px; width: 300px; text-align: center;}
-        .button {padding: 15px 30px; font-size: 1.2rem; color: #fff; background-color: #007bff; border: none; border-radius: 5px; cursor: pointer; transition: background-color 0.3s, transform 0.3s;}
-        .button:hover {background-color: #0056b3; transform: scale(1.05);}
-        .badge-link-container {display: flex; flex-direction: column; align-items: center; margin-top: 20px; width: 100%; text-align: center;}
-        .embed-container {display: flex; gap: 20px; margin-top: 20px; width: 100%; justify-content: center;}
-        .embed-box {border: 1px solid #ccc; border-radius: 5px; padding: 10px; width: 250px; background-color: #fff; display: flex; flex-direction: column; align-items: center;}
-        .embed-title {font-size: 1.2rem; margin-bottom: 10px; text-align: center; font-weight: bold;}
-        .embed-content {display: flex; flex-direction: column; gap: 10px; width: 100%;}
-        .embed-code {padding: 10px; background-color: #f8f9fa; border: 1px solid #ddd; border-radius: 5px; font-family: monospace; font-size: 0.9rem; white-space: pre-wrap; word-wrap: break-word; overflow-wrap: break-word;}
-        .copy-button {padding: 10px; font-size: 1rem; color: #fff; background-color: #007bff; border: none; border-radius: 5px; cursor: pointer; transition: background-color 0.3s;}
-        .copy-button:hover {background-color: #0056b3;}
-        .copy-notification {position: fixed; top: 20px; right: 20px; padding: 10px 20px; background-color: #28a745; color: #fff; border-radius: 5px; opacity: 0; transition: opacity 0.5s ease-in-out; z-index: 1000; display: none;}
-        footer {position: absolute; bottom: 10px; font-size: 0.9rem; color: #888;}
-        footer a {color: #007bff; text-decoration: none;}
-        footer a:hover {text-decoration: underline;}
-    </style>
+    <link rel="stylesheet" type="text/css" href="style/style.css" />
 </head>
 <body>
-<h1>LeetCode Badge</h1>
+<header>
+    <div class="logo">
+        <img src="assets/images/site_ico.ico" alt="Logo">
+        LeetCode Badge
+    </div>
+    <a class="github-link" href="https://github.com/andrew-pavlov-ua/LeetCode-Widget" target="_blank"> 
+        <button class="github-star"> 
+            <img src="assets/images/github_logo.png" alt="GitHub logo"> 
+            Star Project
+        </button> </a>
+</header>
 
-<div class="input-container">
-    <form id="usernameForm">
-        <input type="text" id="usernameInput" name="username" placeholder="Enter your LeetCode username" class="input" required>
-        <button type="submit" class="button">Get Badge Code</button>
-    </form>
-    <div class="badge-link-container" id="badgeLinks" style="display: none;">
-        <div class="embed-container">
-            <div class="embed-box">
-                <div class="embed-title">Markdown:</div>
-                <div class="embed-content">
-                    <div id="markdownEmbed" class="embed-code"></div>
-                    <button class="copy-button" onclick="copyToClipboard('markdownEmbed')">Copy</button>
+<main>
+    <h1>LeetCode Badge</h1>
+    <div class="input-container">
+        <form id="usernameForm">
+            <input type="text" id="usernameInput" name="username" placeholder="Enter your LeetCode username" class="input" required>
+            <button type="submit" class="button">Get Badge Code</button>
+        </form>
+        <div class="badge-link-container" id="badgeLinks" style="display: none;">
+            <div class="embed-container">
+                <div class="embed-box">
+                    <div class="embed-title">Markdown:</div>
+                    <div class="embed-content">
+                        <div id="markdownEmbed" class="embed-code"></div>
+                        <button class="copy-button" onclick="copyToClipboard('markdownEmbed')">Copy</button>
+                    </div>
                 </div>
-            </div>
-            <div class="embed-box">
-                <div class="embed-title">HTML:</div>
-                <div class="embed-content">
-                    <div id="htmlEmbed" class="embed-code"></div>
-                    <button class="copy-button" onclick="copyToClipboard('htmlEmbed')">Copy</button>
+                <div class="embed-box">
+                    <div class="embed-title">HTML:</div>
+                    <div class="embed-content">
+                        <div id="htmlEmbed" class="embed-code"></div>
+                        <button class="copy-button" onclick="copyToClipboard('htmlEmbed')">Copy</button>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
-
-<div id="copyNotification" class="copy-notification">Code copied to clipboard!</div>
+</main>
 
 <footer>
     Created by <a href="https://github.com/andrew-pavlov-ua" target="_blank">Andrew Pavlov</a>
 </footer>
 
 <script>
+    function starRepo() {
+        window.open("https://github.com/andrew-pavlov-ua/LeetCode-Widget", "_blank");
+    }
+
     document.getElementById('usernameForm').addEventListener('submit', function(event) {
         event.preventDefault();
 
@@ -68,17 +64,11 @@
         const badgeUrl = `https://andrewpavlov.org/lcb/api/slug/${username}/badge.svg`;
         const redirectUrl = `https://www.andrewpavlov.org/lcb/${username}/redirect`;
 
-        // Generate Markdown Embed Code
         document.getElementById('markdownEmbed').textContent = `[![LeetCode Badge](${badgeUrl})](${redirectUrl})`;
-
-        // Generate HTML Embed Code
         document.getElementById('htmlEmbed').textContent = `<a href="${redirectUrl}" target="_blank"><img src="${badgeUrl}" alt="LeetCode Badge"></a>`;
-
-        // Show the badge link container
         document.getElementById('badgeLinks').style.display = 'block';
     });
 
-    // Function to copy text to clipboard
     function copyToClipboard(elementId) {
         const text = document.getElementById(elementId).textContent;
         const tempInput = document.createElement('textarea');
@@ -87,25 +77,7 @@
         tempInput.select();
         document.execCommand('copy');
         document.body.removeChild(tempInput);
-        
-        showCopyNotification();
-    }
-
-    // Show copy notification
-    function showCopyNotification() {
-        const notification = document.getElementById('copyNotification');
-        notification.style.display = 'block';
-        setTimeout(() => {
-            notification.style.opacity = '1';
-            setTimeout(() => {
-                notification.style.opacity = '0';
-                setTimeout(() => {
-                    notification.style.display = 'none';
-                }, 500);
-            }, 2000);
-        }, 10);
     }
 </script>
-
 </body>
 </html>
