@@ -1,0 +1,162 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body,
+html {
+    height: 100%;
+    font-family: Arial, sans-serif;
+    background: linear-gradient(180deg, #f0f0f0 60%, #e8e8e8);
+    display: flex;
+    flex-direction: column;
+}
+
+header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+    background-color: #ffffffcc;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+    color: #555555;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #555555;
+}
+
+.logo img {
+    width: 40px;
+    height: 40px;
+}
+
+.github-link {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: #555555;
+    text-decoration: none;
+    font-size: 1rem;
+}
+
+.github-link:hover {
+    text-decoration: underline;
+    color: #007bff;
+}
+
+.github-star {
+    background-color: #f6f8fa;
+    border: 1px solid #d1d5da;
+    color: #24292f;
+    font-size: 1rem;
+    padding: 8px 16px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.3s, border 0.3s;
+}
+
+.github-star:hover {
+    background-color: #e1e4e8;
+    border-color: #c8d1d8;
+}
+
+.github-star img {
+    width: 16px;
+    height: 16px;
+}
+
+main {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    padding-top: 100px;
+    text-align: center;
+}
+
+h1 {
+    font-size: 2.5rem;
+    color: #333;
+    margin-bottom: 30px;
+}
+
+.stats-container {
+    margin-top: 40px;
+    padding: 20px;
+    width: 80%;
+    max-width: 400px;
+    background-color: #ffffff;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    text-align: left;
+}
+
+.stats-title {
+    font-size: 1.3rem;
+    font-weight: bold;
+    margin-bottom: 15px;
+    text-align: center;
+}
+
+.stats-box p {
+    font-size: 1rem;
+    margin: 15px 0;
+    color: #555;
+}
+
+.button-container {
+    margin-top: 50px;
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+}
+
+.button {
+    padding: 12px 25px;
+    font-size: 1rem;
+    color: #fff;
+    background-color: #007bff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.button:hover {
+    background-color: #0056b3;
+}
+
+footer {
+    text-align: center;
+    padding: 10px 0;
+    background-color: #f8f8f8;
+    color: #888;
+    font-size: 0.9rem;
+    margin-top: auto;
+}
+
+footer a {
+    color: #007bff;
+    text-decoration: none;
+}
+
+footer a:hover {
+    text-decoration: underline;
+}

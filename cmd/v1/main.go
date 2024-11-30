@@ -49,7 +49,9 @@ func main() {
 
 	webController := controllers.NewWebController(userService, visitsService)
 
-	r.GET("/", webController.ReturnIndex)                                            // Returning main index.html
+	r.GET("/", webController.ReturnIndex)                                         // Returning main index.html
+	r.GET(".redirect-page/:leetcode_user_slug", webController.ReturnRedirectPage) // Redirect page
+
 	r.GET("/api/slug/:leetcode_user_slug/badge.svg", webController.StatsBadgeBySlug) // Starting with badge creation
 	r.GET("/:leetcode_user_slug/redirect", webController.VisitsCountRedirect)        // Processing profile view
 	// r.GET("/lcb/api/cw/id/:cw_user_id/stats", webController.ReturnCWStatsById)

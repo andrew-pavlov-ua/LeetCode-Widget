@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LeetCode Redirect</title>
+    <link rel="shortcut icon" href="assets/images/site_ico.ico" type="image/x-icon">
+    <link rel="stylesheet" type="text/css" href="style/redirect_page_style.css" />
+</head>
+<body>
+<header>
+    <div class="logo">
+        <img src="assets/images/site_ico.ico" alt="Logo">
+        LeetCode Badge
+    </div>
+    <a class="github-link" href="https://github.com/andrew-pavlov-ua/LeetCode-Widget" target="_blank"> 
+        <button class="github-star"> 
+            <img src="assets/images/github_logo.png" alt="GitHub logo"> 
+            Star Project
+        </button> 
+    </a>
+</header>
+
+<main>
+    <h1>Redirecting to LeetCode Profile</h1>
+    <!-- Добавляем элемент для отображения ника -->
+    <h2 id="username"></h2>
+    <div class="stats-container">
+        <div class="stats-title">Your Profile Visits Statistics</div>
+        <div id="profileStats" class="stats-box">
+            <a href="https://lc.andrewpavlov.org/MURASAME_/redirect-page" target="_blank">
+                <img src="https://lc.andrewpavlov.org/api/slug/MURASAME_/statsBadge.svg" alt="LeetCode Badge">
+            </a>
+        </div>
+    </div>
+    <div class="button-container">
+        <button class="button" onclick="redirectToMain()">Add Badge to Your Profile</button>
+        <button class="button" id="redirectToLeetCode">Go to LeetCode Profile</button>
+    </div>
+</main>
+
+<footer>
+    Created by <a href="https://github.com/andrew-pavlov-ua" target="_blank">Andrew Pavlov</a>
+</footer>
+
+<script>
+    const username = window.location.pathname.split('/').filter(Boolean).pop(); // Извлекаем ник из URL
+    const statsUrl = `https://andrewpavlov.org/lcb/api/slug/${username}/stats`;
+    const leetCodeProfileUrl = `https://leetcode.com/${username}`;
+    
+    // Устанавливаем ник под заголовком
+    document.getElementById('username').textContent = `User: ${username}`;
+
+    // Загружаем статистику профиля
+    fetch(statsUrl)
+        .then(response => response.json())
+        .then(data => {
+            document.getElementById('visitCount').textContent = data.visits || 0;
+        })
+        .catch(() => {
+            document.getElementById('visitCount').textContent = "Error loading stats";
+        });
+
+    // Перенаправление на главную страницу проекта
+    function redirectToMain() {
+        window.location.href = 'https://andrewpavlov.org/lcb/';
+    }
+
+    // Перенаправление на профиль LeetCode
+    document.getElementById('redirectToLeetCode').addEventListener('click', function() {
+        window.location.href = leetCodeProfileUrl;
+    });
+
+</script>
+</body>
+</html>

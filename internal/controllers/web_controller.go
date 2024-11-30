@@ -25,10 +25,14 @@ func (c *WebController) ReturnIndex(ctx *gin.Context) {
 	ctx.HTML(http.StatusOK, "index.html", gin.H{})
 }
 
+func (c *WebController) ReturnRedirectPage(ctx *gin.Context) {
+	ctx.HTML(http.StatusOK, "redirect_page.html", gin.H{})
+}
+
 func (c *WebController) StatsBadgeBySlug(ctx *gin.Context) {
 	// Init userNotFound badge and getting userSlug (Leetcode id) from the url
 	var badge []byte
-	var visitStats v1.VisitsStats
+	// var visitStats v1.VisitsStats
 	logo_path := "public/assets/images/logo_base64.txt"
 	userSlug := ctx.Param("leetcode_user_slug")
 
@@ -45,20 +49,20 @@ func (c *WebController) StatsBadgeBySlug(ctx *gin.Context) {
 			MediumWidth: c.CalculateWidth(userData.MediumCount, v1.MediumMaxValue),
 			HardWidth:   c.CalculateWidth(userData.HardCount, v1.HardMaxValue)}
 
-		// Founding user's lc vivsits count
-		user_id, err := c.userService.GetUserIdBySlug(ctx, userSlug)
-		if err != nil {
-			fmt.Println("StatsBadgeBySlug: error getting userId", err)
-		}
+		// // Founding user's lc vivsits count
+		// user_id, err := c.userService.GetUserIdBySlug(ctx, userSlug)
+		// if err != nil {
+		// 	fmt.Println("StatsBadgeBySlug: error getting userId", err)
+		// }
 
-		visitStats, err = c.visitsService.GetFullStatsCount(ctx, user_id)
-		if err != nil {
-			fmt.Println("StatsBadgeBySlug: error getting full count stats", err)
-		}
+		// // visitStats, err = c.visitsService.GetFullStatsCount(ctx, user_id)
+		// if err != nil {
+		// 	fmt.Println("StatsBadgeBySlug: error getting full count stats", err)
+		// }
 
 		logo_base64 := services.ReadFile(logo_path)
 
-		badge = []byte(v1.Badge(*userData, barsWidth, visitStats, logo_base64))
+		badge = []byte(v1.Badge(*userData, barsWidth, logo_base64))
 	}
 
 	c.renderImage(ctx, badge)

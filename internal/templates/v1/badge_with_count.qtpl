@@ -1,4 +1,4 @@
-{% func Badge(stats LcUserData, barsWidth BarsWidth, logo_base64 string) %}
+{% func BadgeWithCount(stats LcUserData, barsWidth BarsWidth, visitStats VisitsStats, logo_base64 string) %}
   <svg width="500" height="240" viewBox="0 0 500 240" fill="none" xmlns="http://www.w3.org/2000/svg">
     <!-- Background -->
     <rect width="500" height="240" rx="12" fill="#1E1E1E"></rect>
@@ -47,5 +47,25 @@
       <rect x="240" y="160" width="{%f barsWidth.HardWidth %}" height="10" fill="#F44336" rx="5"></rect>
       <text x="470" y="170" font-size="14" fill="#FFF" text-anchor="end">{%dl stats.HardCount %} / {%dl HardMaxValue %}</text>
     </g>
+
+    <!-- Profile Visit Stats at the bottom -->
+<g font-family="Verdana, sans-serif" fill="#FFF">
+  <!-- Daily Visits -->
+  <text x="20" y="210" font-size="14">Daily Visits:</text>
+  <text x="20" y="230" font-size="14" font-weight="bold">{%dl visitStats.DailyVisits %}</text>
+  
+  <!-- Weekly Visits -->
+  <text x="120" y="210" font-size="14">Weekly Visits:</text>
+  <text x="120" y="230" font-size="14" font-weight="bold">{%dl visitStats.WeeklyVisits %}</text>
+  
+  <!-- Monthly Visits -->
+  <text x="240" y="210" font-size="14">Monthly Visits:</text>
+  <text x="240" y="230" font-size="14" font-weight="bold">{%dl visitStats.MonthlyVisits %}</text>
+  
+  <!-- Total Visits -->
+  <text x="450" y="210" font-size="14" text-anchor="end">Total Visits:</text>
+  <text x="370" y="230" font-size="14" font-weight="bold">{%dl visitStats.TotalVisits %}</text>
+</g>
+
   </svg>
 {% endfunc %}

@@ -61,8 +61,8 @@
         event.preventDefault();
 
         const username = document.getElementById('usernameInput').value.trim();
-        const badgeUrl = `https://andrewpavlov.org/lcb/api/slug/${username}/badge.svg`;
-        const redirectUrl = `https://www.andrewpavlov.org/lcb/${username}/redirect`;
+        const badgeUrl = `https://lc.andrewpavlov.org/api/slug/${username}/badge.svg`;
+        const redirectUrl = `https://lc.andrewpavlov.org/${username}/redirect`;
 
         document.getElementById('markdownEmbed').textContent = `[![LeetCode Badge](${badgeUrl})](${redirectUrl})`;
         document.getElementById('htmlEmbed').textContent = `<a href="${redirectUrl}" target="_blank"><img src="${badgeUrl}" alt="LeetCode Badge"></a>`;

@@ -18,7 +18,7 @@ var (
 )
 
 //line internal/templates/v1/badge.qtpl:1
-func StreamBadge(qw422016 *qt422016.Writer, stats LcUserData, barsWidth BarsWidth, visitStats VisitsStats, logo_base64 string) {
+func StreamBadge(qw422016 *qt422016.Writer, stats LcUserData, barsWidth BarsWidth, logo_base64 string) {
 //line internal/templates/v1/badge.qtpl:1
 	qw422016.N().S(`
   <svg width="500" height="240" viewBox="0 0 500 240" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -125,69 +125,33 @@ func StreamBadge(qw422016 *qt422016.Writer, stats LcUserData, barsWidth BarsWidt
 //line internal/templates/v1/badge.qtpl:48
 	qw422016.N().S(`</text>
     </g>
-
-    <!-- Profile Visit Stats at the bottom -->
-<g font-family="Verdana, sans-serif" fill="#FFF">
-  <!-- Daily Visits -->
-  <text x="20" y="210" font-size="14">Daily Visits:</text>
-  <text x="20" y="230" font-size="14" font-weight="bold">`)
-//line internal/templates/v1/badge.qtpl:55
-	qw422016.N().DL(visitStats.DailyVisits)
-//line internal/templates/v1/badge.qtpl:55
-	qw422016.N().S(`</text>
-  
-  <!-- Weekly Visits -->
-  <text x="120" y="210" font-size="14">Weekly Visits:</text>
-  <text x="120" y="230" font-size="14" font-weight="bold">`)
-//line internal/templates/v1/badge.qtpl:59
-	qw422016.N().DL(visitStats.WeeklyVisits)
-//line internal/templates/v1/badge.qtpl:59
-	qw422016.N().S(`</text>
-  
-  <!-- Monthly Visits -->
-  <text x="240" y="210" font-size="14">Monthly Visits:</text>
-  <text x="240" y="230" font-size="14" font-weight="bold">`)
-//line internal/templates/v1/badge.qtpl:63
-	qw422016.N().DL(visitStats.MonthlyVisits)
-//line internal/templates/v1/badge.qtpl:63
-	qw422016.N().S(`</text>
-  
-  <!-- Total Visits -->
-  <text x="450" y="210" font-size="14" text-anchor="end">Total Visits:</text>
-  <text x="370" y="230" font-size="14" font-weight="bold">`)
-//line internal/templates/v1/badge.qtpl:67
-	qw422016.N().DL(visitStats.TotalVisits)
-//line internal/templates/v1/badge.qtpl:67
-	qw422016.N().S(`</text>
-</g>
-
   </svg>
 `)
-//line internal/templates/v1/badge.qtpl:71
+//line internal/templates/v1/badge.qtpl:51
 }
 
-//line internal/templates/v1/badge.qtpl:71
-func WriteBadge(qq422016 qtio422016.Writer, stats LcUserData, barsWidth BarsWidth, visitStats VisitsStats, logo_base64 string) {
-//line internal/templates/v1/badge.qtpl:71
+//line internal/templates/v1/badge.qtpl:51
+func WriteBadge(qq422016 qtio422016.Writer, stats LcUserData, barsWidth BarsWidth, logo_base64 string) {
+//line internal/templates/v1/badge.qtpl:51
 	qw422016 := qt422016.AcquireWriter(qq422016)
-//line internal/templates/v1/badge.qtpl:71
-	StreamBadge(qw422016, stats, barsWidth, visitStats, logo_base64)
-//line internal/templates/v1/badge.qtpl:71
+//line internal/templates/v1/badge.qtpl:51
+	StreamBadge(qw422016, stats, barsWidth, logo_base64)
+//line internal/templates/v1/badge.qtpl:51
 	qt422016.ReleaseWriter(qw422016)
-//line internal/templates/v1/badge.qtpl:71
+//line internal/templates/v1/badge.qtpl:51
 }
 
-//line internal/templates/v1/badge.qtpl:71
-func Badge(stats LcUserData, barsWidth BarsWidth, visitStats VisitsStats, logo_base64 string) string {
-//line internal/templates/v1/badge.qtpl:71
+//line internal/templates/v1/badge.qtpl:51
+func Badge(stats LcUserData, barsWidth BarsWidth, logo_base64 string) string {
+//line internal/templates/v1/badge.qtpl:51
 	qb422016 := qt422016.AcquireByteBuffer()
-//line internal/templates/v1/badge.qtpl:71
-	WriteBadge(qb422016, stats, barsWidth, visitStats, logo_base64)
-//line internal/templates/v1/badge.qtpl:71
+//line internal/templates/v1/badge.qtpl:51
+	WriteBadge(qb422016, stats, barsWidth, logo_base64)
+//line internal/templates/v1/badge.qtpl:51
 	qs422016 := string(qb422016.B)
-//line internal/templates/v1/badge.qtpl:71
+//line internal/templates/v1/badge.qtpl:51
 	qt422016.ReleaseByteBuffer(qb422016)
-//line internal/templates/v1/badge.qtpl:71
+//line internal/templates/v1/badge.qtpl:51
 	return qs422016
-//line internal/templates/v1/badge.qtpl:71
+//line internal/templates/v1/badge.qtpl:51
 }
