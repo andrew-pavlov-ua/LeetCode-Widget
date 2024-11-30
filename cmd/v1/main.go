@@ -42,6 +42,7 @@ func main() {
 	var visitsService = services.NewVisistsStatsService(repository)
 
 	r := gin.Default()
+	r.Use(gin.Logger())
 	r.LoadHTMLGlob("public/view/*.html")
 	r.Static("/assets/images", "./public/assets/images")
 	r.Static("/style", "./public/view/style")
@@ -50,7 +51,7 @@ func main() {
 	webController := controllers.NewWebController(userService, visitsService)
 
 	r.GET("/", webController.ReturnIndex)                                         // Returning main index.html
-	r.GET(".redirect-page/:leetcode_user_slug", webController.ReturnRedirectPage) // Redirect page
+	r.GET("/redirect-page/:leetcode_user_slug", webController.ReturnRedirectPage) // Redirect page
 
 	r.GET("/api/slug/:leetcode_user_slug/badge.svg", webController.StatsBadgeBySlug) // Starting with badge creation
 	r.GET("/:leetcode_user_slug/redirect", webController.VisitsCountRedirect)        // Processing profile view
