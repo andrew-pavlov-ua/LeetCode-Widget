@@ -46,38 +46,74 @@
             </div>
         </div>
     </div>
+
+
 </main>
+
+<div id="copyNotification" class="copy-notification">Code copied to clipboard!</div>
 
 <footer>
     Created by <a href="https://github.com/andrew-pavlov-ua" target="_blank">Andrew Pavlov</a>
 </footer>
 
 <script>
-    function starRepo() {
-        window.open("https://github.com/andrew-pavlov-ua/LeetCode-Widget", "_blank");
-    }
-
+    // Form submission handler
     document.getElementById('usernameForm').addEventListener('submit', function(event) {
-        event.preventDefault();
+        event.preventDefault(); // Prevent the default form submission
 
         const username = document.getElementById('usernameInput').value.trim();
-        const badgeUrl = `https://lc.andrewpavlov.org/api/slug/${username}/badge.svg`;
-        const redirectUrl = `https://lc.andrewpavlov.org/${username}/redirect`;
+        if (username === "") {
+            alert("Please enter your LeetCode username.");
+            return;
+        }
 
+        // Generate the badge URL and redirect URL
+        const badgeUrl = `https://andrewpavlov.org/lcb/api/slug/${username}/badge.svg`;
+        const redirectUrl = `https://www.andrewpavlov.org/lcb/${username}/redirect`;
+
+        // Generate Markdown embed code
         document.getElementById('markdownEmbed').textContent = `[![LeetCode Badge](${badgeUrl})](${redirectUrl})`;
+
+        // Generate HTML embed code
         document.getElementById('htmlEmbed').textContent = `<a href="${redirectUrl}" target="_blank"><img src="${badgeUrl}" alt="LeetCode Badge"></a>`;
+
+        // Display the container with the embed codes
         document.getElementById('badgeLinks').style.display = 'block';
     });
 
+    // Function to copy text to clipboard
     function copyToClipboard(elementId) {
         const text = document.getElementById(elementId).textContent;
+
+        // Create a temporary textarea element to hold the text
         const tempInput = document.createElement('textarea');
-        tempInput.value = text;
-        document.body.appendChild(tempInput);
-        tempInput.select();
-        document.execCommand('copy');
-        document.body.removeChild(tempInput);
+        tempInput.value = text; // Set the value of the textarea to the text
+        document.body.appendChild(tempInput); // Append the textarea to the DOM
+        tempInput.select(); // Select the text inside the textarea
+        document.execCommand('copy'); // Copy the selected text to clipboard
+        document.body.removeChild(tempInput); // Remove the textarea from the DOM
+
+        showCopyNotification(); // Show the notification for successful copy
     }
+
+    // Function to show the copy notification
+    function showCopyNotification() {
+    const notification = document.getElementById('copyNotification');
+    notification.style.display = 'block'; // Делает уведомление видимым
+    notification.style.opacity = '1'; // Устанавливает полную непрозрачность
+    notification.style.transform = 'translateY(0)'; // Сбрасывает смещение
+
+    // Скрыть уведомление через 2 секунды
+    setTimeout(() => {
+        notification.style.opacity = '0'; // Плавное исчезновение
+        notification.style.transform = 'translateY(-20px)'; // Смещение вверх
+        setTimeout(() => {
+            notification.style.display = 'none'; // Полностью скрыть
+        }, 300); // Дождаться завершения анимации
+    }, 2000); // Уведомление отображается 2 секунды
+}
+
 </script>
+
 </body>
 </html>

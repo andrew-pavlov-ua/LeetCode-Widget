@@ -1,3 +1,5 @@
+POSTGRES_DSN=postgresql://lc_badge_user:lc_badge_pass2707@lc_badge_postgres:5432/lc_badge?sslmode=disable
+
 env-up:
 	docker-compose -f docker-compose.yml --env-file .env up -d
 
