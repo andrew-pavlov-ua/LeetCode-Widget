@@ -38,6 +38,7 @@ func (s *LcUserService) GetOrCreate(ctx context.Context, userSlug string) (*v1.L
 		if err != nil {
 			return userData, fmt.Errorf("GetOrCreate: error inserting new user_stats in user_service: %w", err)
 		}
+
 		return userData, nil
 	} else if deprecatedStats {
 		matchedUser, err := leetcode_api.MatchedUserMapToUserProfile(userSlug)

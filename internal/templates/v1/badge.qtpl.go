@@ -23,7 +23,7 @@ func StreamBadge(qw422016 *qt422016.Writer, stats LcUserData, barsWidth BarsWidt
 	qw422016.N().S(`
   <svg width="500" height="240" viewBox="0 0 500 240" fill="none" xmlns="http://www.w3.org/2000/svg">
     <!-- Background -->
-    <rect width="500" height="240" rx="12" fill="#1E1E1E"></rect>
+    <rect width="500" height="200" rx="12" fill="#1E1E1E"></rect>
 
     <!-- LeetCode Logo -->
     <g>

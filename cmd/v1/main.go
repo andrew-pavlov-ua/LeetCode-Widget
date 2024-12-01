@@ -44,8 +44,6 @@ func main() {
 	r := gin.Default()
 	r.Use(gin.Logger())
 	r.LoadHTMLGlob("public/view/*.html")
-	r.Static("/assets/images", "./public/assets/images")
-	r.Static("/style", "./public/view/style")
 	// r.Static("/.well-known/acme-challenge", "./.well-known/acme-challenge")
 
 	webController := controllers.NewWebController(userService, visitsService)
@@ -56,6 +54,18 @@ func main() {
 	r.GET("/api/slug/:leetcode_user_slug/badge.svg", webController.StatsBadgeBySlug) // Starting with badge creation
 	r.GET("/:leetcode_user_slug/redirect", webController.VisitsCountRedirect)        // Processing profile view
 	// r.GET("/lcb/api/cw/id/:cw_user_id/stats", webController.ReturnCWStatsById)
+
+	// CSS
+	r.Static("/style", "./public/view/style")
+	r.Static("/redirect-page/style", "./public/view/style")
+	// Assets
+	r.Static("/assets/images", "./public/assets/images")
+	r.Static("/redirect-page/assets/images", "./public/assets/images")
+	r.Static("/assets/js", "./public/assets/js")
+	r.Static("/redirect-page/assets/js", "./public/assets/js")
+	//Icons
+	r.Static("/site_ico.ico", "./public/assets/images/site_ico.ico")
+	r.Static("/redirect-page/site_ico.ico", "./public/assets/images/site_ico.ico")
 
 	server.Run(r.Handler())
 }

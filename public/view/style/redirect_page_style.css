@@ -96,18 +96,6 @@ h1 {
     margin-bottom: 30px;
 }
 
-.stats-container {
-    margin-top: 40px;
-    padding: 20px;
-    width: 80%;
-    max-width: 400px;
-    background-color: #ffffff;
-    border: 1px solid #ddd;
-    border-radius: 10px;
-    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-    text-align: left;
-}
-
 .stats-title {
     font-size: 1.3rem;
     font-weight: bold;
@@ -159,4 +147,31 @@ footer a {
 
 footer a:hover {
     text-decoration: underline;
+}
+
+.stats-container {
+    text-align: center;
+    margin: 20px 0;
+}
+
+.stats-row {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 15px;
+    font-family: Arial, sans-serif;
+    font-size: 16px;
+    color: #333;
+}
+
+.stat {
+    padding: 5px 10px;
+    background: #f5f5f5;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.stat-value {
+    font-weight: bold;
+    margin-left: 5px;
 }

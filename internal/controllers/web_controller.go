@@ -26,13 +26,30 @@ func (c *WebController) ReturnIndex(ctx *gin.Context) {
 }
 
 func (c *WebController) ReturnRedirectPage(ctx *gin.Context) {
-	ctx.HTML(http.StatusOK, "redirect_page.html", gin.H{})
+	userSlug := ctx.Param("leetcode_user_slug")
+	// Founding user's lc vivsits count
+	user_id, err := c.userService.GetUserIdBySlug(ctx, userSlug)
+	if err != nil {
+		fmt.Println("ReturnRedirectPage: error getting userId", err)
+	}
+
+	visitStats, err := c.visitsService.GetFullStatsCount(ctx, user_id)
+	if err != nil {
+		fmt.Printf("ReturnRedirectPage: error getting visit stats (Id= %d) %e", user_id, err)
+	}
+
+	fmt.Println("USer visit stats: ", visitStats)
+
+	ctx.HTML(http.StatusOK, "redirect_page.html", gin.H{
+		"userSlug":      userSlug,
+		"dailyVisits":   visitStats.DailyVisits,
+		"weeklyVisits":  visitStats.WeeklyVisits,
+		"monthlyVisits": visitStats.MonthlyVisits,
+		"totalVisits":   visitStats.TotalVisits})
 }
 
 func (c *WebController) StatsBadgeBySlug(ctx *gin.Context) {
-	// Init userNotFound badge and getting userSlug (Leetcode id) from the url
 	var badge []byte
-	// var visitStats v1.VisitsStats
 	logo_path := "public/assets/images/logo_base64.txt"
 	userSlug := ctx.Param("leetcode_user_slug")
 
@@ -48,17 +65,6 @@ func (c *WebController) StatsBadgeBySlug(ctx *gin.Context) {
 			EasyWidth:   c.CalculateWidth(userData.EasyCount, v1.EasyMaxValue),
 			MediumWidth: c.CalculateWidth(userData.MediumCount, v1.MediumMaxValue),
 			HardWidth:   c.CalculateWidth(userData.HardCount, v1.HardMaxValue)}
-
-		// // Founding user's lc vivsits count
-		// user_id, err := c.userService.GetUserIdBySlug(ctx, userSlug)
-		// if err != nil {
-		// 	fmt.Println("StatsBadgeBySlug: error getting userId", err)
-		// }
-
-		// // visitStats, err = c.visitsService.GetFullStatsCount(ctx, user_id)
-		// if err != nil {
-		// 	fmt.Println("StatsBadgeBySlug: error getting full count stats", err)
-		// }
 
 		logo_base64 := services.ReadFile(logo_path)
 
@@ -91,7 +97,7 @@ func (c *WebController) VisitsCountRedirect(ctx *gin.Context) {
 	redirectUrl := fmt.Sprintf("https://leetcode.com/u/%s/", userSlug)
 
 	// Adding 1 to current hour's profile visits
-	err = c.visitsService.InsertCount(ctx, userId)
+	err = c.visitsService.Upsert(ctx, userId)
 	if err != nil {
 		fmt.Println("VisitsCountRedirect: error redirecting user", err)
 	}

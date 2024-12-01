@@ -20,7 +20,7 @@ func NewVisistsStatsService(repository *db.Repository) *VisitsStatsService {
 }
 
 func (s *VisitsStatsService) Upsert(ctx context.Context, userId int64) error {
-	now := time.Now().UTC()
+	now := time.Now().UTC().Truncate(time.Hour)
 
 	err := s.repository.Queries().ProfileHourlyVisitsStatsUpsert(ctx, dbs.ProfileHourlyVisitsStatsUpsertParams{
 		UserID: userId,
@@ -32,17 +32,6 @@ func (s *VisitsStatsService) Upsert(ctx context.Context, userId int64) error {
 
 func (s *VisitsStatsService) TotalCount(ctx context.Context, userId int64) (int64, error) {
 	return s.repository.Queries().TotalCount(ctx, userId)
-}
-
-func (s *VisitsStatsService) InsertCount(ctx context.Context, userId int64) error {
-	now := time.Now().UTC().Truncate(time.Hour)
-
-	err := s.repository.Queries().ProfileHourlyVisitsStatsUpsert(ctx, dbs.ProfileHourlyVisitsStatsUpsertParams{
-		UserID: userId,
-		Time:   now,
-		Count:  1,
-	})
-	return err
 }
 
 func (s *VisitsStatsService) GetFullStatsCount(ctx context.Context, userId int64) (v1.VisitsStats, error) {
