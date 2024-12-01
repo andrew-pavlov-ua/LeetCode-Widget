@@ -5,7 +5,7 @@ This project is a simple web application that allows users to generate a custom 
 ### Project web page: https://andrewpavlov.org/lcb
 
 ## Example
-[![LeetCode Badge](https://andrewpavlov.org/lcb/api/slug/MURASAME_/badge.svg)](https://andrewpavlov.org/lcb/MURASAME_/redirect)
+[![LeetCode Badge](https://lc.andrewpavlov.org/api/slug/MURASAME_/badge.svg)](https://lc.andrewpavlov.org/MURASAME_/redirect)
 
 ## Features
 
