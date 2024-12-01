@@ -46,8 +46,6 @@
             </div>
         </div>
     </div>
-
-
 </main>
 
 <div id="copyNotification" class="copy-notification">Code copied to clipboard!</div>
@@ -68,8 +66,8 @@
         }
 
         // Generate the badge URL and redirect URL
-        const badgeUrl = `https://andrewpavlov.org/lcb/api/slug/${username}/badge.svg`;
-        const redirectUrl = `https://www.andrewpavlov.org/lcb/${username}/redirect`;
+        const badgeUrl = `https://lc.andrewpavlov.org/api/slug/${username}/badge.svg`;
+        const redirectUrl = `https://lc.andrewpavlov.org/${username}/redirect`;
 
         // Generate Markdown embed code
         document.getElementById('markdownEmbed').textContent = `[![LeetCode Badge](${badgeUrl})](${redirectUrl})`;
@@ -108,7 +106,7 @@
         notification.style.transform = 'translateY(-20px)'; 
         setTimeout(() => {
             notification.style.display = 'none';
-        }, 300); /
+        }, 300); 
     }, 2000); 
 }
 
