@@ -5,5 +5,5 @@
 app.log
 .docker/volumes/
 cw_api
-cw_api_test
+internal/tests/cw_api_test
 Makefile

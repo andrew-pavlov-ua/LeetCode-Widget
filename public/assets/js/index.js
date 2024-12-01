@@ -2,7 +2,7 @@
 document.getElementById('usernameForm').addEventListener('submit', function(event) {
     event.preventDefault(); // Prevent the default form submission
 
-    const username = document.getElementById('usernameInput').value.trim();
+    const username = document.getElementById('usernameInput').value.trim().toLowerCase();
     if (username === "") {
         alert("Please enter your LeetCode username.");
         return;
