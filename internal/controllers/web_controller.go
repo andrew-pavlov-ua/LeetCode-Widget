@@ -6,6 +6,7 @@ import (
 	v1 "cmd/internal/templates/v1"
 	"fmt"
 	"net/http"
+	"strings"
 
 	"github.com/gin-gonic/gin"
 )
@@ -26,7 +27,7 @@ func (c *WebController) ReturnIndex(ctx *gin.Context) {
 }
 
 func (c *WebController) ReturnRedirectPage(ctx *gin.Context) {
-	userSlug := ctx.Param("leetcode_user_slug")
+	userSlug := strings.ToLower(ctx.Param("leetcode_user_slug"))
 	// Founding user's lc vivsits count
 	user_id, err := c.userService.GetUserIdBySlug(ctx, userSlug)
 	if err != nil {
@@ -51,7 +52,7 @@ func (c *WebController) ReturnRedirectPage(ctx *gin.Context) {
 func (c *WebController) StatsBadgeBySlug(ctx *gin.Context) {
 	var badge []byte
 	logo_path := "public/assets/images/logo_base64.txt"
-	userSlug := ctx.Param("leetcode_user_slug")
+	userSlug := strings.ToLower(ctx.Param("leetcode_user_slug"))
 
 	userData, err := c.userService.GetOrCreate(ctx.Request.Context(), userSlug)
 
@@ -91,7 +92,7 @@ func (c *WebController) VisitsCountRedirect(ctx *gin.Context) {
 	userSlug := ctx.Param("leetcode_user_slug")
 	userId, err := c.userService.GetUserIdBySlug(ctx, userSlug)
 	if err != nil {
-		fmt.Println("VisitsCountRedirect: error getting userId", err)
+		fmt.Printf("VisitsCountRedirect: error getting userId with slug: %s: %e", userSlug, err)
 	}
 
 	redirectUrl := fmt.Sprintf("https://leetcode.com/u/%s/", userSlug)
