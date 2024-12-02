@@ -3,6 +3,7 @@ package leetcode_api
 import (
 	"context"
 	"fmt"
+	"strings"
 
 	"github.com/machinebox/graphql"
 )
@@ -64,7 +65,7 @@ func MatchedUserMapToUserProfile(userSlug string) (*UserProfileData, error) {
 
 	profileData := UserProfileData{
 		Username: _username,
-		UserSlug: _userSlug,
+		UserSlug: strings.ToLower(_userSlug),
 		Rank:     _rank,
 	}
 

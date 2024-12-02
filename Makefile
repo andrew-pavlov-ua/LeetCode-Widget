@@ -1,4 +1,5 @@
-POSTGRES_DSN="postgresql://lc_badge_user:lc_badge_pass@lc_badge_postgres:5432/lc_badge?sslmode=disable"
+POSTGRES_DSN="postgresql://lc_user:lc_pass@lc_badge_postgres:5432/lc_badge?sslmode=disable"
+
 
 env-up:
 	docker-compose -f docker-compose.yml --env-file .env up -d
@@ -55,3 +56,6 @@ qtc-gen:
 
 run-tests:
 	docker exec lc_badge_app go test -v ./...
+
+connect-psql-cont:
+	docker exec -it lc_badge_postgres bash

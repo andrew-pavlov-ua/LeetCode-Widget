@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"log"
+	"net/http"
 	"os"
 
 	"cmd/internal/controllers"
@@ -53,6 +54,8 @@ func main() {
 
 	r.GET("/api/slug/:leetcode_user_slug/badge.svg", webController.StatsBadgeBySlug) // Starting with badge creation
 	r.GET("/:leetcode_user_slug/redirect", webController.VisitsCountRedirect)        // Processing profile view
+	r.GET("/favicon.ico", func(c *gin.Context) { c.Status(http.StatusNoContent) })
+
 	// r.GET("/lcb/api/cw/id/:cw_user_id/stats", webController.ReturnCWStatsById)
 
 	// CSS

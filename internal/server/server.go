@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"log"
 	"strings"
+	"time"
 
 	"cmd/internal/env"
 	"crypto/tls"
@@ -40,6 +41,8 @@ func runProduction(handler http.Handler) {
 			GetCertificate: certManager.GetCertificate,
 			MinVersion:     tls.VersionTLS12, // improves cert reputation score at https://www.ssllabs.com/ssltest/
 		},
+		ReadTimeout:  10 * time.Second,
+		WriteTimeout: 10 * time.Second,
 	}
 
 	var g errgroup.Group
@@ -57,8 +60,18 @@ func runProduction(handler http.Handler) {
 
 func runDevelopment(handler http.Handler) {
 	fmt.Println("Started dev")
-	err := http.ListenAndServe(":http", handler)
+	server := &http.Server{
+		Addr:         ":http",
+		Handler:      handler,
+		ReadTimeout:  10 * time.Second,
+		WriteTimeout: 10 * time.Second,
+		IdleTimeout:  120 * time.Second,
+	}
+
+	fmt.Println("Started dev")
+	err := server.ListenAndServe()
 	if err != nil {
 		log.Fatal("runDevelopment: ", err)
 	}
+
 }

@@ -36,7 +36,7 @@ func (c *WebController) ReturnRedirectPage(ctx *gin.Context) {
 
 	visitStats, err := c.visitsService.GetFullStatsCount(ctx, user_id)
 	if err != nil {
-		fmt.Printf("ReturnRedirectPage: error getting visit stats (Id= %d) %e", user_id, err)
+		fmt.Printf("ReturnRedirectPage: error getting visit stats (slug= %s) %e", userSlug, err)
 	}
 
 	fmt.Println("USer visit stats: ", visitStats)
@@ -89,7 +89,7 @@ func (c *WebController) CalculateWidth(count int64, max int64) float64 {
 }
 
 func (c *WebController) VisitsCountRedirect(ctx *gin.Context) {
-	userSlug := ctx.Param("leetcode_user_slug")
+	userSlug := strings.ToLower(ctx.Param("leetcode_user_slug"))
 	userId, err := c.userService.GetUserIdBySlug(ctx, userSlug)
 	if err != nil {
 		fmt.Printf("VisitsCountRedirect: error getting userId with slug: %s: %e", userSlug, err)
