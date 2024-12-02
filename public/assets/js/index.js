@@ -2,7 +2,23 @@
 document.getElementById('usernameForm').addEventListener('submit', function(event) {
     event.preventDefault(); // Prevent the default form submission
 
-    const username = document.getElementById('usernameInput').value.trim().toLowerCase();
+    // Get the input value and trim it
+    let input = document.getElementById('usernameInput').value.trim();
+
+    // Determine if input is a URL or just a username
+    const urlPattern = /^https:\/\/leetcode\.com\/u\/([\w-]+)\/?/i;
+    let username;
+
+
+    
+     if (urlPattern.test(input)) {
+        // Extract username from URL if input is a valid URL
+        username = input.match(urlPattern)[1].toLowerCase();
+    } else {
+        // Otherwise, treat input as username directly
+        username = input.toLowerCase();
+    }
+    
     if (username === "") {
         alert("Please enter your LeetCode username.");
         return;
