@@ -4,6 +4,7 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"sync"
 	"time"
 
 	"cmd/internal/db"
@@ -15,6 +16,7 @@ import (
 )
 
 type LcUserService struct {
+	mutex      sync.Mutex
 	repository *db.Repository
 }
 
@@ -71,6 +73,9 @@ func (s *LcUserService) GetOrCreate(ctx context.Context, userSlug string) (*v1.L
 func (s *LcUserService) UpdateUserStats(ctx context.Context, userData *v1.LcUserData) error {
 	now := time.Now().UTC()
 
+	s.mutex.Lock()
+	defer s.mutex.Unlock()
+
 	err := s.repository.Queries().UpdateLcStats(ctx,
 		dbs.UpdateLcStatsParams{
 			EasySubmits:   userData.EasyCount,
@@ -84,6 +89,9 @@ func (s *LcUserService) UpdateUserStats(ctx context.Context, userData *v1.LcUser
 
 func (s *LcUserService) InsertUserStats(ctx context.Context, userData *v1.LcUserData) error {
 	now := time.Now().UTC()
+
+	s.mutex.Lock()
+	defer s.mutex.Unlock()
 
 	err := s.repository.Queries().InsertStatsInfo(ctx, dbs.InsertStatsInfoParams{
 		Rank:          int64(userData.Rank),
