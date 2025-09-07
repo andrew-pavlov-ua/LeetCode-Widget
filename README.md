@@ -5,7 +5,7 @@ This project is a web application that allows users to generate a custom LeetCod
 ### Project web page: https://lc.andrewpavlov.org/
 
 ## Example
-[![LeetCode Badge](https://lc.andrewpavlov.org/api/slug/MURASAME_/badge.svg)](https://lc.andrewpavlov.org/redirect-page/murasame_)
+[![LeetCode Badge](public/assets/images/lc_badge_example.png)](https://lc.andrewpavlov.org/)
 
 ## Features
 
