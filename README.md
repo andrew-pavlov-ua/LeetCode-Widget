@@ -34,5 +34,10 @@ make app-start
 ## Usage
 Once the application is running, navigate to http://localhost in your web browser. Enter your LeetCode username in the input field, click "Get Badge Link," and you will be provided with a URL to your custom badge. You can also copy the URL using the "Copy URL" button.
 
+## (Optional) Static, serverless fallback
+
+If you ever need a zero-backend version (e.g., Netlify only), you can generate a simple badge via shields.io and link it to your profile:
+
 ## Author
 Created by Andrew Pavlov.
+
