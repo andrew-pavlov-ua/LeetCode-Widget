@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>LeetCode Badge (Static)</title>
+  <meta name="description" content="Generate a simple, serverless LeetCode badge for your README or website." />
+  <style>
+    :root {
+      --bg: #f5f7fb;
+      --card: #ffffff;
+      --text: #222;
+      --muted: #666;
+      --brand: #007bff;
+      --ok: #28a745;
+      --shadow: 0 8px 24px rgba(0,0,0,.08);
+      --radius: 14px;
+    }
+    * { box-sizing: border-box; }
+    html, body { height: 100%; }
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      color: var(--text);
+      background: linear-gradient(180deg, #f0f0f0 60%, #e8e8e8);
+      display: flex;
+      flex-direction: column;
+    }
+    header {
+      position: sticky; top: 0; z-index: 10;
+      backdrop-filter: saturate(180%) blur(8px);
+      background: rgba(255,255,255,.85);
+      border-bottom: 1px solid #e7e7e7;
+    }
+    .nav {
+      max-width: 960px; margin: 0 auto; padding: 12px 16px;
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 12px;
+    }
+    .brand { display: flex; align-items: center; gap: 10px; font-weight: 700; color: #555; }
+    .brand .dot { width: 10px; height: 10px; border-radius: 50%; background: #ffa116; box-shadow: 0 0 0 3px #ffe1b8; }
+    .gh {
+      text-decoration: none; color: #24292f; display: inline-flex; align-items: center; gap: 8px;
+      background: #f6f8fa; border: 1px solid #d1d5da; padding: 8px 14px; border-radius: 8px;
+    }
+    .gh:hover { background:#e9ecf0; }
+
+    main {
+      flex: 1 0 auto; display: flex; align-items: center; justify-content: center; padding: 40px 16px;
+    }
+    .wrap { width: 100%; max-width: 960px; display: grid; gap: 24px; }
+    .hero {
+      display: grid; gap: 10px; justify-items: start;
+    }
+    h1 { font-size: clamp(28px, 5vw, 44px); margin: 0; }
+    .note {
+      background: #fff; border: 1px solid #e7e7e7; border-radius: var(--radius); padding: 12px 14px; color: #444;
+      box-shadow: var(--shadow);
+    }
+    .note strong { color: #111; }
+    .card {
+      background: var(--card); border: 1px solid #e7e7e7; border-radius: var(--radius);
+      box-shadow: var(--shadow); padding: 20px;
+    }
+
+    .form {
+      display: grid; gap: 12px; grid-template-columns: 1fr auto;
+      align-items: center;
+    }
+    .form input[type="text"] {
+      padding: 12px 14px; border: 1px solid #dcdcdc; border-radius: 10px; font-size: 16px; width: 100%;
+      outline: none;
+    }
+    .form input[type="text"]:focus { border-color: var(--brand); box-shadow: 0 0 0 3px rgba(0,123,255,.15); }
+    .btn {
+      background: var(--brand); color: white; border: 0; padding: 12px 16px; border-radius: 10px; cursor: pointer;
+      font-weight: 600;
+    }
+    .btn:hover { filter: brightness(0.95); }
+
+    .embed-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px,1fr)); gap: 16px; margin-top: 12px; }
+    .embed-box { border: 1px solid #e7e7e7; border-radius: 12px; padding: 12px; background: #fff; }
+    .embed-title { font-weight: 700; margin-bottom: 6px; color: #333; }
+    .code {
+      background: #f7f8fa; border: 1px solid #e1e4e8; border-radius: 8px; padding: 10px; font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      overflow-wrap: anywhere; font-size: 13px; min-height: 44px;
+    }
+    .actions { display: flex; gap: 8px; margin-top: 8px; }
+    .copy { background: #007bff; color:#fff; border:0; padding: 8px 10px; border-radius: 8px; cursor:pointer; }
+    .copy:hover { filter: brightness(0.95); }
+    .preview { display:flex; align-items:center; gap:10px; padding: 8px 0 4px; color: var(--muted); }
+    .preview img { height: 20px; }
+
+    .alt {
+      font-size: 14px; color: var(--muted);
+    }
+
+    .toast {
+      position: fixed; right: 20px; top: 20px; background: var(--ok); color: #fff;
+      padding: 10px 14px; border-radius: 10px; box-shadow: var(--shadow);
+      opacity: 0; transform: translateY(-8px); pointer-events: none; transition: .2s ease;
+    }
+    .toast.show { opacity: 1; transform: translateY(0); }
+
+    footer {
+      border-top: 1px solid #e7e7e7; background: #fafafa; color: #666; text-align: center; padding: 12px;
+    }
+    footer a { color: #007bff; text-decoration: none; }
+    footer a:hover { text-decoration: underline; }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="nav">
+      <div class="brand"><span class="dot" aria-hidden="true"></span>LeetCode Badge (Static)</div>
+      <a class="gh" href="https://github.com/andrew-pavlov-ua/LeetCode-Widget" target="_blank" rel="noopener">⭐ Star on GitHub</a>
+    </div>
+  </header>
+
+  <main>
+    <div class="wrap">
+      <section class="hero">
+        <h1>Generate a serverless LeetCode badge</h1>
+        <div class="note">
+          <strong>Heads-up!</strong> I’m a student and I’m hosting this as a <em>static</em> site to avoid server costs.
+          This page builds simple badges (via shields.io) that link to your LeetCode profile—no backend required.
+        </div>
+      </section>
+
+      <section class="card">
+        <form id="form" class="form" autocomplete="off">
+          <input id="input" type="text" placeholder="Enter LeetCode username or profile URL (e.g. leetcode.com/yourname/)" required />
+          <button class="btn" type="submit">Generate</button>
+        </form>
+
+        <div id="results" style="display:none">
+          <div class="preview">
+            <strong>Preview:</strong>
+            <img id="badgeImg" alt="LeetCode badge preview" />
+            <a id="profileLink" href="#" target="_blank" rel="noopener">Profile →</a>
+          </div>
+
+          <div class="embed-grid">
+            <div class="embed-box">
+              <div class="embed-title">Markdown</div>
+              <div id="md" class="code"></div>
+              <div class="actions">
+                <button class="copy" data-copy="md">Copy</button>
+              </div>
+            </div>
+            <div class="embed-box">
+              <div class="embed-title">HTML</div>
+              <div id="html" class="code"></div>
+              <div class="actions">
+                <button class="copy" data-copy="html">Copy</button>
+              </div>
+            </div>
+          </div>
+
+          <p class="alt">
+            This uses a static shields.io badge (no stats, just your name + LeetCode icon) linking to your profile.
+            If you need dynamic stats, you’ll need a backend or a third-party service.
+          </p>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <div id="toast" class="toast">Copied!</div>
+
+  <footer>
+    Created by <a href="https://github.com/andrew-pavlov-ua" target="_blank" rel="noopener">Andrew Pavlov</a>
+  </footer>
+
+  <script>
+    // Parse username from free text or URL.
+    function extractUsername(input) {
+      let s = (input || "").trim();
+      if (!s) return "";
+      try {
+        if (s.includes("http://") || s.includes("https://")) {
+          const u = new URL(s);
+          // common forms: leetcode.com/<user>/  |  leetcode.cn/u/<user>/
+          const parts = u.pathname.split("/").filter(Boolean);
+          if (u.hostname.includes("leetcode.cn")) {
+            // /u/<username>[/...]
+            const idx = parts[0] === "u" ? 1 : parts.length - 1;
+            return (parts[idx] || "").trim();
+          }
+          // leetcode.com/<username>[/...]
+          return (parts[0] || "").trim();
+        }
+      } catch(_) {}
+      // plain username
+      return s.replace(/^@/, "");
+    }
+
+    function buildBadge(username) {
+      // shields.io static badge; colors/logo tuned for LeetCode
+      const label = "LeetCode";
+      const message = encodeURIComponent(username);
+      const color = "FFA116"; // LeetCode orange
+      const logo = "leetcode";
+      const badgeURL =
+        `https://img.shields.io/badge/${label}-${message}-${color}?logo=${logo}&logoColor=white`;
+      const profileURL = `https://leetcode.com/${username}/`;
+
+      const md = `[![LeetCode - ${username}](${badgeURL})](${profileURL})`;
+      const html = `<a href="${profileURL}" target="_blank" rel="noopener"><img src="${badgeURL}" alt="LeetCode - ${username}"></a>`;
+
+      return { badgeURL, profileURL, md, html };
+    }
+
+    const form = document.getElementById("form");
+    const input = document.getElementById("input");
+    const results = document.getElementById("results");
+    const mdBox = document.getElementById("md");
+    const htmlBox = document.getElementById("html");
+    const img = document.getElementById("badgeImg");
+    const profileLink = document.getElementById("profileLink");
+    const toast = document.getElementById("toast");
+
+    form.addEventListener("submit", (e) => {
+      e.preventDefault();
+      const user = extractUsername(input.value);
+      if (!user) return;
+
+      const { badgeURL, profileURL, md, html } = buildBadge(user);
+      img.src = badgeURL;
+      img.alt = `LeetCode - ${user}`;
+      profileLink.href = profileURL;
+      profileLink.textContent = "Profile →";
+
+      mdBox.textContent = md;
+      htmlBox.textContent = html;
+      results.style.display = "block";
+    });
+
+    document.addEventListener("click", (e) => {
+      const btn = e.target.closest(".copy");
+      if (!btn) return;
+      const id = btn.getAttribute("data-copy");
+      const el = document.getElementById(id);
+      const text = el?.textContent || "";
+      if (!text) return;
+      navigator.clipboard.writeText(text).then(() => {
+        toast.classList.add("show");
+        setTimeout(() => toast.classList.remove("show"), 1200);
+      });
+    });
+  </script>
+</body>
+</html>

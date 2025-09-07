@@ -36,5 +36,3 @@ Once the application is running, navigate to http://localhost in your web browse
 
 ## Author
 Created by Andrew Pavlov.
-
-
