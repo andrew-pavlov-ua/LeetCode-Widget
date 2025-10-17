@@ -1,6 +1,7 @@
 package main
 
 import (
+	"context"
 	"fmt"
 	"log"
 	"net/http"
@@ -13,6 +14,7 @@ import (
 	"cmd/internal/services"
 
 	"github.com/gin-gonic/gin"
+	"github.com/redis/go-redis/v9"
 )
 
 func main() {
@@ -38,6 +40,35 @@ func main() {
 	var repository = db.MustRepository(pgConnection)
 	defer repository.Close()
 
+	// redis
+	opt, err := redis.ParseURL(env.Must("REDIS_OPT"))
+	if err != nil {
+		panic(err)
+	}
+	client := redis.NewClient(opt)
+
+	// Ping to test the connection
+	ctx := context.Background()
+	pong, err := client.Ping(ctx).Result()
+	if err != nil {
+		fmt.Println("Could not connect to Redis:", err)
+	} else {
+		fmt.Println("Redis connection successful:", pong)
+	}
+
+	// Example: Set and Get a key
+	err = client.Set(ctx, "mykey", "myvalue", 0).Err() // 0 means no expiration
+	if err != nil {
+		fmt.Println("Error setting key:", err)
+	}
+
+	val, err := client.Get(ctx, "mykey").Result()
+	if err != nil {
+		fmt.Println("Error getting key:", err)
+	} else {
+		fmt.Println("Value of mykey:", val)
+	}
+
 	// creating services
 	var userService = services.NewLcUserService(repository)
 	var visitsService = services.NewVisistsStatsService(repository)
@@ -56,8 +87,6 @@ func main() {
 	r.GET("/:leetcode_user_slug/redirect", webController.VisitsCountRedirect)        // Processing profile view
 	r.GET("/favicon.ico", func(c *gin.Context) { c.Status(http.StatusNoContent) })
 
-	// r.GET("/lcb/api/cw/id/:cw_user_id/stats", webController.ReturnCWStatsById)
-
 	// CSS
 	r.Static("/style", "./public/view/style")
 	r.Static("/redirect-page/style", "./public/view/style")
@@ -71,4 +100,5 @@ func main() {
 	r.Static("/redirect-page/site_ico.ico", "./public/assets/images/site_ico.ico")
 
 	server.Run(r.Handler())
+
 }

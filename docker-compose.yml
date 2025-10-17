@@ -1,5 +1,3 @@
-version: "3.7"
-
 services:
   postgres:
     container_name: "lc_badge_postgres"
@@ -13,6 +11,17 @@ services:
     volumes:
       - ./.docker/volumes/postgresql/data/:/var/lib/postgresql/data/
 
+  redis:
+    container_name: "lc_badge_redis"
+    image: redis:latest
+    command: ["redis-server", "--requirepass", "${REDIS_PASSWORD}"]
+    ports:
+      - "6379:6379"
+    volumes:
+      - ./redis_data:/data
+    # environment:
+      # REDIS_PASSWORD: ${REDIS_PASSWORD} 
+
   app:
     container_name: "lc_badge_app"
     image: golang:1.21.0-alpine
@@ -24,6 +33,7 @@ services:
       ENVIRONMENT: ${ENVIRONMENT}
       POSTGRES_DSN: ${POSTGRES_DSN}
       GOOSE_DBSTRING: ${POSTGRES_DSN}
+      REDIS_OPT: ${REDIS_OPT}
       PORT: ${PORT}
       HOSTS: ${HOSTS}
       TLS_CERTIFICATES_DIR: ${TLS_CERTIFICATES_DIR}
@@ -33,3 +43,4 @@ services:
       - "443:443"
     depends_on:
       - postgres
+      - redis

@@ -4,6 +4,7 @@
 
 app.log
 .docker/volumes/
+redis_data/
 cw_api
 internal/tests/cw_api_test
 Makefile
