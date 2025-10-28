@@ -59,7 +59,6 @@ func runProduction(handler http.Handler) {
 }
 
 func runDevelopment(handler http.Handler) {
-	fmt.Println("Started dev")
 	server := &http.Server{
 		Addr:         ":http",
 		Handler:      handler,

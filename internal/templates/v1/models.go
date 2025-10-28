@@ -12,13 +12,13 @@ const (
 )
 
 type LcUserData struct {
-	UserSlug    string
-	Username    string
-	EasyCount   int64
-	MediumCount int64
-	HardCount   int64
-	TotalCount  int64
-	Rank        float64
+	UserSlug    string  `redis:"user_slug"`
+	Username    string  `redis:"username"`
+	EasyCount   int64   `redis:"easy_count"`
+	MediumCount int64   `redis:"medium_count"`
+	HardCount   int64   `redis:"hard_count"`
+	TotalCount  int64   `redis:"total_count"`
+	Rank        float64 `redis:"rank"`
 }
 
 type BarsWidth struct {

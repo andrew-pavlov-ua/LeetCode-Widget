@@ -19,8 +19,6 @@ services:
       - "6379:6379"
     volumes:
       - ./redis_data:/data
-    # environment:
-      # REDIS_PASSWORD: ${REDIS_PASSWORD} 
 
   app:
     container_name: "lc_badge_app"
@@ -33,6 +31,7 @@ services:
       ENVIRONMENT: ${ENVIRONMENT}
       POSTGRES_DSN: ${POSTGRES_DSN}
       GOOSE_DBSTRING: ${POSTGRES_DSN}
+      USE_REDIS: ${USE_REDIS}
       REDIS_OPT: ${REDIS_OPT}
       PORT: ${PORT}
       HOSTS: ${HOSTS}

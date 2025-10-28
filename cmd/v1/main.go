@@ -1,7 +1,6 @@
 package main
 
 import (
-	"context"
 	"fmt"
 	"log"
 	"net/http"
@@ -10,11 +9,11 @@ import (
 	"cmd/internal/controllers"
 	"cmd/internal/db"
 	"cmd/internal/env"
+	"cmd/internal/redis"
 	"cmd/internal/server"
 	"cmd/internal/services"
 
 	"github.com/gin-gonic/gin"
-	"github.com/redis/go-redis/v9"
 )
 
 func main() {
@@ -40,37 +39,12 @@ func main() {
 	var repository = db.MustRepository(pgConnection)
 	defer repository.Close()
 
-	// redis
-	opt, err := redis.ParseURL(env.Must("REDIS_OPT"))
-	if err != nil {
-		panic(err)
-	}
-	client := redis.NewClient(opt)
-
-	// Ping to test the connection
-	ctx := context.Background()
-	pong, err := client.Ping(ctx).Result()
-	if err != nil {
-		fmt.Println("Could not connect to Redis:", err)
-	} else {
-		fmt.Println("Redis connection successful:", pong)
-	}
-
-	// Example: Set and Get a key
-	err = client.Set(ctx, "mykey", "myvalue", 0).Err() // 0 means no expiration
-	if err != nil {
-		fmt.Println("Error setting key:", err)
-	}
-
-	val, err := client.Get(ctx, "mykey").Result()
-	if err != nil {
-		fmt.Println("Error getting key:", err)
-	} else {
-		fmt.Println("Value of mykey:", val)
-	}
+	// redis connectin
+	rdb := redis.SetUpRDB()
+	defer rdb.Close()
 
 	// creating services
-	var userService = services.NewLcUserService(repository)
+	var userService = services.NewLcUserService(repository, rdb)
 	var visitsService = services.NewVisistsStatsService(repository)
 
 	r := gin.Default()

@@ -26,6 +26,9 @@ app-stop:
 
 app-restart: app-build app-stop app-start
 
+test-smth:
+	docker exec -it lc_badge_app go run ./cmd/testing_smth/
+
 migrate-pgsql-goose-install:
 	docker exec lc_badge_app go install github.com/pressly/goose/v3/cmd/goose@latest
 
