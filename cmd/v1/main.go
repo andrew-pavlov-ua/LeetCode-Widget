@@ -27,21 +27,21 @@ func main() {
 	if err != nil {
 		log.Fatalf("Error while log file opening: %v", err)
 	}
-	defer file.Close()
+	defer file.Close() //nolint:errcheck
 	log.SetOutput(file)
 
 	log.Println("Starting app")
 
 	// Setting up connection with db
 	var pgConnection = db.MustConnection(dsn)
-	defer pgConnection.Close()
+	defer pgConnection.Close() //nolint:errcheck
 
 	var repository = db.MustRepository(pgConnection)
-	defer repository.Close()
+	defer repository.Close() //nolint:errcheck
 
 	// redis connectin
 	rdb := redis.SetUpRDB()
-	defer rdb.Close()
+	defer rdb.Close() //nolint:errcheck
 
 	// creating services
 	var userService = services.NewLcUserService(repository, rdb)

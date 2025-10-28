@@ -36,7 +36,7 @@ func main() {
 		panic(err)
 	}
 	client := redis.NewClient(opt)
-	defer client.Close()
+	defer client.Close() //nolint:errcheck
 
 	ctx := context.Background()
 
