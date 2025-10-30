@@ -1,7 +1,5 @@
 .env
 
-.github
-
 app.log
 .docker/volumes/
 redis_data/
