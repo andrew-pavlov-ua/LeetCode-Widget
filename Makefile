@@ -18,8 +18,13 @@ env-down-with-clear:
 app-build:
 	docker exec lc_badge_app go build -o /bin/lc-redirect-server ./cmd/v1/main.go
 
+# Starts the server with Redis stats storage
 app-start:
-	docker exec lc_badge_app lc-redirect-server
+	docker exec -e USE_REDIS=y lc_badge_app lc-redirect-server
+
+# Starts the server with Postgres stats storage
+app-start-pg:
+	docker exec -e USE_REDIS=n lc_badge_app lc-redirect-server 
 
 app-stop:
 	docker exec lc_badge_app pkill lc-redirect-server || echo "lc_redirect-server already stopped"
