@@ -11,10 +11,10 @@ import (
 
 func TestMatchedUserMapToUserProfile(t *testing.T) {
 	t.Logf("Started testing lc api")
-	userSlug := "MURASAME_"
-	allSubmissions := &Submission{Count: 27, Difficulty: "All"}
-	ezSubmissions := &Submission{Count: 24, Difficulty: "Easy"}
-	medSubmissions := &Submission{Count: 3, Difficulty: "Medium"}
+	userSlug := "murasame_"
+	allSubmissions := &Submission{Count: 39, Difficulty: "All"}
+	ezSubmissions := &Submission{Count: 30, Difficulty: "Easy"}
+	medSubmissions := &Submission{Count: 9, Difficulty: "Medium"}
 	hardSubmissions := &Submission{Count: 0, Difficulty: "Hard"}
 
 	actualUser, err := MatchedUserMapToUserProfile(userSlug)
